@@ -4,22 +4,32 @@ namespace ZendDeveloperTools;
 
 use Zend\Module\Manager,
     Zend\Config\Config,
-    Zend\EventManager\StaticEventManager;
+    Zend\EventManager\StaticEventManager,
+    Zend\Loader\AutoloaderFactory;
 
 class Module
 {
     public function init(Manager $moduleManager)
     {
-        StaticEventManager::getInstance()->attach('Zend\Mvc\Application', 'finish', function($e) {
-            $append = 'ZendDeveloperTools Module Loaded';
-            return $e->getResponse()->setContent($e->getResponse()->getBody() . $append);
-        });
         $this->initAutoloader();
+        StaticEventManager::getInstance()->attach('Zend\Mvc\Application', 'finish', function($e) {
+            $devToolService = new Service\DeveloperTools;
+            return $devToolService->appendResponse($e->getResponse());
+        });
     }
 
     protected function initAutoloader()
     {
-        require __DIR__ . '/autoload_register.php';
+        AutoloaderFactory::factory(array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/autoload_classmap.php',
+            ),
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                ),
+            ),
+        ));
     }
 
     public static function getConfig($env = null)
