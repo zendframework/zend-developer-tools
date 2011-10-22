@@ -32,7 +32,7 @@ class Module
         ));
     }
 
-    public static function getConfig($env = null)
+    public function getConfig($env = null)
     {
         return new Config(include __DIR__ . '/configs/module.config.php');
     }
