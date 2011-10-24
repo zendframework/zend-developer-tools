@@ -2,11 +2,22 @@
 
 namespace ZendDeveloperTools\Service;
 
+use ZendDeveloperTools\Controller\DeveloperToolsController;
+
 class DeveloperTools
 {
-    public function appendResponse($response)
+    public static $startTime;
+    public static $stopTime;
+
+    public function appendResponse($event)
     {
-        $append = '<hr/>ZendDeveloperTools Module Loaded';
+        $response = $event->getResponse();
+        $controller = new DeveloperToolsController;
+        $controller->dispatch($event->getRequest(), $event->getResponse(), $event);
+        $append = $event->getResult();
+        if (!is_string($append)) {
+            return $response;
+        }
         $responseBody = $response->getBody();
         $responseBody = str_ireplace('</body>', $append . "\n</body>", $responseBody, $count);
         if ($count === 0) {
