@@ -22,7 +22,7 @@ class DeveloperToolsController implements Dispatchable
     public function indexAction()
     {
         $execTime = DevToolsService::$stopTime - DevToolsService::$startTime;
-        return array('execTime' => round($execTime, 5));
+        return array('execTime' => round($execTime, 5) * 1000);
     }
 
     public function execute(MvcEvent $e)
