@@ -3,17 +3,16 @@
 namespace ZendDeveloperTools;
 
 use Zend\Module\Manager,
-    Zend\EventManager\StaticEventManager,
-    Zend\Loader\AutoloaderFactory;
+    Zend\Module\Consumer\AutoloaderProvider,
+    Zend\EventManager\StaticEventManager;
 
-class Module
+class Module implements AutoloaderProvider
 {
     protected $viewListener;
     protected $view;
 
     public function init(Manager $moduleManager)
     {
-        $this->initAutoloader();
         Service\DeveloperTools::$startTime = microtime(true);
         $events = StaticEventManager::getInstance();
         $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 1000);
@@ -24,9 +23,9 @@ class Module
         });
     }
 
-    protected function initAutoloader()
+    public function getAutoloaderConfig()
     {
-        AutoloaderFactory::factory(array(
+        return array(
             'Zend\Loader\ClassMapAutoloader' => array(
                 __DIR__ . '/autoload_classmap.php',
             ),
@@ -35,7 +34,7 @@ class Module
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
-        ));
+        );
     }
 
     public function getConfig($env = null)
@@ -47,7 +46,7 @@ class Module
     {
         $app          = $e->getParam('application');
         $locator      = $app->getLocator();
-        $config       = $e->getParam('modules')->getMergedConfig();
+        $config       = $e->getParam('config');
         $view         = $this->getView($app);
         $viewListener = $this->getViewListener($view, $config);
         $events       = StaticEventManager::getInstance();
