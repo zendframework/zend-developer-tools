@@ -7,6 +7,7 @@ use ArrayAccess,
     Zend\EventManager\ListenerAggregate,
     Zend\EventManager\StaticEventCollection,
     Zend\Mvc\MvcEvent,
+    Zend\Http\PhpEnvironment\Response,
     Zend\View\Renderer;
 
 class Listener implements ListenerAggregate
@@ -57,6 +58,10 @@ class Listener implements ListenerAggregate
     public function renderView(MvcEvent $e)
     {
         $response = $e->getResponse();
+        if (!$response) {
+            $response = new Response();
+            $e->setResponse($response);
+        }
         if (!$response->isSuccess()) {
             return;
         }
@@ -84,6 +89,9 @@ class Listener implements ListenerAggregate
         if (!$response) {
             $response = new Response();
             $e->setResponse($response);
+        }
+        if (!$response->isSuccess()) {
+            return;
         }
         if ($response->isRedirect()) {
             return $response;
