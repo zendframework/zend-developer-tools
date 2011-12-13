@@ -18,6 +18,9 @@ class DeveloperTools
         if (!is_string($append)) {
             return $response;
         }
+        if (!$response) {
+            return;
+        }
         $responseBody = $response->getBody();
         $responseBody = str_ireplace('</body>', $append . "\n</body>", $responseBody, $count);
         if ($count === 0) {
