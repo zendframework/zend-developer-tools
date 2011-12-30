@@ -9,7 +9,7 @@ return array(
                 'parameters' => array(
                     'options'  => array(
                         'script_paths' => array(
-                            'developer-tools' => __DIR__ . '/../views',
+                            'zend_developer_tools' => __DIR__ . '/../views',
                         ),
                     ),
                 ),

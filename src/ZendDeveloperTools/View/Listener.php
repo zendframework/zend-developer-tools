@@ -79,8 +79,8 @@ class Listener implements ListenerAggregate
 
         $content = $this->view->render($script, $vars);
 
-        $e->setResult($content);
-        return $e->getResult();
+        $e->setParam('content', $content);
+        return $content;
     }
 
     public function renderLayout(MvcEvent $e)
@@ -99,11 +99,9 @@ class Listener implements ListenerAggregate
 
         if (false !== ($contentParam = $e->getParam('content', false))) {
             $vars['content'] = $contentParam;
-        } else {
-            $vars['content'] = $e->getResult();
         }
 
-        $layout   = $this->view->render($this->layout, $vars);
+        $layout = $this->view->render($this->layout, $vars);
         $e->setResult($layout);
         return $response;
     }
