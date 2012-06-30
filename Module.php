@@ -85,7 +85,7 @@ class Module implements AutoloaderProvider
     protected function getView($app)
     {
         if ($this->view === null) {
-            $this->view = $app->getLocator()->get('view');
+            $this->view = $app->getLocator()->get('Zend\View\Renderer\PhpRenderer');
         }
         return $this->view;
     }

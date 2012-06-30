@@ -5,12 +5,10 @@ return array(
     ),
     'di' => array(
         'instance' => array(
-            'Zend\View\PhpRenderer' => array(
+            'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
-                    'options'  => array(
-                        'script_paths' => array(
-                            'zend_developer_tools' => __DIR__ . '/../views',
-                        ),
+                    'paths' => array(
+                        'zend_developer_tools' => __DIR__.'/../views',
                     ),
                 ),
             ),
