@@ -21,27 +21,43 @@
 
 namespace ZendDeveloperTools;
 
-use Zend\Module\Manager,
-    Zend\Module\Consumer\AutoloaderProvider,
-    Zend\EventManager\StaticEventManager;
+use Zend\EventManager\Event;
+use Zend\ModuleManager\Feature\ConfigProviderInterface as ConfigProvider;
+use Zend\ModuleManager\Feature\ServiceProviderInterface as ServiceProvider;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface as BootstrapListener;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface as AutoloaderProvider;
 
-class Module implements AutoloaderProvider
+/**
+ * @category   Zend
+ * @package    ZendDeveloperTools
+ * @subpackage Module
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ */
+class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, BootstrapListener
 {
-    protected $viewListener;
-    protected $view;
-
-    public function init(Manager $moduleManager)
+    /**
+     * Zend\Mvc\MvcEvent::EVENT_BOOTSTRAP event callback
+     *
+     * @param Event $event
+     */
+    public function onBootstrap(Event $event)
     {
-        Service\DeveloperTools::$startTime = microtime(true);
-        $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 1000);
-        $events->attach('Zend\Mvc\Application', 'finish', function($e) {
-            Service\DeveloperTools::$stopTime = microtime(true);
-            $devToolService = new Service\DeveloperTools;
-            return $devToolService->appendResponse($e);
-        });
+        $eventManager       = $event->getApplication()->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+        $serviceManager     = $event->getApplication()->getServiceManager();
+
+        $eventManager->attachAggregate($serviceManager->get('ProfileListener'));
+
+        // todo: check if the toolbar is enabled.
+        $sharedEventManager->attach('profiler', $serviceManager->get('ToolbarListener'), 2500);
+
+        // todo: save stuff in db/file.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAutoloaderConfig()
     {
         return array(
@@ -56,37 +72,43 @@ class Module implements AutoloaderProvider
         );
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getConfig($env = null)
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function initializeView($e)
+    /**
+     * @inheritdoc
+     */
+    public function getServiceConfiguration()
     {
-        $app          = $e->getParam('application');
-        $locator      = $app->getLocator();
-        $config       = $e->getParam('config');
-        $view         = $this->getView($app);
-        $viewListener = $this->getViewListener($view, $config);
-        $events       = StaticEventManager::getInstance();
-        $viewListener->registerStaticListeners($events, $locator);
-    }
+        return array(
+            'invokables' => array(
+                'ProfilerReport' => 'ZendDeveloperTools\Report',
+            ),
+            'factories' => array(
+                'Profiler' => function($sm) {
+                    return new Profiler($sm->get('ProfilerEvent'), $sm->get('ProfilerReport'));
+                },
+                'ProfilerEvent' => function($sm) {
+                    $event = new ProfilerEvent();
+                    $event->setApplication($sm->get('Application'));
 
-    protected function getViewListener($view, $config)
-    {
-        if ($this->viewListener instanceof View\Listener) {
-            return $this->viewListener;
-        }
-        $viewListener       = new View\Listener($view, $config->zend_developer_tools->layout);
-        $this->viewListener = $viewListener;
-        return $viewListener;
-    }
-
-    protected function getView($app)
-    {
-        if ($this->view === null) {
-            $this->view = $app->getLocator()->get('view');
-        }
-        return $this->view;
+                    return $event;
+                },
+                'StorageListener' => function($sm) {
+                    return new Listener\StorageListener($sm);
+                },
+                'ToolbarListener' => function($sm) {
+                    return new Listener\ToolbarListener($sm);
+                },
+                'ProfileListener' => function($sm) {
+                    return new Listener\ProfilerListener($sm);
+                },
+            ),
+        );
     }
 }

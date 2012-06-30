@@ -14,27 +14,47 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendDeveloperTools\Controller;
+namespace ZendDeveloperTools\Collector;
 
-use Zend\View\Model\ViewModel;
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\MvcEvent;
 
 /**
+ * Request Data Collector.
+ *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class IndexController extends ActionController
+class RequestCollector extends CollectorAbstract
 {
-    public function indexAction()
+    /**
+     * @inheritdoc
+     */
+    public function getName()
     {
-        return new ViewModel();
+        return 'request';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPriority()
+    {
+        return 100;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function collect(MvcEvent $mvcEvent)
+    {
+        // todo
     }
 }

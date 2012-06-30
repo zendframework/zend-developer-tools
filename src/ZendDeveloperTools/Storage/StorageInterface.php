@@ -14,27 +14,21 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Storage
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendDeveloperTools\Controller;
-
-use Zend\View\Model\ViewModel;
-use Zend\Mvc\Controller\ActionController;
+namespace ZendDeveloperTools\Storage;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Storage
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class IndexController extends ActionController
+interface StorageInterface
 {
-    public function indexAction()
-    {
-        return new ViewModel();
-    }
+
 }

@@ -14,27 +14,44 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendDeveloperTools\Controller;
-
-use Zend\View\Model\ViewModel;
-use Zend\Mvc\Controller\ActionController;
+namespace ZendDeveloperTools\Collector;
 
 /**
+ * Serializable Collector base class.
+ *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class IndexController extends ActionController
+abstract class CollectorAbstract implements CollectorInterface, \Serializable
 {
-    public function indexAction()
+    /**
+     * Collected Data
+     *
+     * @var array
+     */
+    protected $data;
+
+    /**
+     * @see \Serializable
+     */
+    public function serialize()
     {
-        return new ViewModel();
+        return serialize($this->data);
+    }
+
+    /**
+     * @see \Serializable
+     */
+    public function unserialize($data)
+    {
+        $this->data = unserialize($data);
     }
 }

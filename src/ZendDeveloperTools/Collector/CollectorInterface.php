@@ -14,27 +14,51 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendDeveloperTools\Controller;
+namespace ZendDeveloperTools\Collector;
 
-use Zend\View\Model\ViewModel;
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\MvcEvent;
 
 /**
+ * Collector Interface.
+ *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class IndexController extends ActionController
+interface CollectorInterface
 {
-    public function indexAction()
-    {
-        return new ViewModel();
-    }
+    /**
+     * Collector Name.
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * Collector Priority.
+     *
+     * @return integer
+     */
+    public function getPriority();
+
+    /**
+     * Is the collected data exportable?
+     *
+     * @return boolean
+     */
+    #public function isExportable();
+
+    /**
+     * Collects data.
+     *
+     * @param MvcEvent $mvcEvent
+     */
+    public function collect(MvcEvent $mvcEvent);
 }

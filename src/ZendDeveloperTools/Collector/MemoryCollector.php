@@ -14,27 +14,59 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendDeveloperTools\Controller;
+namespace ZendDeveloperTools\Collector;
 
-use Zend\View\Model\ViewModel;
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\MvcEvent;
 
 /**
+ * Memory Data Collector.
+ *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class IndexController extends ActionController
+class MemoryCollector extends CollectorAbstract
 {
-    public function indexAction()
+    /**
+     * @inheritdoc
+     */
+    public function getName()
     {
-        return new ViewModel();
+        return 'memory';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPriority()
+    {
+        return 1;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function collect(MvcEvent $mvcEvent)
+    {
+        $this->data = array(
+            'memory' => memory_get_peak_usage(true),
+        );
+    }
+
+    /**
+     * Returns the used Memory (peak)
+     *
+     * @return integer Memory
+     */
+    public function getMemory()
+    {
+        return $this->data['memory'];
     }
 }
