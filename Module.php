@@ -43,16 +43,9 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
      */
     public function onBootstrap(Event $event)
     {
-        $eventManager       = $event->getApplication()->getEventManager();
-        $sharedEventManager = $eventManager->getSharedManager();
-        $serviceManager     = $event->getApplication()->getServiceManager();
-
-        $eventManager->attachAggregate($serviceManager->get('ProfileListener'));
-
-        // todo: check if the toolbar is enabled.
-        $sharedEventManager->attach('profiler', $serviceManager->get('ToolbarListener'), 2500);
-
-        // todo: save stuff in db/file.
+        $sm      = $event->getApplication()->getServiceManager();
+        $manager = $sm->get('ZDT_Manager');
+        $manager->register();
     }
 
     /**
@@ -87,27 +80,54 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
     {
         return array(
             'invokables' => array(
-                'ProfilerReport' => 'ZendDeveloperTools\Report',
+                'ZDT_Report'              => 'ZendDeveloperTools\Report',
+                'ZDT_Collector_Db'        => 'ZendDeveloperTools\Collector\DbCollector',
+                'ZDT_Collector_Event'     => 'ZendDeveloperTools\Collector\EventCollector',
+                'ZDT_Collector_Exception' => 'ZendDeveloperTools\Collector\ExceptionCollector',
+                'ZDT_Collector_Request'   => 'ZendDeveloperTools\Collector\RequestCollector',
+                'ZDT_Collector_Memory'    => 'ZendDeveloperTools\Collector\MemoryCollector',
+                'ZDT_Collector_Time'      => 'ZendDeveloperTools\Collector\TimeCollector',
             ),
             'factories' => array(
-                'Profiler' => function($sm) {
-                    return new Profiler($sm->get('ProfilerEvent'), $sm->get('ProfilerReport'));
+                'ZDT_Options' => function ($sm) {
+                    $config = $sm->get('Configuration');
+                    $config = isset($config['zdt']) ? $config['zdt'] : null;
+
+                    return new Options($config, $sm->get('ZDT_Report'));
                 },
-                'ProfilerEvent' => function($sm) {
+                'ZDT_Manager' => function($sm) {
+                    $opt = $sm->get('ZDT_Options');
+                    $em  = $sm->get('Application')->getEventManager();
+
+                    return new Manager($sm, $em, $opt);
+                },
+                'ZDT_Profiler' => function($sm) {
+                    return new Profiler($sm->get('ZDT_ProfilerEvent'), $sm->get('ZDT_Report'));
+                },
+                'ZDT_ProfilerEvent' => function($sm) {
                     $event = new ProfilerEvent();
                     $event->setApplication($sm->get('Application'));
 
                     return $event;
                 },
-                'StorageListener' => function($sm) {
+                'ZDT_StorageListener' => function($sm) {
                     return new Listener\StorageListener($sm);
                 },
-                'ToolbarListener' => function($sm) {
-                    return new Listener\ToolbarListener($sm);
+                'ZDT_ToolbarListener' => function($sm) {
+                    return new Listener\ToolbarListener($sm, $sm->get('ZDT_Options'));
                 },
-                'ProfileListener' => function($sm) {
-                    return new Listener\ProfilerListener($sm);
+                'ZDT_ProfileListener' => function($sm) {
+                    return new Listener\ProfilerListener($sm, $sm->get('ZDT_Options'));
                 },
+                'ZDT_TimeCollectorListener' => function($sm) {
+                    return new Listener\EventCollectorListener($sm->get('ZDT_Collector_Time'));
+                },
+                'ZDT_MemoryCollectorListener' => function($sm) {
+                    return new Listener\EventCollectorListener($sm->get('ZDT_Collector_Memory'));
+                },
+            ),
+            'aliases' => array(
+                'Profiler' => 'ZDT_Profiler',
             ),
         );
     }

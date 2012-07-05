@@ -1,0 +1,12 @@
+<?php
+return array(
+    'zdt' => array(
+        'profiler' => array(
+            'enabled' => true,
+            'strict'  => false,
+        ),
+        'toolbar' => array(
+            'enabled' => true,
+        ),
+    ),
+);

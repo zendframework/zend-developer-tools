@@ -36,6 +36,11 @@ use Zend\EventManager\EventManagerAwareInterface;
 class Profiler implements EventManagerAwareInterface
 {
     /**
+     * @var boolean
+     */
+    protected $strict;
+
+    /**
      * @var ProfilerEvent
      */
     protected $event;
@@ -73,6 +78,19 @@ class Profiler implements EventManagerAwareInterface
     }
 
     /**
+     * Set the error mode.
+     *
+     * @param  boolean $mode
+     * @return self
+     */
+    public function setErrorMode($mode)
+    {
+        $this->strict = $mode;
+
+        return $this;
+    }
+
+    /**
      * Set the event manager instance
      *
      * @param  EventManagerInterface $eventManager
@@ -97,24 +115,25 @@ class Profiler implements EventManagerAwareInterface
     }
 
     /**
-     * Setss collectors.
+     * Adds a collector.
      *
-     * @param  array $collectors
+     * @param  Collector\CollectorInterface $collector
      * @return self
      */
-    public function setCollectors(array $collectors)
+    public function addCollector($collector)
     {
         if (!isset($this->collectors)) {
             $this->collectors = new PriorityQueue();
         }
 
-        foreach ($collectors as $collector) {
-            if ($collector instanceof Collector\CollectorInterface) {
-                $this->collectors->insert($collector, $collector->getPriority());
+        if ($collector instanceof Collector\CollectorInterface) {
+            $this->collectors->insert($collector, $collector->getPriority());
+        } else {
+            $error = sprintf('%s must implement CollectorInterface.', get_class($collector));
+            if ($this->strict === true) {
+                throw new Exception\CollectorException($error);
             } else {
-                $this->report->setErrors(array(
-                    'collector' => sprintf('The service named %s must implement CollectorInterface.')
-                ));
+                $report->addError($error);
             }
         }
 
@@ -131,9 +150,10 @@ class Profiler implements EventManagerAwareInterface
     public function collect(MvcEvent $mvcEvent)
     {
         $this->report->setToken(uniqid('zdt'))
+                     ->setUri($mvcEvent->getRequest()->getUriString())
                      ->setMethod($mvcEvent->getRequest()->getMethod())
                      ->setTime(new \DateTime('now', new \DateTimeZone('UTC')))
-                     ->setIp($mvcEvent->getRequest()->server()->get('REMOTE_ADDR'));
+                     ->setIp($mvcEvent->getRequest()->getServer()->get('REMOTE_ADDR'));
 
         if (isset($this->collectors)) {
             foreach ($this->collectors as $collector) {
@@ -144,7 +164,12 @@ class Profiler implements EventManagerAwareInterface
 
             $this->eventManager->trigger(ProfilerEvent::EVENT_COLLECTED, $this->event);
         } else {
-            $report->setErrors(array('collect' => 'No collectors initialized.'));
+            $error = 'There is nothing to collect.';
+            if ($this->strict === true) {
+                throw new Exception\ProfilerException($error);
+            } else {
+                $report->addError($error);
+            }
         }
 
         return $this;

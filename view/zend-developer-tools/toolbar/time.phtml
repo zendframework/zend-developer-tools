@@ -1,0 +1,19 @@
+<div class="zdt-toolbar-entry">
+    <div class="zdt-toolbar-preview">
+        <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHAw8mGjxdOGkAAANISURBVDjLrZRRSCxlFMf/3+es7ujAZdkWRFtMepAUXVehEIILETei+1iy9iBURMF9iB6u9JJEBWbZS6F4k7wXe0vYLNhIwau5O4MSDKIj68LorkzhthItspvbznxzerhe2J27ZA99b3P+5//jO985cxiuOKenp44QgnPOWUdHB7sqn1+VMDMzU2htbWXxeBz/27Esi1ZXV2/+l9yGJWSz2ccZY68xxt5kjIUZYwSAEVHJdd1viGhOCHHIOX+Hcz7e1NR0PRwOFxsCTdN8i3P+kc/nC+VyOVfTtCIAOI5DkUhE6e/vbyEi23XdH4QQT8uyHC6Xy1s9PT3X0QB2yzRNymQy7tjY2IEkSZ/KsjwCIAIg2tbWdntwcDCVTCYvTNOkk5MTmpqaOu3s7Jx/BGYYxjOZTIa2t7dFb2/vPQBPPNSOjo7IsqyXLj+bfT7fZCKRKGezWVpcXPyq4WMeHBxkdV2n8fHxOwDkWi2dTlM6nX6xNtbd3f1GIpFwDw8PqVAoPFY3Npubm68A6LAs62hpaelDABe1ZiICEXkbd09V1buO48AwjE/qgLIsDwBoTiaT9wH8Vmvc399XhBAQQrR5ihLVavXb8/PzvxVFuVEH9Pv9khACZ2dnP3qfQghx/xI459WOj4+PGWN/trS0+B/GpMuRAOccwWDwwmtyHGeQcw7XdUNeLRgM2gBcx3F43Q0rlQo5joP29vaA1zQ6OnpHURQsLCz87NW6urpkIpIqlYpbB9zd3S1Vq1VEIpFYg7LenZ6edovF4pRXGx4efopzHjIM4486YWho6Mb6+vpfmqYVVFXtazBV/QDqmqKqarOmaT/t7OzQwMDAe3U31HV9LR6P/8IYC9m2/UUqlbrmAe4DKNcGbNv+mIheWFtb+31vb++zR9bX7Ozs6ysrK0W/3/+cbdva1tbWUKMfIJVKKRsbG99zzm+bpimWl5ffBiAabhtFUW5OTEx8PTIyEpIkiQHYIKI5AASgyhh7GcCrRCTl8/ny5OTkl6Zpvg/A+bf19XwsFvsgGo1G+/r6WgOBB41njKFUKiGXy1V1Xc/Nz89/DuAuAPvKfQjgWiAQeFZRlBhj7MkHPMZc183btr2ez+e/A/BrI+M/BMaRHvzJD8cAAAAASUVORK5CYII=" alt="Execution Time">
+        <span class="zdt-toolbar-info">
+            <?php printf('%.0f ms', $this->collector->getExecutionTime() * 1000); ?>
+        </span>
+    </div>
+    <?php if ($this->collector->hasEventTimes()) : ?>
+    <div class="zdt-toolbar-detail">
+        <?php
+        // todo: proper styling.
+        foreach ($this->collector->getApplicationEventTimes() as $key => $value) {
+            printf('<span class="zdt-toolbar-info"><strong style="width: 100px;float: left;">%s</strong>', $key);
+            printf('<span style="width: 40px;float: right;text-align:right;">%.0f ms</span></span>', $value * 1000);
+        }
+        ?>
+    </div>
+    <?php endif; ?>
+</div>

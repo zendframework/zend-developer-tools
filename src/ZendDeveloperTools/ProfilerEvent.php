@@ -36,7 +36,7 @@ class ProfilerEvent extends Event
     /**
      * The EVENT_COLLECTED occurs after all data was collected.
      *
-     * This event allows you to grab the report that will be saved.
+     * This event allows you to grab the report.
      *
      * @var string
      */

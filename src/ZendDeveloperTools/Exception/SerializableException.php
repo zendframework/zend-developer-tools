@@ -62,7 +62,7 @@ class SerializableException implements \Serializable
      */
     public function getCode()
     {
-        return $this->data['code']
+        return $this->data['code'];
     }
 
     /**
@@ -70,7 +70,7 @@ class SerializableException implements \Serializable
      */
     public function getFile()
     {
-        return $this->data['file']
+        return $this->data['file'];
     }
 
     /**
@@ -78,7 +78,7 @@ class SerializableException implements \Serializable
      */
     public function getLine()
     {
-        return $this->data['line']
+        return $this->data['line'];
     }
 
     /**
@@ -86,7 +86,7 @@ class SerializableException implements \Serializable
      */
     public function getTrace()
     {
-        return $this->data['trace']
+        return $this->data['trace'];
     }
 
     /**
@@ -102,7 +102,7 @@ class SerializableException implements \Serializable
      */
     public function getMessage()
     {
-        return $this->data['message']
+        return $this->data['message'];
     }
 
     /**
@@ -110,7 +110,7 @@ class SerializableException implements \Serializable
      */
     public function getPrevious()
     {
-        return $this->data['previous']
+        return $this->data['previous'];
     }
 
     /**

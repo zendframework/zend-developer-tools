@@ -14,44 +14,33 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Match
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendDeveloperTools\Collector;
-
-use Zend\Mvc\MvcEvent;
+namespace ZendDeveloperTools;
 
 /**
- * Collector Interface.
- *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Match
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface CollectorInterface
+interface MatchInterface
 {
     /**
-     * Collector Name.
+     * The (case-insensetiv) name of the matcher.
      *
      * @return string
      */
     public function getName();
 
     /**
-     * Collector Priority.
+     * Matches the pattern against data.
      *
-     * @return integer
+     * @return boolean
      */
-    public function getPriority();
-
-    /**
-     * Collects data.
-     *
-     * @param MvcEvent $mvcEvent
-     */
-    public function collect(MvcEvent $mvcEvent);
+    public function matches($pattern);
 }

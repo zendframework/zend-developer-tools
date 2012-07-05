@@ -22,6 +22,7 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Application;
 use ZendDeveloperTools\Exception\SerializableException;
 
 /**
@@ -56,11 +57,9 @@ class ExceptionCollector extends CollectorAbstract
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        $exception = $mvcEvent->getParam('exception');
-
-        if ($exception !== null) {
+        if ($mvcEvent->getError() === Application::ERROR_EXCEPTION) {
             $this->data = array(
-                'exception' => new SerializableException($exception)
+                'exception' => new SerializableException($mvcEvent->getParam('exception'))
             );
         }
     }

@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage EventListener
+ * @subpackage Listener
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,10 +22,12 @@
 namespace ZendDeveloperTools\Listener;
 
 use Zend\Mvc\MvcEvent;
+use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceNotFoundException;
 
 /**
  * Profiler Listener
@@ -34,7 +36,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage EventListener
+ * @subpackage Listener
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -46,6 +48,11 @@ class ProfilerListener implements ListenerAggregateInterface
     protected $serviceLocator;
 
     /**
+     * @var Options
+     */
+    protected $options;
+
+    /**
      * @var array
      */
     protected $listeners = array();
@@ -54,9 +61,11 @@ class ProfilerListener implements ListenerAggregateInterface
      * Constructor.
      *
      * @param ServiceLocatorInterface $serviceLocator
+     * @param Options                 $options
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+    public function __construct(ServiceLocatorInterface $serviceLocator, Options $options)
     {
+        $this->options        = $options;
         $this->serviceLocator = $serviceLocator;
     }
 
@@ -65,7 +74,7 @@ class ProfilerListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_FINISH, array($this, 'onFinish'));
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_FINISH, array($this, 'onFinish'), -99999);
     }
 
     /**
@@ -87,19 +96,26 @@ class ProfilerListener implements ListenerAggregateInterface
      */
     public function onFinish(MvcEvent $event)
     {
-        // todo: needs to be fixed, should úse serivice locator/plugin manager whatever.
-        //       question of the day: does the service locator allow tagging?
-        $temp_collector_dict = array(
-            'zdt_data_collector_db'        => new \ZendDeveloperTools\Collector\DbCollector(),
-            'zdt_data_collector_event'     => new \ZendDeveloperTools\Collector\EventCollector(),
-            'zdt_data_collector_exception' => new \ZendDeveloperTools\Collector\ExceptionCollector(),
-            'zdt_data_collector_request'   => new \ZendDeveloperTools\Collector\RequestCollector(),
-            'zdt_data_collector_memory'    => new \ZendDeveloperTools\Collector\MemoryCollector(),
-            'zdt_data_collector_time'      => new \ZendDeveloperTools\Collector\TimeCollector(),
-        );
+        $strict     = $this->options->isStrict();
+        $collectors = $this->options->getCollectors();
+        $report     = $this->serviceLocator->get('ZDT_Report');
+        $profiler   = $this->serviceLocator->get('ZDT_Profiler');
 
-        $profiler = $this->serviceLocator->get('Profiler');
-        $profiler->setCollectors($temp_collector_dict)
-                 ->collect($event);
+        $profiler->setErrorMode($strict);
+
+        foreach ($collectors as $name => $collector) {
+            if ($this->serviceLocator->has($collector)) {
+                $profiler->addCollector($this->serviceLocator->get($collector));
+            } else {
+                $error = sprintf('Unable to fetch or create an instance for %s.', $collector);
+                if ($strict === true) {
+                    throw new ServiceNotFoundException($error);
+                } else {
+                    $report->addError($error);
+                }
+            }
+        }
+
+        $profiler->collect($event);
     }
 }

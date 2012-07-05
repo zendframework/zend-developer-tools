@@ -22,6 +22,7 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use Zend\EventManager\Event;
 
 /**
  * Time Data Collector.
@@ -32,7 +33,7 @@ use Zend\Mvc\MvcEvent;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class TimeCollector extends CollectorAbstract
+class TimeCollector extends CollectorAbstract implements EventCollectorInterface
 {
     /**
      * @inheritdoc
@@ -47,7 +48,7 @@ class TimeCollector extends CollectorAbstract
      */
     public function getPriority()
     {
-        return 1;
+        return PHP_INT_MAX;
     }
 
     /**
@@ -55,26 +56,87 @@ class TimeCollector extends CollectorAbstract
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        // todo: clean up.
-
-        if ($mvcEvent->getRequest()->server()->get('REQUEST_TIME_MICRO') !== null) {
-            $start = $mvcEvent->getRequest()->server()->get('REQUEST_TIME_MICRO');
+        if ($mvcEvent->getRequest()->getServer()->get('REQUEST_MICROTIME') !== null) {
+            $start = $mvcEvent->getRequest()->getServer()->get('REQUEST_MICROTIME');
         } else {
-            $start = $mvcEvent->getRequest()->server()->get('REQUEST_TIME', 0);
+            $start = $mvcEvent->getRequest()->getServer()->get('REQUEST_TIME');
         }
 
-        $this->data = array(
-            'start' => $start,
-            'end'   => microtime(true),
-        );
+        if (!isset($this->data)) {
+            $this->data = array();
+        }
+
+        $this->data['start'] = $start;
+        $this->data['end']   = microtime(true);
     }
 
-    public function getExecutionTime()
+    /**
+     * Saves the current time in microseconds for a specific event.
+     *
+     * @param string $id
+     * @param string $name
+     */
+    public function collectEvent($id, $name)
     {
-        if (!isset($this->data['start']) || !isset($this->data['end'])) {
-            return 0;
+        if (!isset($this->data)) {
+            $this->data = array();
+        }
+        if (!isset($this->data['event'])) {
+            $this->data['event'] = array();
+        }
+        if (!isset($this->data['event'][$id])) {
+            $this->data['event'][$id] = array();
         }
 
+        $this->data['event'][$id][$name] = microtime(true);
+    }
+
+    /**
+     * Returns the total execution time.
+     *
+     * @return float
+     */
+    public function getStartTime()
+    {
+        return $this->data['start'];
+    }
+
+    /**
+     * Returns the total execution time.
+     *
+     * @return float
+     */
+    public function getExecutionTime()
+    {
         return $this->data['end'] - $this->data['start'];
+    }
+
+    /**
+     * Event times collected?
+     *
+     * @return boolean
+     */
+    public function hasEventTimes()
+    {
+        return isset($this->data['event']);
+    }
+
+    /**
+     * Returns the detailed application execution time.
+     *
+     * @return array|null
+     */
+    public function getApplicationEventTimes()
+    {
+        $sc = $this->data['event']['application'];
+
+        $result = array();
+        $result['request']   = $sc['bootstrap'] - $this->data['start'];
+        $result['bootstrap'] = $sc['dispatch'] - $sc['bootstrap'];
+        $result['dispatch']  = $sc['render'] - $sc['dispatch'];
+        $result['render']    = $sc['finish'] - $sc['render'];
+        $result['finish']    = $this->data['end'] - $sc['finish'];
+
+        return $result;
     }
 }

@@ -1,0 +1,24 @@
+<div class="zdt-toolbar-entry">
+    <div class="zdt-toolbar-preview">
+        <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHBQsUJDIuhrMAAAJoSURBVDjLzVS9S1tRFP+d+26+5NlFHSw2S5A6SIsQiym8LsVChxYc/BccoggdbP+GTgWRCo4FMVuxHQqVNNCUZMjwaONghkwNFQQDD6Uvee/ec7u8IA2aph9DLxw4H7/z45zDuQf43x/9CtBqte4DeBOZj6empoqD8GJQsNFojBtjto0xI5FsNxqN8T8i9DxPSCk3pJTTiUQCiUQCUsppKeWG53nit1tuNpu5VCr1fmdnJzg6OvoOADMzMyMrKytx3/cfZDKZ6tAVuq4bC8Nws9vt2ul0Ol8oFHKFQiGXTqfz3W7XDsNw03Xd2NCEtm0vCyGySik4jnMCoAWg5TjOiVIKQoisbdvLQxHW6/WJIAh2tdZQSkFrLXsxrbWMfAiCYLder0/058t+BzPvCyHAzAYA+b4/f3Bw8AEAzs/P51OpFAAYAMTM+wDuXllhrVZbJ6IFpZTRWhMzo91uL7bb7Xgki8wMrTUppQwRLdRqtfVLCcvl8k0Aq0opYmbSWkNrDSllVggBIQSklNmen5lJKUUAVqPci7VxXTeulHoBIN8/AmMMiMiJ9DLRpZv2Ukr5ZG5uLpAAcHZ2dseyrLxlWTDGXCwpEZjZGGPKkW2EENSP0Vrnfd/fA/CJKpXKNWPMWwD3esPugZPJJNbW1t5Vq9VvAJDL5a5vbW097HQ6PzUR5XwkokdULBafxmKx5/1kvXZnZ2dvj42NfQGA09PTW4eHh58vadsAoDAMn1GpVPIBJAf899cAvkb6DQBLA7Ad6XlefHJyEsx8FWhpmDsohMDx8XGcRkdHXwHIANB/eVstAM1/frF/ADtnLpwq0xupAAAAAElFTkSuQmCC" alt="Profiler Errors">
+        <span class="zdt-toolbar-info">
+            <?php echo count($this->errors); ?>
+        </span>
+    </div>
+    <div class="zdt-toolbar-detail">
+        <?php
+        // todo: proper styling.
+        foreach ($this->errors as $i => $error) {
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+        }
+        ?>
+    </div>
+</div>

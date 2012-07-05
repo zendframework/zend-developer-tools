@@ -21,10 +21,8 @@
 
 namespace ZendDeveloperTools\Collector;
 
-use Zend\Mvc\MvcEvent;
-
 /**
- * Collector Interface.
+ * Event Data Collector Interface.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
@@ -32,26 +30,13 @@ use Zend\Mvc\MvcEvent;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface CollectorInterface
+interface EventCollectorInterface
 {
     /**
-     * Collector Name.
+     * Saves the current time in microseconds for an specific event.
      *
-     * @return string
+     * @param string                          $id
+     * @param \Zend\EventManager\Event|string $event
      */
-    public function getName();
-
-    /**
-     * Collector Priority.
-     *
-     * @return integer
-     */
-    public function getPriority();
-
-    /**
-     * Collects data.
-     *
-     * @param MvcEvent $mvcEvent
-     */
-    public function collect(MvcEvent $mvcEvent);
+    public function collectEvent($id, $event);
 }

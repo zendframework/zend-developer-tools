@@ -42,15 +42,15 @@ interface ReportInterface
     public function getIp();
 
     /**
-     * @param  string $url
+     * @param  string $uri
      * @return self
      */
-    public function setUrl($url);
+    public function setUri($uri);
 
     /**
      * @return string
      */
-    public function getUrl();
+    public function getUri();
 
     /**
      * @param  \DateTime $time
@@ -75,15 +75,20 @@ interface ReportInterface
     public function getToken();
 
     /**
-     * @param  array $error
+     * @param  string $error
      * @return self
      */
-    public function setErrors($errors);
+    public function addError($error);
 
     /**
      * @return array|null
      */
     public function getErrors();
+
+    /**
+     * @return boolean
+     */
+    public function hasErrors();
 
     /**
      * @param  string $ip

@@ -27,7 +27,7 @@ use Zend\EventManager\ListenerAggregateInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Report Storage Listener
+ * FirePHP Listener
  *
  * @category   Zend
  * @package    ZendDeveloperTools
@@ -35,7 +35,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class StorageListener implements ListenerAggregateInterface
+class FirePhpListener implements ListenerAggregateInterface
 {
     /**
      * @var ServiceLocatorInterface

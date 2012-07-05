@@ -38,7 +38,7 @@ class Report implements ReportInterface
     /**
      * @var string
      */
-    protected $url;
+    protected $uri;
 
     /**
      * @var integer
@@ -86,9 +86,9 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
-    public function setUrl($url)
+    public function setUri($uri)
     {
-        $this->url = $url;
+        $this->uri = $uri;
 
         return $this;
     }
@@ -96,7 +96,7 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
-    public function getUrl()
+    public function getUri()
     {
         return $this->url;
     }
@@ -140,19 +140,13 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
-    public function setErrors($errors)
+    public function addError($error)
     {
         if (!isset($this->errors)) {
             $this->errors = array();
         }
 
-        foreach ($errors as $collector => $error) {
-            if (isset($this->errors[$collector])) {
-                $this->errors[$collector][] = $error;
-            } else {
-                $this->errors[$collector] = array($error);
-            }
-        }
+        $this->errors[] = $error;
 
         return $this;
     }
@@ -163,6 +157,14 @@ class Report implements ReportInterface
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasErrors()
+    {
+        return !empty($this->errors);;
     }
 
     /**
@@ -236,6 +238,6 @@ class Report implements ReportInterface
      */
     public function __sleep()
     {
-        return array('ip', 'url', 'time', 'token', 'errors', 'method', 'collectors');
+        return array('ip', 'uri', 'time', 'token', 'errors', 'method', 'collectors');
     }
 }

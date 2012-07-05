@@ -21,13 +21,16 @@
 
 namespace ZendDeveloperTools\Listener;
 
-use ZendDeveloperTools\Event\ProfilerEvent;
+use Zend\Mvc\MvcEvent;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZendDeveloperTools\Collector\EventCollectorInterface;
 
 /**
- * Report Storage Listener
+ * Event Collector Listener
+ *
+ * Listens to every MvcEvent event.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
@@ -35,12 +38,12 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class StorageListener implements ListenerAggregateInterface
+class EventCollectorListener implements ListenerAggregateInterface
 {
     /**
-     * @var ServiceLocatorInterface
+     * @var EventCollectorInterface
      */
-    protected $serviceLocator;
+    protected $collector;
 
     /**
      * @var array
@@ -50,11 +53,11 @@ class StorageListener implements ListenerAggregateInterface
     /**
      * Constructor.
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param EventCollectorInterface $collector
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+    public function __construct(EventCollectorInterface $collector)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->collector = $collector;
     }
 
     /**
@@ -62,7 +65,7 @@ class StorageListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_COLLECTED, array($this, 'onCollected'));
+        $this->listeners[] = $events->attach('*', array($this, 'onEvent'), PHP_INT_MAX);
     }
 
     /**
@@ -78,12 +81,17 @@ class StorageListener implements ListenerAggregateInterface
     }
 
     /**
-     * ProfilerEvent::EVENT_COLLECTED event callback.
+     * MvcEvent::EVENT_BOOTSTRAP,
+     * MvcEvent::EVENT_DISPATCH,
+     * MvcEvent::EVENT_DISPATCH_ERROR,
+     * MvcEvent::EVENT_ROUTE,
+     * MvcEvent::EVENT_RENDER,
+     * MvcEvent::EVENT_FINISH event callback
      *
-     * @param ProfilerEvent $event
+     * @param MvcEvent|string $event
      */
-    public function onCollected(ProfilerEvent $event)
+    public function onEvent($event)
     {
-
+        $this->collector->collectEvent('application', (is_string($event)) ? $event : $event->getName());
     }
 }

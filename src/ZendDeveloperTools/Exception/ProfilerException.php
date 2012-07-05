@@ -14,44 +14,21 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Exception
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendDeveloperTools\Collector;
-
-use Zend\Mvc\MvcEvent;
+namespace ZendDeveloperTools\Exception;
 
 /**
- * Collector Interface.
- *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Exception
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface CollectorInterface
+class ProfilerException extends \Exception implements ExceptionInterface
 {
-    /**
-     * Collector Name.
-     *
-     * @return string
-     */
-    public function getName();
 
-    /**
-     * Collector Priority.
-     *
-     * @return integer
-     */
-    public function getPriority();
-
-    /**
-     * Collects data.
-     *
-     * @param MvcEvent $mvcEvent
-     */
-    public function collect(MvcEvent $mvcEvent);
 }

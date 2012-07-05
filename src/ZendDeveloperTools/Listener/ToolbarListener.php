@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage EventListener
+ * @subpackage Listener
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,8 +22,10 @@
 namespace ZendDeveloperTools\Listener;
 
 use Zend\View\Model\ViewModel;
-use Zend\Stdlib\ResponseInterface;
+use Zend\View\Exception\RuntimeException;
+use ZendDeveloperTools\Options;
 use ZendDeveloperTools\ProfilerEvent;
+use ZendDeveloperTools\Exception\InvalidOptionException;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -33,7 +35,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage EventListener
+ * @subpackage Listener
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -45,15 +47,24 @@ class ToolbarListener implements ListenerAggregateInterface
     protected $serviceLocator;
 
     /**
+     * @var Options
+     */
+    protected $options;
+
+    /**
      * @var array
      */
     protected $listeners = array();
 
     /**
+     * Constructor.
+     *
      * @param ServiceLocatorInterface $serviceLocator
+     * @param Options                 $options
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+    public function __construct(ServiceLocatorInterface $serviceLocator, Options $options)
     {
+        $this->options        = $options;
         $this->serviceLocator = $serviceLocator;
     }
 
@@ -95,37 +106,92 @@ class ToolbarListener implements ListenerAggregateInterface
         // todo: X-Debug-Token logic?
         // todo: redirect logic
 
-        $this->injectToolbar($response, $event);
+        $this->injectToolbar($event);
     }
 
     /**
      * Tries to injects the toolbar into the view. The toolbar is only injected in well
      * formed HTML by repleacing the closing body tag, leaving ESI untouched.
      *
-     * @param ResponseInterface $response
-     * @param ProfilerEvent     $event
+     * @param ProfilerEvent $event
      */
-    public function injectToolbar(ResponseInterface $response, ProfilerEvent $event)
+    protected function injectToolbar(ProfilerEvent $event)
     {
-        // todo: support different toolbar positions, e.g. top.
+        $entries     = $this->renderEntries($event);
+        $response    = $event->getApplication()->getResponse();;
+        $renderer    = $this->serviceLocator->get('ViewRenderer');
 
-        $renderer = $this->serviceLocator->get('ViewRenderer');
-        $resolver = $this->serviceLocator->get('ViewTemplateMapResolver');
-
-        $resolver->add(
-            'zend-developer-tools/toolbar',
-            __DIR__ . '/../../../views/zend-developer-tools/toolbar.phtml'
-        );
-
-        $toolbarView = new ViewModel(array('report' => $event->getReport()));
-        $toolbarView->setTemplate('zend-developer-tools/toolbar');
+        $toolbarView = new ViewModel(array('entries' => $entries));
+        $toolbarView->setTemplate('zend-developer-tools/toolbar/toolbar');
         $toolbar     = $renderer->render($toolbarView);
         $toolbar     = str_replace("\n", '', $toolbar);
-        $injected    = str_ireplace('</body>', $toolbar . "\n</body>", $response->getBody(), $count);
-        if ($count > 1) {
-            // todo: re-render toolbar with warning or use preg_replace with limit 1?
-        }
+
+        $toolbarCss  = new ViewModel(array(
+            'position' => $this->options->getToolbarPosition(),
+        ));
+        $toolbarCss->setTemplate('zend-developer-tools/toolbar/style');
+        $style       = $renderer->render($toolbarCss);
+        $style       = str_replace(array("\n", '    '), '', $style);
+
+        $injected    = preg_replace('/<\/body>/i', $toolbar . "\n</body>", $response->getBody(), 1);
+        $injected    = preg_replace('/<\/head>/i', $style . "\n</head>", $injected, 1);
 
         $response->setContent($injected);
+    }
+
+    /**
+     * Renders all toolbar entries.
+     *
+     * @param ProfilerEvent $event
+     */
+    protected function renderEntries(ProfilerEvent $event)
+    {
+        $entries    = array();
+        $report     = $event->getReport();
+        $renderer   = $this->serviceLocator->get('ViewRenderer');
+
+        $zfEntry    = new ViewModel(array('version' => \Zend\Version::VERSION));
+        $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
+        $entries[]  = $renderer->render($zfEntry);
+
+        $errors     = array();
+        $collectors = $this->options->getCollectors();
+        $templates  = $this->options->getToolbarEntries();
+
+        foreach ($templates as $name => $template) {
+            if (isset($collectors[$name])) {
+                try {
+                    $collector = new ViewModel(array(
+                        'report'    => $report,
+                        'collector' => $report->getCollector($name),
+                    ));
+                    $collector->setTemplate($template);
+                    $entries[] = $renderer->render($collector);
+                } catch (RuntimeException $e) {
+                    $errors[$name] = $template;
+                }
+            }
+        }
+
+        if (!empty($errors)) {
+            $tmp = array();
+            foreach ($errors as $name => $template) {
+                $cur   = sprintf('Unable to render toolbar template %s (%s).', $name, $template);
+                $tmp[] = $cur;
+                $report->addError($cur);
+            }
+
+            if ($this->options->isStrict()) {
+                throw new InvalidOptionException(implode(' ', $tmp));
+            }
+        }
+
+        if ($report->hasErrors()) {
+            $errorTpl  = new ViewModel(array('errors' => $report->getErrors()));
+            $errorTpl->setTemplate('zend-developer-tools/toolbar/error');
+            $entries[] = $renderer->render($errorTpl);
+        }
+
+        return $entries;
     }
 }
