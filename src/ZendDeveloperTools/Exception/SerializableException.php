@@ -50,7 +50,7 @@ class SerializableException implements \Serializable
             'line'     => $exception->getLine(),
             'class'    => get_class($exception),
             'message'  => $exception->getMessage(),
-            'previous' => $exception->getPrevious() ? null : new self($exception->getPrevious()),
+            'previous' => $exception->getPrevious() ? new self($exception->getPrevious()) : null,
             'trace'    => $this->filterTrace(
                 $exception->getTrace(),
                 $exception->getFile(),
