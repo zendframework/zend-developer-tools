@@ -137,7 +137,13 @@ class RequestCollector extends CollectorAbstract
      */
     public function getFullControllerName($short = true)
     {
-        $controller = ($short) ? array_pop(explode('\\', $this->data['controller'])) : $this->data['controller'];
+        if ($short) {
+            $controller = explode('\\', $this->data['controller']);
+            $controller = array_pop($controller);
+        } else {
+            $controller = $this->data['controller'];
+        }
+
         $return = sprintf('%s::%s', $controller, $this->data['action']);
 
         if ($return === 'N/A::N/A') {

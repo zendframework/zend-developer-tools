@@ -119,7 +119,7 @@ class Options extends AbstractOptions
         if (isset($options['collectors'])) {
             $this->setCollectors($options['collectors']);
         }
-        if (isset($options['collectors'])) {
+        if (isset($options['verbose_listeners'])) {
             $this->setVerboseListeners($options['verbose_listeners']);
         }
     }
