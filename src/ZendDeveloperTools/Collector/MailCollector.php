@@ -24,7 +24,7 @@ namespace ZendDeveloperTools\Collector;
 use Zend\Mvc\MvcEvent;
 
 /**
- * Route Data Collector.
+ * Mail Data Collector.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
@@ -32,14 +32,14 @@ use Zend\Mvc\MvcEvent;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RouteCollector extends CollectorAbstract
+class MailCollector extends CollectorAbstract
 {
     /**
      * @inheritdoc
      */
     public function getName()
     {
-        return 'route';
+        return 'mail';
     }
 
     /**
@@ -56,5 +56,15 @@ class RouteCollector extends CollectorAbstract
     public function collect(MvcEvent $mvcEvent)
     {
         // todo
+    }
+
+    /**
+     * Returns the total number of E-Mails send.
+     *
+     * @return integer
+     */
+    public function getMailsSend()
+    {
+        return 0;
     }
 }

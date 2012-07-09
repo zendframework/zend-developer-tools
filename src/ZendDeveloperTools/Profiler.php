@@ -14,7 +14,6 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Profiler
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -29,12 +28,54 @@ use Zend\EventManager\EventManagerAwareInterface;
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Profiler
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Profiler implements EventManagerAwareInterface
 {
+    /**
+     * Event collector listener priority.
+     *
+     * @var int
+     */
+    const PRIORITY_EVENT_COLLECTOR = PHP_INT_MAX;
+
+    /**
+     * FirePHP listener priority.
+     *
+     * @var int
+     */
+    const PRIORITY_FIREPHP = 500;
+
+    /**
+     * Flush listener priority.
+     * Note: The Priority must be lower than PRIORITY_PROFILER!
+     *
+     * @var int
+     */
+    const PRIORITY_FLUSH = -99999;
+
+    /**
+     * Profiler listener priority.
+     *
+     * @var int
+     */
+    const PRIORITY_PROFILER = -100000;
+
+    /**
+     * Storage listener priority.
+     *
+     * @var int
+     */
+    const PRIORITY_STORAGE = 100;
+
+    /**
+     * Toolbar listener priority.
+     *
+     * @var int
+     */
+    const PRIORITY_TOOBAR = 500;
+
     /**
      * @var boolean
      */

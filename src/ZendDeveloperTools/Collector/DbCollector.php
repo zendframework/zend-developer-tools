@@ -57,4 +57,54 @@ class DbCollector extends CollectorAbstract
     {
         // todo
     }
+
+    public function getQueries()
+    {
+        return 0;
+    }
+
+    public function getCreateQueries()
+    {
+        return 0;
+    }
+
+    public function getReadQueries()
+    {
+        return 0;
+    }
+
+    public function getUpdateQueries()
+    {
+        return 0;
+    }
+
+    public function getDeleteQueries()
+    {
+        return 0;
+    }
+
+    public function getTime()
+    {
+        return 0;
+    }
+
+    public function getCreateTime()
+    {
+        return 0;
+    }
+
+    public function getReadTime()
+    {
+        return 0;
+    }
+
+    public function getUpdateTime()
+    {
+        return 0;
+    }
+
+    public function getDeleteTime()
+    {
+        return 0;
+    }
 }

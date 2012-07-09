@@ -124,10 +124,14 @@ class TimeCollector extends CollectorAbstract implements EventCollectorInterface
     /**
      * Returns the detailed application execution time.
      *
-     * @return array|null
+     * @return array
      */
     public function getApplicationEventTimes()
     {
+        if (!isset($this->data['event']['application'])) {
+            return array();
+        }
+
         $sc = $this->data['event']['application'];
 
         $result = array();

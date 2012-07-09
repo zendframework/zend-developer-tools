@@ -21,7 +21,8 @@
 
 namespace ZendDeveloperTools\Listener;
 
-use ZendDeveloperTools\Event\ProfilerEvent;
+use ZendDeveloperTools\Profiler;
+use ZendDeveloperTools\ProfilerEvent;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -62,7 +63,11 @@ class FirePhpListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_COLLECTED, array($this, 'onCollected'));
+        $this->listeners[] = $events->attach(
+            ProfilerEvent::EVENT_COLLECTED,
+            array($this, 'onCollected'),
+            Profiler::PRIORITY_FIREPHP
+        );
     }
 
     /**

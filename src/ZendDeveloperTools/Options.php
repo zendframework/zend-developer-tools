@@ -14,7 +14,6 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Option
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -26,7 +25,6 @@ use Zend\Stdlib\AbstractOptions;
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Option
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -41,29 +39,29 @@ class Options extends AbstractOptions
      * @var array
      */
     protected $profiler = array(
-        'enabled' => false,
-        'strict'  => true,
-        'matcher' => array(
+        'enabled'     => false,
+        'strict'      => true,
+        'verbose'     => true,
+        'flush_early' => true,
+        'matcher'     => array(
             'enabled' => false,
             'rules'   => array(),
         ),
-    );
-
-    /**
-     * @var array
-     */
-    protected $collectors = array(
         'collectors' => array(
-            'db'        => 'ZDT_Collector_Db',
-            'event'     => 'ZDT_Collector_Event',
-            'exception' => 'ZDT_Collector_Exception',
-            'request'   => 'ZDT_Collector_Request',
-            'memory'    => 'ZDT_Collector_Memory',
-            'time'      => 'ZDT_Collector_Time',
+            'db'        => 'ZDT_DbCollector',
+            'event'     => 'ZDT_EventCollector',
+            'exception' => 'ZDT_ExceptionCollector',
+            'request'   => 'ZDT_RequestCollector',
+            'mail'      => 'ZDT_MailCollector',
+            'memory'    => 'ZDT_MemoryCollector',
+            'time'      => 'ZDT_TimeCollector',
         ),
-        'options' => array(
-            'time' => 'ZDT_Collector_Options_Time',
-        ),
+        'verbose_listeners' => array(
+            'application' => array(
+                'ZDT_TimeCollectorListener'   => true,
+                'ZDT_MemoryCollectorListener' => true,
+            ),
+        )
     );
 
     /**
@@ -73,8 +71,11 @@ class Options extends AbstractOptions
         'enabled'  => false,
         'position' => 'bottom',
         'entries'  => array(
-            'time'   => 'zend-developer-tools/toolbar/time',
-            'memory' => 'zend-developer-tools/toolbar/memory',
+            'request' => 'zend-developer-tools/toolbar/request',
+            'time'    => 'zend-developer-tools/toolbar/time',
+            'memory'  => 'zend-developer-tools/toolbar/memory',
+            'db'      => 'zend-developer-tools/toolbar/db',
+            'mail'    => 'zend-developer-tools/toolbar/mail',
         )
     );
 
@@ -106,8 +107,20 @@ class Options extends AbstractOptions
         if (isset($options['strict'])) {
             $this->profiler['strict'] = (boolean) $options['strict'];
         }
+        if (isset($options['verbose'])) {
+            $this->profiler['verbose'] = (boolean) $options['verbose'];
+        }
+        if (isset($options['flush_early'])) {
+            $this->profiler['flush_early'] = (boolean) $options['flush_early'];
+        }
         if (isset($options['matcher'])) {
-            $this->setProfilerMatcher($options['matcher']);
+            $this->setMatcher($options['matcher']);
+        }
+        if (isset($options['collectors'])) {
+            $this->setCollectors($options['collectors']);
+        }
+        if (isset($options['collectors'])) {
+            $this->setVerboseListeners($options['verbose_listeners']);
         }
     }
 
@@ -116,8 +129,17 @@ class Options extends AbstractOptions
      *
      * @param array $options
      */
-    protected function setProfilerMatcher(array $options)
+    protected function setMatcher($options)
     {
+        if (!is_array($options)) {
+            $report->addError(sprintf(
+                '[\'zdt\'][\'profiler\'][\'matcher\'] must be an array, %s given.',
+                gettype($options)
+            ));
+
+            return;
+        }
+
         if (isset($options['enabled'])) {
             $this->profiler['matcher']['enabled'] = (boolean) $options['enabled'];
         }
@@ -181,6 +203,68 @@ class Options extends AbstractOptions
     }
 
     /**
+     * Sets Profiler collectors options.
+     *
+     * @param array $options
+     */
+    protected function setCollectors($options)
+    {
+        if (!is_array($options)) {
+            $report->addError(sprintf(
+                '[\'zdt\'][\'profiler\'][\'collectors\'] must be an array, %s given.',
+                gettype($options)
+            ));
+
+            return;
+        }
+
+        foreach ($options as $name => $collector) {
+            if (($collector === false || $collector === null)) {
+                unset($this->profiler['collectors'][$name]);
+            } else {
+                $this->profiler['collectors'][$name] = $collector;
+            }
+        }
+    }
+
+    /**
+     * Sets verbose listener options.
+     *
+     * @param array $options
+     */
+    protected function setVerboseListeners($options)
+    {
+        if (!is_array($options)) {
+            $report->addError(sprintf(
+                '[\'zdt\'][\'profiler\'][\'verbose_listeners\'] must be an array, %s given.',
+                gettype($options)
+            ));
+
+            return;
+        }
+
+        foreach ($options as $id => $listeners) {
+            if (!is_array($listeners)) {
+                $report->addError(sprintf(
+                    '[\'zdt\'][\'profiler\'][\'verbose_listeners\'][\'%s\'] must be an array, %s given.',
+                    $id,
+                    gettype($listeners)
+                ));
+
+                continue;
+            }
+
+            foreach ($listeners as $service => $mode) {
+                if (!isset($this->profiler['verbose_listeners'][$id])) {
+                    $this->profiler['verbose_listeners'][$id] = array();
+                }
+
+                $this->profiler['verbose_listeners'][$id][$service] = (boolean) $mode;
+            }
+        }
+    }
+
+    /**
      * Is the Profiler enabled?
      *
      * @return boolean
@@ -200,36 +284,28 @@ class Options extends AbstractOptions
         return $this->profiler['strict'];
     }
 
-    // todo: getter for matcher
+    /**
+     * Is it allowed to flush the page before the collector runs?
+     * Note: Only possible if the toolbar and firephp is disabled!
+     *
+     * @return boolean
+     */
+    public function canFlushEarly()
+    {
+        return ($this->profiler['flush_early'] && !$this->toolbar['enabled']);
+    }
 
     /**
-     * Sets Collector options.
+     * Is the verbose mode actived?
      *
-     * @param array $options
+     * @return boolean
      */
-    public function setCollectors(array $options)
+    public function isVerbose()
     {
-        foreach (array('collectors' => true, 'options' => false) as $key => $unset) {
-            if (isset($options['collectors'][$key])) {
-                if (is_array($options['collectors'][$key])) {
-                    foreach ($options['collectors'][$key] as $name => $collector) {
-                        if (($collector === false || $collector === null) && $unset === true) {
-                            unset($this->collectors['options'][$name]);
-                            unset($this->collectors['collectors'][$name]);
-                        } else {
-                            $this->collectors[$key][$name] = $collector;
-                        }
-                    }
-                } else {
-                    $report->addError(sprintf(
-                        '[\'zdt\'][\'collectors\'][\'%s\'] must be an array, %s given.',
-                        $key,
-                        gettype($options['collectors'][$key])
-                    ));
-                }
-            }
-        }
+        return $this->profiler['verbose'];
     }
+
+    // todo: getter for matcher
 
     /**
      * Returns the collectors.
@@ -238,17 +314,16 @@ class Options extends AbstractOptions
      */
     public function getCollectors()
     {
-        return $this->collectors['collectors'];
+        return $this->profiler['collectors'];
     }
-
     /**
-     * Returns the collector options.
+     * Returns the verbose listeners.
      *
      * @return array
      */
-    public function getCollectorOptions()
+    public function getVerboseListeners()
     {
-        return $this->collectors['options'];
+        return $this->profiler['verbose_listeners'];
     }
 
     /**

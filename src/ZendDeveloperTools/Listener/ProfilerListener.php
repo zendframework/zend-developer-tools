@@ -27,7 +27,7 @@ use ZendDeveloperTools\Profiler;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceNotFoundException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
 
 /**
  * Profiler Listener
@@ -74,7 +74,11 @@ class ProfilerListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_FINISH, array($this, 'onFinish'), -99999);
+        $this->listeners[] = $events->attach(
+            MvcEvent::EVENT_FINISH,
+            array($this, 'onFinish'),
+            Profiler::PRIORITY_PROFILER
+        );
     }
 
     /**
