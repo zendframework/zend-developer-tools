@@ -56,8 +56,8 @@ class TimeCollector extends CollectorAbstract implements EventCollectorInterface
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        if ($mvcEvent->getRequest()->getServer()->get('REQUEST_MICROTIME') !== null) {
-            $start = $mvcEvent->getRequest()->getServer()->get('REQUEST_MICROTIME');
+        if (defined('REQUEST_MICROTIME')) {
+            $start = REQUEST_MICROTIME;
         } else {
             $start = $mvcEvent->getRequest()->getServer()->get('REQUEST_TIME');
         }

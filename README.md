@@ -8,7 +8,7 @@ Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to ./config/a
 
 In your `index.php` add the following:
 
-    $_SERVER['REQUEST_MICROTIME'] = microtime(true);
+    define('REQUEST_MICROTIME', microtime(true));
 
 Redux
 =====
