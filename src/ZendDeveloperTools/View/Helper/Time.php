@@ -13,48 +13,38 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @package    ZendDeveloperTools_View
+ * @subpackage Helper
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendDeveloperTools\Collector;
+namespace ZendDeveloperTools\View\Helper;
 
-use Zend\Mvc\MvcEvent;
+use Zend\View\Helper\AbstractHelper;
 
 /**
- * Route Data Collector.
- *
  * @category   Zend
- * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @package    ZendDeveloperTools_View
+ * @subpackage Helper
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RouteCollector extends CollectorAbstract
+class Time extends AbstractHelper
 {
     /**
-     * @inheritdoc
+     * Returns the formated time.
+     *
+     * @param  integer|float $time
+     * @param  integer       $precision Will only be used for seconds.
+     * @return string
      */
-    public function getName()
+    public function __invoke($time, $precision = 2)
     {
-        return 'route';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPriority()
-    {
-        return 100;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function collect(MvcEvent $mvcEvent)
-    {
-        // todo
+        if ($time >= 1) {
+            return sprintf('%.' . $precision . 'f s', $time);
+        } else {
+            return sprintf('%.0f ms', $time * 1000);
+        }
     }
 }

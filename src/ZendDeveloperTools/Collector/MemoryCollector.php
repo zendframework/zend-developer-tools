@@ -60,6 +60,7 @@ class MemoryCollector extends CollectorAbstract implements EventCollectorInterfa
         }
 
         $this->data['memory'] = memory_get_peak_usage(true);
+        $this->data['end']    = memory_get_usage(true);
     }
 
     /**
@@ -117,7 +118,7 @@ class MemoryCollector extends CollectorAbstract implements EventCollectorInterfa
         $result['bootstrap'] = $sc['dispatch'] - $sc['bootstrap'];
         $result['dispatch']  = $sc['render'] - $sc['dispatch'];
         $result['render']    = $sc['finish'] - $sc['render'];
-        $result['finish']    = $this->data['memory'] - $sc['finish'];
+        $result['finish']    = $this->data['end'] - $sc['finish'];
 
         return $result;
     }

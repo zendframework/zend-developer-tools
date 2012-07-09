@@ -24,7 +24,7 @@ namespace ZendDeveloperTools\Collector;
 use Zend\Mvc\MvcEvent;
 
 /**
- * Database Data Collector.
+ * Mail Data Collector.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
@@ -32,14 +32,14 @@ use Zend\Mvc\MvcEvent;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class DbCollector extends CollectorAbstract
+class MailCollector extends CollectorAbstract
 {
     /**
      * @inheritdoc
      */
     public function getName()
     {
-        return 'db';
+        return 'mail';
     }
 
     /**
@@ -58,52 +58,12 @@ class DbCollector extends CollectorAbstract
         // todo
     }
 
-    public function getQueries()
-    {
-        return 0;
-    }
-
-    public function getCreateQueries()
-    {
-        return 0;
-    }
-
-    public function getReadQueries()
-    {
-        return 0;
-    }
-
-    public function getUpdateQueries()
-    {
-        return 0;
-    }
-
-    public function getDeleteQueries()
-    {
-        return 0;
-    }
-
-    public function getTime()
-    {
-        return 0;
-    }
-
-    public function getCreateTime()
-    {
-        return 0;
-    }
-
-    public function getReadTime()
-    {
-        return 0;
-    }
-
-    public function getUpdateTime()
-    {
-        return 0;
-    }
-
-    public function getDeleteTime()
+    /**
+     * Returns the total number of E-Mails send.
+     *
+     * @return integer
+     */
+    public function getMailsSend()
     {
         return 0;
     }

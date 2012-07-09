@@ -1,0 +1,6 @@
+Copyright Gentleface [http://gentleface.com/]. All rights reserved.
+
+Creative Commons Attribution Non-commercial (by-nc)
+
+Allows for use in wireframes, on personal and community web sites, in free and open source software applications and other types of non-commercial usage. The set includes transparent PNG versions of the original Gentleface Mono Icon Set in black and white colors in 16x16, 32x32, 48x48 sizes.
+Read license terms here [http://creativecommons.org/licenses/by-nc/3.0/]. For clarification of non commercial usage contacting us [design@gentleface.com].

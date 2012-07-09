@@ -6,18 +6,12 @@
         </span>
     </div>
     <div class="zdt-toolbar-detail">
+        <span class="zdt-toolbar-info zdt-toolbar-info-heading">Errors</span>
         <?php
-        // todo: proper styling.
         foreach ($this->errors as $i => $error) {
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
-            printf('<span class="zdt-toolbar-info" style="width: 250px; overflow: scroll;"><strong>%d.</strong> %s</span>', ++$i, $error);
+            echo '<span class="zdt-toolbar-info">';
+            printf('<strong>%d.</strong> %s', ++$i, $error);
+            echo '</span>';
         }
         ?>
     </div>

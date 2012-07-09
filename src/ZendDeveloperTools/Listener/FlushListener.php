@@ -22,16 +22,14 @@
 namespace ZendDeveloperTools\Listener;
 
 use Zend\Mvc\MvcEvent;
+use ZendDeveloperTools\Profiler;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use ZendDeveloperTools\Profiler;
-use ZendDeveloperTools\Collector\EventCollectorInterface;
 
 /**
- * Event Collector Listener
+ * Flush Listener
  *
- * Listens to every MvcEvent event.
+ * Listens to the MvcEvent::EVENT_FINISH event with a low priority and flushes the page.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
@@ -39,43 +37,23 @@ use ZendDeveloperTools\Collector\EventCollectorInterface;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class EventCollectorListener implements ListenerAggregateInterface, DynamicIdentifierInterface
+class FlushListener implements ListenerAggregateInterface
 {
-    /**
-     * @var string
-     */
-    protected $identifier;
-
-    /**
-     * @var EventCollectorInterface
-     */
-    protected $collector;
-
     /**
      * @var array
      */
     protected $listeners = array();
 
     /**
-     * Constructor.
-     *
-     * @param EventCollectorInterface $collector
-     */
-    public function __construct(EventCollectorInterface $collector)
-    {
-        $this->collector = $collector;
-    }
-
-    /**
      * @inheritdoc
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('*', array($this, 'onEvent'), Profiler::PRIORITY_EVENT_COLLECTOR);
-
-        if ($this->identifier === 'application') {
-            $this->onEvent(MvcEvent::EVENT_BOOTSTRAP);
-        }
+        $this->listeners[] = $events->attach(
+            MvcEvent::EVENT_FINISH,
+            array($this, 'onFinish'),
+            Profiler::PRIORITY_FLUSH
+        );
     }
 
     /**
@@ -91,27 +69,12 @@ class EventCollectorListener implements ListenerAggregateInterface, DynamicIdent
     }
 
     /**
-     * @inheritdoc
-     */
-    public function setIdentifier($id)
-    {
-        $this->identifier = $id;
-
-        return $this;
-    }
-
-    /**
-     * MvcEvent::EVENT_BOOTSTRAP,
-     * MvcEvent::EVENT_DISPATCH,
-     * MvcEvent::EVENT_DISPATCH_ERROR,
-     * MvcEvent::EVENT_ROUTE,
-     * MvcEvent::EVENT_RENDER,
      * MvcEvent::EVENT_FINISH event callback
      *
-     * @param MvcEvent|string $event
+     * @param MvcEvent $event
      */
-    public function onEvent($event)
+    public function onFinish(MvcEvent $event)
     {
-        $this->collector->collectEvent($this->identifier, (is_string($event)) ? $event : $event->getName());
+        $event->getResponse()->send();
     }
 }

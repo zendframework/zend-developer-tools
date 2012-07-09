@@ -14,7 +14,6 @@
  *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Module
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -30,7 +29,6 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface as AutoloaderProvider
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Module
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -44,8 +42,8 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
     public function onBootstrap(Event $event)
     {
         $sm      = $event->getApplication()->getServiceManager();
-        $manager = $sm->get('ZDT_Manager');
-        $manager->register();
+        $manager = $sm->get('ZDT_Bootstrap');
+        $manager->init();
     }
 
     /**
@@ -73,20 +71,38 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
         return include __DIR__ . '/config/module.config.php';
     }
 
+   public function getViewHelperConfiguration()
+    {
+        return array(
+            'invokables' => array(
+                'ZDT_Time'        => 'ZendDeveloperTools\View\Helper\Time',
+                'ZDT_Memory'      => 'ZendDeveloperTools\View\Helper\Memory',
+                'ZDT_DetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
+            ),
+        );
+
+
+    }
+
     /**
      * @inheritdoc
      */
     public function getServiceConfiguration()
     {
         return array(
+            'aliases' => array(
+                'Profiler' => 'ZDT_Profiler',
+            ),
             'invokables' => array(
-                'ZDT_Report'              => 'ZendDeveloperTools\Report',
-                'ZDT_Collector_Db'        => 'ZendDeveloperTools\Collector\DbCollector',
-                'ZDT_Collector_Event'     => 'ZendDeveloperTools\Collector\EventCollector',
-                'ZDT_Collector_Exception' => 'ZendDeveloperTools\Collector\ExceptionCollector',
-                'ZDT_Collector_Request'   => 'ZendDeveloperTools\Collector\RequestCollector',
-                'ZDT_Collector_Memory'    => 'ZendDeveloperTools\Collector\MemoryCollector',
-                'ZDT_Collector_Time'      => 'ZendDeveloperTools\Collector\TimeCollector',
+                'ZDT_Report'             => 'ZendDeveloperTools\Report',
+                'ZDT_DbCollector'        => 'ZendDeveloperTools\Collector\DbCollector',
+                'ZDT_EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
+                'ZDT_ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
+                'ZDT_RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
+                'ZDT_RequestCollector'   => 'ZendDeveloperTools\Collector\RequestCollector',
+                'ZDT_MailCollector'      => 'ZendDeveloperTools\Collector\MailCollector',
+                'ZDT_MemoryCollector'    => 'ZendDeveloperTools\Collector\MemoryCollector',
+                'ZDT_TimeCollector'      => 'ZendDeveloperTools\Collector\TimeCollector',
             ),
             'factories' => array(
                 'ZDT_Options' => function ($sm) {
@@ -95,11 +111,12 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
 
                     return new Options($config, $sm->get('ZDT_Report'));
                 },
-                'ZDT_Manager' => function($sm) {
-                    $opt = $sm->get('ZDT_Options');
-                    $em  = $sm->get('Application')->getEventManager();
+                'ZDT_Bootstrap' => function($sm) {
+                        $opt = $sm->get('ZDT_Options');
+                        $em  = $sm->get('Application')->getEventManager();
+                        $rpt = $sm->get('ZDT_Report');
 
-                    return new Manager($sm, $em, $opt);
+                        return new Bootstrap($sm, $em, $opt, $rpt);
                 },
                 'ZDT_Profiler' => function($sm) {
                     return new Profiler($sm->get('ZDT_ProfilerEvent'), $sm->get('ZDT_Report'));
@@ -110,24 +127,24 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
 
                     return $event;
                 },
+                'ZDT_FlushListener' => function($sm) {
+                    return new Listener\FlushListener($sm);
+                },
                 'ZDT_StorageListener' => function($sm) {
                     return new Listener\StorageListener($sm);
                 },
                 'ZDT_ToolbarListener' => function($sm) {
-                    return new Listener\ToolbarListener($sm, $sm->get('ZDT_Options'));
+                    return new Listener\ToolbarListener($sm->get('ViewRenderer'), $sm->get('ZDT_Options'));
                 },
                 'ZDT_ProfileListener' => function($sm) {
                     return new Listener\ProfilerListener($sm, $sm->get('ZDT_Options'));
                 },
                 'ZDT_TimeCollectorListener' => function($sm) {
-                    return new Listener\EventCollectorListener($sm->get('ZDT_Collector_Time'));
+                    return new Listener\EventCollectorListener($sm->get('ZDT_TimeCollector'));
                 },
                 'ZDT_MemoryCollectorListener' => function($sm) {
-                    return new Listener\EventCollectorListener($sm->get('ZDT_Collector_Memory'));
+                    return new Listener\EventCollectorListener($sm->get('ZDT_MemoryCollector'));
                 },
-            ),
-            'aliases' => array(
-                'Profiler' => 'ZDT_Profiler',
             ),
         );
     }
