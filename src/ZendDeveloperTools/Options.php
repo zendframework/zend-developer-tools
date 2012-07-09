@@ -89,9 +89,9 @@ class Options extends AbstractOptions
      */
     public function __construct($options = null, ReportInterface $report)
     {
-        parent::__construct($options);
-
         $this->report = $report;
+
+        parent::__construct($options);
     }
 
     /**
@@ -180,7 +180,7 @@ class Options extends AbstractOptions
                         }
                     }
                 } else {
-                    $report->addError(sprintf(
+                    $this->report->addError(sprintf(
                         '%s[\'rules\'][\'%s\'] must be an array, %s given.',
                         $arrayPath,
                         $name,
@@ -337,10 +337,10 @@ class Options extends AbstractOptions
             $this->toolbar['enabled'] = (boolean) $options['enabled'];
         }
         if (isset($options['position'])) {
-            if ($rule['position'] !== 'bottom' && $rule['position'] !== 'top') {
+            if ($options['position'] !== 'bottom' && $options['position'] !== 'top') {
                 $report->addError(sprintf(
                     '[\'zdt\'][\'toolbar\'][\'position\'] must be "top" or "bottom", %s given.',
-                    $rule['position']
+                    $options['position']
                 ));
             } else {
                 $this->toolbar['position'] = $options['position'];

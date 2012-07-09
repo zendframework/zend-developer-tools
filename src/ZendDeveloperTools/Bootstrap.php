@@ -93,7 +93,7 @@ class Bootstrap
             }
 
             if ($this->options->isStrict() && $this->report->hasErrors()) {
-                throw new Exception\InvalidOptionException(implode(' ', $report->getErrors()));
+                throw new Exception\InvalidOptionException(implode(' ', $this->report->getErrors()));
             }
 
             $this->eventManager->attachAggregate($this->serviceLocator->get('ZDT_ProfileListener'));
@@ -102,7 +102,7 @@ class Bootstrap
                  ->registerToolbar();
 
             if ($this->options->isStrict() && $this->report->hasErrors()) {
-                throw new Exception\ProfilerException(implode(' ', $report->getErrors()));
+                throw new Exception\ProfilerException(implode(' ', $this->report->getErrors()));
             }
         }
 
