@@ -1,7 +1,7 @@
 <?php
-$color = ($this->collector->getStatusCode() >= 400)
-       ? 'red' : ($this->collector->getStatusCode() === 200)
-               ? 'green' : 'yellow';
+$color = ($this->collector->getStatusCode() < 400)
+       ? ($this->collector->getStatusCode() === 200) ? 'green' : 'yellow'
+       : 'red';
 ?>
 <div class="zdt-toolbar-entry">
     <div class="zdt-toolbar-preview">

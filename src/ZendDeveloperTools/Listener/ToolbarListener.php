@@ -176,7 +176,7 @@ class ToolbarListener implements ListenerAggregateInterface
             }
         }
 
-        if (!empty($errors)) {
+        if (!empty($errors) || $report->hasErrors()) {
             $tmp = array();
             foreach ($errors as $name => $template) {
                 $cur   = sprintf('Unable to render toolbar template %s (%s).', $name, $template);
