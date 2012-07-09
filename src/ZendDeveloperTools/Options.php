@@ -337,10 +337,10 @@ class Options extends AbstractOptions
             $this->toolbar['enabled'] = (boolean) $options['enabled'];
         }
         if (isset($options['position'])) {
-            if ($rule['position'] !== 'bottom' && $rule['position'] !== 'top') {
+            if ($options['position'] !== 'bottom' && $options['position'] !== 'top') {
                 $report->addError(sprintf(
                     '[\'zdt\'][\'toolbar\'][\'position\'] must be "top" or "bottom", %s given.',
-                    $rule['position']
+                    $options['position']
                 ));
             } else {
                 $this->toolbar['position'] = $options['position'];
