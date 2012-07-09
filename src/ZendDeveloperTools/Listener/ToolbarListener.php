@@ -24,6 +24,7 @@ namespace ZendDeveloperTools\Listener;
 use Zend\View\Model\ViewModel;
 use Zend\View\Exception\RuntimeException;
 use ZendDeveloperTools\Options;
+use ZendDeveloperTools\Profiler;
 use ZendDeveloperTools\ProfilerEvent;
 use ZendDeveloperTools\Exception\InvalidOptionException;
 use Zend\EventManager\EventManagerInterface;
@@ -42,9 +43,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class ToolbarListener implements ListenerAggregateInterface
 {
     /**
-     * @var ServiceLocatorInterface
+     * @var object
      */
-    protected $serviceLocator;
+    protected $renderer;
 
     /**
      * @var Options
@@ -59,13 +60,13 @@ class ToolbarListener implements ListenerAggregateInterface
     /**
      * Constructor.
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param Options                 $options
+     * @param object  $viewRenderer
+     * @param Options $options
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator, Options $options)
+    public function __construct($viewRenderer, Options $options)
     {
-        $this->options        = $options;
-        $this->serviceLocator = $serviceLocator;
+        $this->options  = $options;
+        $this->renderer = $viewRenderer;
     }
 
     /**
@@ -73,7 +74,11 @@ class ToolbarListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_COLLECTED, array($this, 'onCollected'), 2500);
+        $this->listeners[] = $events->attach(
+            ProfilerEvent::EVENT_COLLECTED,
+            array($this, 'onCollected'),
+            Profiler::PRIORITY_TOOBAR
+        );
     }
 
     /**
@@ -119,19 +124,18 @@ class ToolbarListener implements ListenerAggregateInterface
     {
         $entries     = $this->renderEntries($event);
         $response    = $event->getApplication()->getResponse();;
-        $renderer    = $this->serviceLocator->get('ViewRenderer');
 
         $toolbarView = new ViewModel(array('entries' => $entries));
         $toolbarView->setTemplate('zend-developer-tools/toolbar/toolbar');
-        $toolbar     = $renderer->render($toolbarView);
+        $toolbar     = $this->renderer->render($toolbarView);
         $toolbar     = str_replace("\n", '', $toolbar);
 
         $toolbarCss  = new ViewModel(array(
             'position' => $this->options->getToolbarPosition(),
         ));
         $toolbarCss->setTemplate('zend-developer-tools/toolbar/style');
-        $style       = $renderer->render($toolbarCss);
-        $style       = str_replace(array("\n", '    '), '', $style);
+        $style       = $this->renderer->render($toolbarCss);
+        $style       = str_replace(array("\n", '  '), '', $style);
 
         $injected    = preg_replace('/<\/body>/i', $toolbar . "\n</body>", $response->getBody(), 1);
         $injected    = preg_replace('/<\/head>/i', $style . "\n</head>", $injected, 1);
@@ -148,11 +152,10 @@ class ToolbarListener implements ListenerAggregateInterface
     {
         $entries    = array();
         $report     = $event->getReport();
-        $renderer   = $this->serviceLocator->get('ViewRenderer');
 
-        $zfEntry    = new ViewModel(array('version' => \Zend\Version::VERSION));
+        $zfEntry    = new ViewModel();
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
-        $entries[]  = $renderer->render($zfEntry);
+        $entries[]  = $this->renderer->render($zfEntry);
 
         $errors     = array();
         $collectors = $this->options->getCollectors();
@@ -166,7 +169,7 @@ class ToolbarListener implements ListenerAggregateInterface
                         'collector' => $report->getCollector($name),
                     ));
                     $collector->setTemplate($template);
-                    $entries[] = $renderer->render($collector);
+                    $entries[] = $this->renderer->render($collector);
                 } catch (RuntimeException $e) {
                     $errors[$name] = $template;
                 }
@@ -189,7 +192,7 @@ class ToolbarListener implements ListenerAggregateInterface
         if ($report->hasErrors()) {
             $errorTpl  = new ViewModel(array('errors' => $report->getErrors()));
             $errorTpl->setTemplate('zend-developer-tools/toolbar/error');
-            $entries[] = $renderer->render($errorTpl);
+            $entries[] = $this->renderer->render($errorTpl);
         }
 
         return $entries;
