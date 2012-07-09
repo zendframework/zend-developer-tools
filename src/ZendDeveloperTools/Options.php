@@ -89,9 +89,9 @@ class Options extends AbstractOptions
      */
     public function __construct($options = null, ReportInterface $report)
     {
-        parent::__construct($options);
-
         $this->report = $report;
+
+        parent::__construct($options);
     }
 
     /**
@@ -180,7 +180,7 @@ class Options extends AbstractOptions
                         }
                     }
                 } else {
-                    $report->addError(sprintf(
+                    $this->report->addError(sprintf(
                         '%s[\'rules\'][\'%s\'] must be an array, %s given.',
                         $arrayPath,
                         $name,
