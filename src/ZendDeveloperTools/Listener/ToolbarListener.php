@@ -176,7 +176,6 @@ class ToolbarListener implements ListenerAggregateInterface
                     }
 
                     $collector = new ViewModel(array(
-                        'report'    => $report,
                         'collector' => $collectorInstance,
                     ));
                     $collector->setTemplate($template);
