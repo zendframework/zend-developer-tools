@@ -22,7 +22,8 @@
 namespace ZendDeveloperTools\Collector;
 
 /**
- * Serializable Collector base class.
+ * Auto hide Interface provides the ability for collectors, to specify that
+ * they can be hidden.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
@@ -30,28 +31,12 @@ namespace ZendDeveloperTools\Collector;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class CollectorAbstract implements CollectorInterface, \Serializable
+interface AutoHideInterface
 {
     /**
-     * Collected Data
+     * Returns true if the collector can be hidden, because it is empty.
      *
-     * @var array
+     * @return boolean
      */
-    protected $data;
-
-    /**
-     * @see \Serializable
-     */
-    public function serialize()
-    {
-        return serialize($this->data);
-    }
-
-    /**
-     * @see \Serializable
-     */
-    public function unserialize($data)
-    {
-        $this->data = unserialize($data);
-    }
+    public function canHide();
 }

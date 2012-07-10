@@ -22,7 +22,7 @@
 namespace ZendDeveloperTools\Controller;
 
 use Zend\View\Model\ViewModel;
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\Controller\AbstractActionController;
 
 /**
  * @category   Zend
@@ -31,7 +31,7 @@ use Zend\Mvc\Controller\ActionController;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class IndexController extends ActionController
+class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
