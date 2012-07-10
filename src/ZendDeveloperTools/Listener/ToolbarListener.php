@@ -21,6 +21,7 @@
 
 namespace ZendDeveloperTools\Listener;
 
+use Zend\Version;
 use Zend\View\Model\ViewModel;
 use Zend\View\Exception\RuntimeException;
 use ZendDeveloperTools\Options;
@@ -42,6 +43,13 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class ToolbarListener implements ListenerAggregateInterface
 {
+    /**
+     * Time to live for the version cache in seconds.
+     *
+     * @var integer
+     */
+    const VERSION_CACHE_TTL = 3600;
+
     /**
      * @var object
      */
@@ -153,7 +161,14 @@ class ToolbarListener implements ListenerAggregateInterface
         $entries    = array();
         $report     = $event->getReport();
 
-        $zfEntry    = new ViewModel();
+        list($isLatest, $latest) = $this->getLatestVersion();
+
+        $zfEntry    = new ViewModel(array(
+            'version'   => Version::VERSION,
+            'is_latest' => $isLatest,
+            'latest'    => $latest,
+            'has_intl'  => extension_loaded('intl'),
+        ));
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
         $entries[]  = $this->renderer->render($zfEntry);
 
@@ -196,5 +211,44 @@ class ToolbarListener implements ListenerAggregateInterface
         }
 
         return $entries;
+    }
+
+    /**
+     * Wrapper for Zend\Version::getLatest with caching functionality, so that
+     * ZendDeveloperTools won't act as a "DDoS bot-network".
+     *
+     * @return array
+     */
+    protected function getLatestVersion()
+    {
+        $cacheDir = $this->options->getCacheDir();
+
+        // exit early if the cache dir doesn't exist,
+        // to prevent hitting the GitHub API for every request.
+        if (!is_dir($cacheDir)) {
+            return array(true, '');
+        }
+
+        if (file_exists($cacheDir . '/ZDT_ZF_Version.cache')) {
+            $cache = file_get_contents($cacheDir . '/ZDT_ZF_Version.cache');
+            $cache = explode('|', $cache);
+
+            if ($cache[0] + self::VERSION_CACHE_TTL > time()) {
+                return array(
+                    ($cache[1] === 'yes') ? true : false,
+                    $cache[2]
+                );
+            }
+        }
+
+        $isLatest = Version::isLatest();
+        $latest   = Version::getLatest();
+
+        file_put_contents(
+            $cacheDir . '/ZDT_ZF_Version.cache',
+            sprintf('%d|%s|%s', time(), ($isLatest) ? 'yes' : 'no', $latest)
+        );
+
+        return array($isLatest, $latest);
     }
 }

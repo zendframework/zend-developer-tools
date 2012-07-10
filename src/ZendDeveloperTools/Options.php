@@ -43,6 +43,7 @@ class Options extends AbstractOptions
         'strict'      => true,
         'verbose'     => true,
         'flush_early' => true,
+        'cache_dir'   => null,
         'matcher'     => array(
             'enabled' => false,
             'rules'   => array(),
@@ -79,7 +80,6 @@ class Options extends AbstractOptions
         )
     );
 
-
     /**
      * Overloading Constructor.
      *
@@ -90,6 +90,8 @@ class Options extends AbstractOptions
     public function __construct($options = null, ReportInterface $report)
     {
         $this->report = $report;
+
+        $this->profiler['cache_dir'] = getcwd() . '/data/cache';
 
         parent::__construct($options);
     }
@@ -112,6 +114,9 @@ class Options extends AbstractOptions
         }
         if (isset($options['flush_early'])) {
             $this->profiler['flush_early'] = (boolean) $options['flush_early'];
+        }
+        if (isset($options['cache_dir'])) {
+            $this->profiler['cache_dir'] = (string) $options['cache_dir'];
         }
         if (isset($options['matcher'])) {
             $this->setMatcher($options['matcher']);
@@ -305,6 +310,17 @@ class Options extends AbstractOptions
         return $this->profiler['verbose'];
     }
 
+    /**
+     * Returns the cache directory that is used to store the version cache or
+     * any report storage that writes to the disk.
+     *
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return $this->profiler['cache_dir'];
+    }
+
     // todo: getter for matcher
 
     /**
@@ -316,6 +332,7 @@ class Options extends AbstractOptions
     {
         return $this->profiler['collectors'];
     }
+
     /**
      * Returns the verbose listeners.
      *
