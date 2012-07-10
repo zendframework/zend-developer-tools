@@ -21,10 +21,8 @@
 
 namespace ZendDeveloperTools\Collector;
 
-use Zend\Mvc\MvcEvent;
-
 /**
- * Event Data Collector.
+ * Serializable Collector base class.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
@@ -32,29 +30,28 @@ use Zend\Mvc\MvcEvent;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class EventCollector extends AbstractCollector
+abstract class AbstractCollector implements CollectorInterface, \Serializable
 {
     /**
-     * @inheritdoc
+     * Collected Data
+     *
+     * @var array
      */
-    public function getName()
+    protected $data;
+
+    /**
+     * @see \Serializable
+     */
+    public function serialize()
     {
-        return 'event';
+        return serialize($this->data);
     }
 
     /**
-     * @inheritdoc
+     * @see \Serializable
      */
-    public function getPriority()
+    public function unserialize($data)
     {
-        return 100;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function collect(MvcEvent $mvcEvent)
-    {
-        // todo
+        $this->data = unserialize($data);
     }
 }

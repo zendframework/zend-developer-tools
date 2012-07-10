@@ -68,9 +68,10 @@ class Options extends AbstractOptions
      * @var array
      */
     protected $toolbar = array(
-        'enabled'  => false,
-        'position' => 'bottom',
-        'entries'  => array(
+        'enabled'   => false,
+        'auto_hide' => false,
+        'position'  => 'bottom',
+        'entries'   => array(
             'request' => 'zend-developer-tools/toolbar/request',
             'time'    => 'zend-developer-tools/toolbar/time',
             'memory'  => 'zend-developer-tools/toolbar/memory',
@@ -372,6 +373,16 @@ class Options extends AbstractOptions
     public function isToolbarEnabled()
     {
         return $this->toolbar['enabled'];
+    }
+
+    /**
+     * Can hide Toolbar entries?
+     *
+     * @return boolean
+     */
+    public function getToolbarAutoHide()
+    {
+        return $this->toolbar['auto_hide'];
     }
 
     /**

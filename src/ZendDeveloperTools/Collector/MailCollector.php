@@ -32,7 +32,7 @@ use Zend\Mvc\MvcEvent;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class MailCollector extends CollectorAbstract
+class MailCollector extends AbstractCollector implements AutoHideInterface
 {
     /**
      * @inheritdoc
@@ -56,6 +56,14 @@ class MailCollector extends CollectorAbstract
     public function collect(MvcEvent $mvcEvent)
     {
         // todo
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canHide()
+    {
+        return true;
     }
 
     /**

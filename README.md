@@ -43,7 +43,6 @@ Redux
         * Provides the same information as the web toolbar.
 * **CLI**
     * Debug helper for routes, config, template etc.
-    * Developer Sever (obviously PHP >=5.4 only)?
 
 
 ¹) Which config key got overwritten by which module. Won't save any config values in the report!

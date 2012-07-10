@@ -22,10 +22,11 @@
 namespace ZendDeveloperTools\Listener;
 
 use Zend\View\Model\ViewModel;
-use Zend\View\Exception\RuntimeException;
+use Zend\View\Exception\RuntimeException as ViewRuntimeException;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
 use ZendDeveloperTools\ProfilerEvent;
+use ZendDeveloperTools\Collector\AutoHideInterface;
 use ZendDeveloperTools\Exception\InvalidOptionException;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
@@ -164,13 +165,22 @@ class ToolbarListener implements ListenerAggregateInterface
         foreach ($templates as $name => $template) {
             if (isset($collectors[$name])) {
                 try {
+                    $collectorInstance = $report->getCollector($name);
+
+                    if (
+                        $this->options->getToolbarAutoHide()
+                        && $collectorInstance instanceof AutoHideInterface
+                        && $collectorInstance->canHide()
+                    ) {
+                        continue;
+                    }
+
                     $collector = new ViewModel(array(
-                        'report'    => $report,
-                        'collector' => $report->getCollector($name),
+                        'collector' => $collectorInstance,
                     ));
                     $collector->setTemplate($template);
                     $entries[] = $this->renderer->render($collector);
-                } catch (RuntimeException $e) {
+                } catch (ViewRuntimeException $e) {
                     $errors[$name] = $template;
                 }
             }
