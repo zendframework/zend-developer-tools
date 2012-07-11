@@ -43,7 +43,7 @@ class Options extends AbstractOptions
         'strict'      => true,
         'verbose'     => true,
         'flush_early' => true,
-        'cache_dir'   => null,
+        'cache_dir'   => '/data/cache',
         'matcher'     => array(
             'enabled' => false,
             'rules'   => array(),
@@ -90,8 +90,6 @@ class Options extends AbstractOptions
     public function __construct($options = null, ReportInterface $report)
     {
         $this->report = $report;
-
-        $this->profiler['cache_dir'] = getcwd() . '/data/cache';
 
         parent::__construct($options);
     }
