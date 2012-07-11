@@ -31,7 +31,7 @@ class Options extends AbstractOptions
         'strict'      => true,
         'verbose'     => true,
         'flush_early' => true,
-        'cache_dir'   => '/data/cache',
+        'cache_dir'   => 'data/cache',
         'matcher'     => array(
             'enabled' => false,
             'rules'   => array(),
