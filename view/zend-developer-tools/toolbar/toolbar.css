@@ -164,27 +164,27 @@
     display: inline-block;
 }
 
-.zdt-toolbar-info .zdt-toolbar-status-green {
+.zdt-toolbar-status-green {
     background: #558f0b;
 }
 
-.zdt-toolbar-info .zdt-toolbar-status-red {
+.zdt-toolbar-status-red {
     background: #8f2727;
 }
 
-.zdt-toolbar-info .zdt-toolbar-color-green {
+.zdt-toolbar-color-green {
     color: #80dc09;
 }
 
-.zdt-toolbar-info .zdt-toolbar-color-red {
+.zdt-toolbar-color-red {
     color: #e83535;
 }
 
-.zdt-toolbar-info .zdt-toolbar-color-yellow {
+.zdt-toolbar-color-yellow {
     color: #d9cd0f;
 }
 
-.zdt-toolbar-info .zdt-toolbar-color-grey {
+.zdt-toolbar-color-grey {
     color: #9d9d9d;
 }
 
