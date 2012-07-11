@@ -1,0 +1,36 @@
+{
+    "name": "zendframework/zend-developer-tools",
+    "description": "Module for developer and debug tools for working with the ZF2 MVC layer.",
+    "type": "zf-module",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "debug",
+        "developer",
+        "zf2",
+        "module"
+    ],
+    "homepage": "https://github.com/zendframework/ZendDeveloperTools",
+    "authors": [
+        {
+            "name": "Evan Coury",
+            "email": "me@evancoury.com",
+            "homepage": "http://blog.evan.pro/"
+        },
+        {
+            "name": "Eric Boh",
+            "email": "cossish@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "ZendDeveloperTools": "src/"
+        },
+        "classmap": [
+            "./"
+        ]
+    }
+}
