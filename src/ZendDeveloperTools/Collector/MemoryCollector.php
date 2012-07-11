@@ -20,7 +20,7 @@ use Zend\Mvc\MvcEvent;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class MemoryCollector extends CollectorAbstract implements EventCollectorInterface
+class MemoryCollector extends AbstractCollector implements EventCollectorInterface
 {
     /**
      * @inheritdoc

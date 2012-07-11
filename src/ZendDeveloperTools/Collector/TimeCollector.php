@@ -21,7 +21,7 @@ use Zend\EventManager\Event;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class TimeCollector extends CollectorAbstract implements EventCollectorInterface
+class TimeCollector extends AbstractCollector implements EventCollectorInterface
 {
     /**
      * @inheritdoc

@@ -12,14 +12,14 @@
 namespace ZendDeveloperTools\Controller;
 
 use Zend\View\Model\ViewModel;
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\Controller\AbstractActionController;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
  * @subpackage Controller
  */
-class IndexController extends ActionController
+class IndexController extends AbstractActionController
 {
     public function indexAction()
     {

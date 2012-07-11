@@ -22,7 +22,7 @@ use ZendDeveloperTools\Exception\SerializableException;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class ExceptionCollector extends CollectorAbstract
+class ExceptionCollector extends AbstractCollector
 {
     /**
      * @inheritdoc

@@ -18,7 +18,7 @@ namespace ZendDeveloperTools\Collector;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-abstract class CollectorAbstract implements CollectorInterface, \Serializable
+abstract class AbstractCollector implements CollectorInterface, \Serializable
 {
     /**
      * Collected Data

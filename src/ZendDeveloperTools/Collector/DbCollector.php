@@ -20,7 +20,7 @@ use Zend\Mvc\MvcEvent;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class DbCollector extends CollectorAbstract
+class DbCollector extends AbstractCollector implements AutoHideInterface
 {
     /**
      * @inheritdoc
@@ -44,6 +44,14 @@ class DbCollector extends CollectorAbstract
     public function collect(MvcEvent $mvcEvent)
     {
         // todo
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canHide()
+    {
+        return true;
     }
 
     public function getQueries()

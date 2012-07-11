@@ -20,7 +20,7 @@ use Zend\Mvc\MvcEvent;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class MailCollector extends CollectorAbstract
+class MailCollector extends AbstractCollector implements AutoHideInterface
 {
     /**
      * @inheritdoc
@@ -44,6 +44,14 @@ class MailCollector extends CollectorAbstract
     public function collect(MvcEvent $mvcEvent)
     {
         // todo
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canHide()
+    {
+        return true;
     }
 
     /**
