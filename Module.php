@@ -10,7 +10,7 @@
 
 namespace ZendDeveloperTools;
 
-use Zend\EventManager\Event;
+use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface as ConfigProvider;
 use Zend\ModuleManager\Feature\ServiceProviderInterface as ServiceProvider;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface as BootstrapListener;
@@ -27,7 +27,7 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
      *
      * @param Event $event
      */
-    public function onBootstrap(Event $event)
+    public function onBootstrap(EventInterface $event)
     {
         $sm      = $event->getApplication()->getServiceManager();
         $manager = $sm->get('ZDT_Bootstrap');
