@@ -1,12 +1,186 @@
 <?php
 return array(
     'zdt' => array(
+         /**
+          * General Profiler settings
+          */
         'profiler' => array(
-            'enabled' => true,
-            'strict'  => false,
+            /**
+             * Enables or disables the profiler.
+             *
+             * Expects: boolean
+             * Default: false
+             */
+            'enabled' => false,
+
+            /**
+             * Enables or disables the strict mode. If the strict mode is
+             * enabled, any error will throw an exception, otherwise all
+             * errors will be added to the report (and shown in the toolbar).
+             *
+             * Expects: boolean
+             * Default: true
+             */
+            'strict' => true,
+
+            /**
+             * Enables or disables verbose profiling. If enabled, the profiler
+             * will collect data before the MvcEvent::EVENT_FINISH event.
+             * This adds some overhead during the execution but adds more details
+             * to the report.
+             *
+             * See:     verbose_listeners
+             * Expects: boolean
+             * Default: false
+             */
+            'verbose' => false,
+
+            /**
+             * If enabled, the profiler tries to flush the content before the it
+             * starts collecting data. This option will be ignored if the Toolbar
+             * is enabled.
+             *
+             * Note: The flush listener listens to the MvcEvent::EVENT_FINISH event
+             *       with a priority of -99999. You have to disbale this function if
+             *       you wish to modify the output with a lower priority.
+             *
+             * Expects: boolean
+             * Default: false
+             */
+            'flush_early' => false,
+
+            /**
+             * The cache directory is used in the version check and for every storage
+             * type that writes to the disk.
+             *
+             * Note: The default value assumes that the current working directory is the
+             *       application root.
+             *
+             * Expects: string
+             * Default: 'data/cache'
+             */
+            'cache_dir' => 'data/cache',
+
+            /**
+             * Matcher settings
+             *
+             * Note: The matcher is not implemented yet!
+             */
+            'matcher' => array(
+                /**
+                 * Enables or disables the matcher. If the matcher is enabled, every request
+                 * that match a defined pattern will disable or enable to profiler.
+                 *
+                 * Expects: boolean
+                 * Default: false
+                 */
+                'enabled' => false,
+
+                /**
+                 * The matcher support multiple rules.
+                 *
+                 * Example: 'rules' => array(
+                 *              'MyRuleName1' => array(
+                 *                  'action' => 'enable',
+                 *                  'match'  => array('ip' => '127.0.0.1')
+                 *              ),
+                 *              'MyRuleName2' => array(
+                 *                  'action' => 'disable',
+                 *                  'match'  => array('url' => array('path' => '/admin'))
+                 *              )
+                 *          )
+                 *
+                 * Expects: array
+                 */
+                'rules' => array(),
+            ),
+
+            /**
+             * Contains a list with all collector the profiler should run.
+             * Zend Developer Tools ships with 'db' (Zend\Db), 'time', 'event', 'memory',
+             * 'exception', 'request' and 'mail' (Zend\Mail). If you wish to disable a default
+             * collector, simply set the value to null or false.
+             *
+             * Example: 'collectors' => array('db' => null)
+             *
+             * Expects: array
+             */
+            'collectors' => array(),
+
+            /**
+             * Contains a list with all verbose listeners. The array key is used
+             * as event identifier and the array key inside that array is the
+             * service name. If you wish to disable a listerner, simply set the
+             * value to false.
+             *
+             * Default: 'application' => array(
+             *              'ZDT_TimeCollectorListener'   => true,
+             *              'ZDT_MemoryCollectorListener' => true,
+             *          )
+             * Expects: array
+             */
+            'verbose_listeners' => array(),
         ),
+         /**
+          * General Toolbar settings
+          */
         'toolbar' => array(
-            'enabled' => true,
+            /**
+             * Enables or disables the Toolbar.
+             *
+             * Expects: boolean
+             * Default: false
+             */
+            'enabled' => false,
+
+            /**
+             * If enabled, every empty collector will be hidden.
+             *
+             * Expects: boolean
+             * Default: false
+             */
+            'auto_hide' => false,
+
+            /**
+             * The Toolbar position.
+             *
+             * Expects: string ('bottom' or 'top')
+             * Default: bottom
+             */
+            'position' => 'bottom',
+
+            /**
+             * If enabled, the Toolbar will check if your current Zend Framework version
+             * is up-to-date.
+             *
+             * Note: The check will only occur once every hour.
+             *
+             * Expects: boolean
+             * Default: false
+             */
+            'version_check' => false,
+
+            /**
+             * Contains a list with all collector toolbar templates. The name
+             * of the array key must be same as the key name used in the
+             * 'collectors' array.
+             *
+             * Note: You have to add the template to the template map.
+             *
+             * Example: 'profiler' => array(
+             *              'collectors' => array(
+             *                  'MyCollector' => 'My_Collector_Example',
+             *              )
+             *          ),
+             *          'toolbar' => array(
+             *              'entries' => array(
+             *                  'MyCollector' => 'example/toolbar/my-collector',
+             *              )
+             *          ),
+             *
+             * Expects: array
+             */
+            'entries' => array(),
         ),
     ),
 );

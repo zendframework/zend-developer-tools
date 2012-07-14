@@ -29,8 +29,8 @@ class Options extends AbstractOptions
     protected $profiler = array(
         'enabled'     => false,
         'strict'      => true,
-        'verbose'     => true,
-        'flush_early' => true,
+        'verbose'     => false,
+        'flush_early' => false,
         'cache_dir'   => 'data/cache',
         'matcher'     => array(
             'enabled' => false,
@@ -50,23 +50,24 @@ class Options extends AbstractOptions
                 'ZDT_TimeCollectorListener'   => true,
                 'ZDT_MemoryCollectorListener' => true,
             ),
-        )
+        ),
     );
 
     /**
      * @var array
      */
     protected $toolbar = array(
-        'enabled'   => false,
-        'auto_hide' => false,
-        'position'  => 'bottom',
-        'entries'   => array(
+        'enabled'       => false,
+        'auto_hide'     => false,
+        'position'      => 'bottom',
+        'version_check' => false,
+        'entries'       => array(
             'request' => 'zend-developer-tools/toolbar/request',
             'time'    => 'zend-developer-tools/toolbar/time',
             'memory'  => 'zend-developer-tools/toolbar/memory',
             'db'      => 'zend-developer-tools/toolbar/db',
             'mail'    => 'zend-developer-tools/toolbar/mail',
-        )
+        ),
     );
 
     /**
@@ -340,6 +341,10 @@ class Options extends AbstractOptions
         if (isset($options['enabled'])) {
             $this->toolbar['enabled'] = (boolean) $options['enabled'];
         }
+
+        if (isset($options['version_check'])) {
+            $this->profiler['version_check'] = (boolean) $options['version_check'];
+        }
         if (isset($options['position'])) {
             if ($options['position'] !== 'bottom' && $options['position'] !== 'top') {
                 $report->addError(sprintf(
@@ -376,6 +381,16 @@ class Options extends AbstractOptions
     public function isToolbarEnabled()
     {
         return $this->toolbar['enabled'];
+    }
+
+    /**
+     * Is the Zend Framework version check enabled?
+     *
+     * @return boolean
+     */
+    public function isVersionCheckEnabled()
+    {
+        return $this->toolbar['version_check'];
     }
 
     /**

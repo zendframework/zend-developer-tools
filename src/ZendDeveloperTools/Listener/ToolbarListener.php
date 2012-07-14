@@ -1,23 +1,32 @@
 <?php
 /**
- * Zend Developer Tools for Zend Framework (http://framework.zend.com/)
+ * ZendDeveloperTools
  *
- * @link       http://github.com/zendframework/ZendDeveloperTools for the canonical source repository
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd New BSD License
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
  * @package    ZendDeveloperTools
  * @subpackage Listener
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 namespace ZendDeveloperTools\Listener;
 
 use Zend\Version;
 use Zend\View\Model\ViewModel;
-use Zend\View\Exception\RuntimeException as ViewRuntimeException;
+use Zend\View\Exception\RuntimeException;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
 use ZendDeveloperTools\ProfilerEvent;
-use ZendDeveloperTools\Collector\AutoHideInterface;
 use ZendDeveloperTools\Exception\InvalidOptionException;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
@@ -29,6 +38,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @category   Zend
  * @package    ZendDeveloperTools
  * @subpackage Listener
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class ToolbarListener implements ListenerAggregateInterface
 {
@@ -147,19 +158,19 @@ class ToolbarListener implements ListenerAggregateInterface
      */
     protected function renderEntries(ProfilerEvent $event)
     {
-        $entries    = array();
-        $report     = $event->getReport();
+        $entries = array();
+        $report  = $event->getReport();
 
-        list($isLatest, $latest) = $this->getLatestVersion();
+        list($isLatest, $latest) = $this->getLatestVersion(Version::VERSION);
 
-        $zfEntry    = new ViewModel(array(
+        $zfEntry = new ViewModel(array(
             'version'   => Version::VERSION,
             'is_latest' => $isLatest,
             'latest'    => $latest,
             'has_intl'  => extension_loaded('intl'),
         ));
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
-        $entries[]  = $this->renderer->render($zfEntry);
+        $entries[] = $this->renderer->render($zfEntry);
 
         $errors     = array();
         $collectors = $this->options->getCollectors();
@@ -168,22 +179,13 @@ class ToolbarListener implements ListenerAggregateInterface
         foreach ($templates as $name => $template) {
             if (isset($collectors[$name])) {
                 try {
-                    $collectorInstance = $report->getCollector($name);
-
-                    if (
-                        $this->options->getToolbarAutoHide()
-                        && $collectorInstance instanceof AutoHideInterface
-                        && $collectorInstance->canHide()
-                    ) {
-                        continue;
-                    }
-
                     $collector = new ViewModel(array(
-                        'collector' => $collectorInstance,
+                        'report'    => $report,
+                        'collector' => $report->getCollector($name),
                     ));
                     $collector->setTemplate($template);
                     $entries[] = $this->renderer->render($collector);
-                } catch (ViewRuntimeException $e) {
+                } catch (RuntimeException $e) {
                     $errors[$name] = $template;
                 }
             }
@@ -215,10 +217,15 @@ class ToolbarListener implements ListenerAggregateInterface
      * Wrapper for Zend\Version::getLatest with caching functionality, so that
      * ZendDeveloperTools won't act as a "DDoS bot-network".
      *
+     * @param  string $currentVersion
      * @return array
      */
-    protected function getLatestVersion()
+    protected function getLatestVersion($currentVersion)
     {
+        if (!$this->options->isVersionCheckEnabled()) {
+            return array(true, '');
+        }
+
         $cacheDir = $this->options->getCacheDir();
 
         // exit early if the cache dir doesn't exist,
@@ -232,6 +239,11 @@ class ToolbarListener implements ListenerAggregateInterface
             $cache = explode('|', $cache);
 
             if ($cache[0] + self::VERSION_CACHE_TTL > time()) {
+                // the cache file was written before the version was upgraded.
+                if ($currentVersion === $cache[2] || $cache[2] === 'N/A') {
+                    return array(true, '');
+                }
+
                 return array(
                     ($cache[1] === 'yes') ? true : false,
                     $cache[2]
@@ -244,7 +256,12 @@ class ToolbarListener implements ListenerAggregateInterface
 
         file_put_contents(
             $cacheDir . '/ZDT_ZF_Version.cache',
-            sprintf('%d|%s|%s', time(), ($isLatest) ? 'yes' : 'no', $latest)
+            sprintf(
+                '%d|%s|%s',
+                time(),
+                ($isLatest) ? 'yes' : 'no',
+                ($latest === null) ? 'N/A' : $latest
+            )
         );
 
         return array($isLatest, $latest);
