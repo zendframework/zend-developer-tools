@@ -25,6 +25,9 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "dev-master"
     },
+    "suggest": {
+        "bjyoungblood/BjyProfiler": "Version: dev-master, allows the usage of the (Zend) Db collector.",
+    },
     "autoload": {
         "psr-0": {
             "ZendDeveloperTools": "src/"
