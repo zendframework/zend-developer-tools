@@ -99,14 +99,43 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
      */
     public function getApplicationEventMemory()
     {
-        $sc = $this->data['event']['application'];
-
         $result = array();
-        $result['request']   = $sc['bootstrap'];
-        $result['bootstrap'] = $sc['dispatch'] - $sc['bootstrap'];
-        $result['dispatch']  = $sc['render'] - $sc['dispatch'];
-        $result['render']    = $sc['finish'] - $sc['render'];
-        $result['finish']    = $this->data['end'] - $sc['finish'];
+
+        if (!isset($this->data['event']['application'])) {
+            return $result;
+        }
+
+        $app = $this->data['event']['application'];
+
+        if (isset($app['bootstrap'])) {
+            $result['request'] = $app['bootstrap'];
+        }
+
+        if (isset($app['bootstrap']) && isset($app['route'])) {
+            $result['bootstrap'] = $app['route'] - $app['bootstrap'];
+        }
+
+        if (isset($app['dispatch']) && isset($app['route'])) {
+            $result['route'] = $app['route'] - $app['dispatch'];
+        }
+        if (isset($app['dispatch.error']) && isset($app['route'])) {
+            $result['route'] = $app['route'] - $app['dispatch.error'];
+        }
+
+        if (isset($app['dispatch']) && isset($app['render'])) {
+            $result['dispatch'] = $app['render'] - $app['dispatch'];
+        }
+        if (isset($app['dispatch.error']) && isset($app['render'])) {
+            $result['dispatch (e)'] = $app['render'] - $app['dispatch.error'];
+        }
+
+        if (isset($app['render']) && isset($app['finish'])) {
+            $result['render'] = $app['finish'] - $app['render'];
+        }
+
+        if (isset($app['finish'])) {
+            $result['finish'] = $this->data['end'] - $app['finish'];
+        }
 
         return $result;
     }
