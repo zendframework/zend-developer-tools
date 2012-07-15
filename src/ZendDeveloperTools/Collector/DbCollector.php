@@ -12,16 +12,22 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use BjyProfiler\Db\Profiler\Profiler;
 
 /**
- * Database Data Collector.
+ * Database (Zend\Db) Data Collector.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class DbCollector extends AbstractCollector implements AutoHideInterface
+class DbCollector implements CollectorInterface, AutoHideInterface, \Serializable
 {
+    /**
+     * @var Profiler
+     */
+    protected $profiler;
+
     /**
      * @inheritdoc
      */
@@ -35,7 +41,7 @@ class DbCollector extends AbstractCollector implements AutoHideInterface
      */
     public function getPriority()
     {
-        return 100;
+        return 10;
     }
 
     /**
@@ -43,7 +49,7 @@ class DbCollector extends AbstractCollector implements AutoHideInterface
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        // todo
+        return;
     }
 
     /**
@@ -51,56 +57,95 @@ class DbCollector extends AbstractCollector implements AutoHideInterface
      */
     public function canHide()
     {
+        if (!isset($this->profiler)) {
+            return false;
+        } elseif ($this->getQueryCount() > 0) {
+            return false;
+        }
+
         return true;
     }
 
-    public function getQueries()
+    /**
+     * Has the collector access to Bjy's Db Profiler?
+     *
+     * @return boolean
+     */
+    public function hasProfiler()
     {
-        return 0;
+        return isset($this->profiler);
     }
 
-    public function getCreateQueries()
+    /**
+     * Returns Bjy's Db Profiler
+     *
+     * @return Profiler
+     */
+    public function getProfiler()
     {
-        return 0;
+        return $this->profiler;
     }
 
-    public function getReadQueries()
+    /**
+     * Sets Bjy's Db Profiler
+     *
+     * @param  Profiler $profiler
+     * @return self
+     */
+    public function setProfiler(Profiler $profiler)
     {
-        return 0;
+        $this->profiler = $profiler;
+
+        return $this;
     }
 
-    public function getUpdateQueries()
+    /**
+     * Returns the number of queries send to the database.
+     *
+     * You can use the constants in the Profiler class to specify
+     * what kind of queries you want to get, e.g. Profiler::INSERT.
+     *
+     * @param  integer $mode
+     * @return self
+     */
+    public function getQueryCount($mode = null)
     {
-        return 0;
+        return count($this->profiler->getQueryProfiles($mode));
     }
 
-    public function getDeleteQueries()
+    /**
+     * Returns the total time the queries took to execute.
+     *
+     * You can use the constants in the Profiler class to specify
+     * what kind of queries you want to get, e.g. Profiler::INSERT.
+     *
+     * @param  integer $mode
+     * @return float|integer
+     */
+    public function getQueryTime($mode = null)
     {
-        return 0;
+        $time = 0;
+
+        foreach ($this->profiler->getQueryProfiles($mode) as $query) {
+            $time += $query->getElapsedTime();
+        }
+
+        return $time;
     }
 
-    public function getTime()
+    /**
+     * @see \Serializable
+     */
+    public function serialize()
     {
-        return 0;
+        return serialize($this->profiler);
     }
 
-    public function getCreateTime()
+    /**
+     * @see \Serializable
+     */
+    public function unserialize($profiler)
     {
-        return 0;
-    }
-
-    public function getReadTime()
-    {
-        return 0;
-    }
-
-    public function getUpdateTime()
-    {
-        return 0;
-    }
-
-    public function getDeleteTime()
-    {
-        return 0;
+        $this->profiler = unserialize($profiler);
     }
 }
