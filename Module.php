@@ -15,6 +15,7 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface as ConfigProvider;
 use Zend\ModuleManager\Feature\ServiceProviderInterface as ServiceProvider;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface as BootstrapListener;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface as AutoloaderProvider;
+use BjyProfiler\Db\Adapter\ProfilingAdapter;
 
 /**
  * @category   Zend
@@ -83,7 +84,6 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
             ),
             'invokables' => array(
                 'ZDT_Report'             => 'ZendDeveloperTools\Report',
-                'ZDT_DbCollector'        => 'ZendDeveloperTools\Collector\DbCollector',
                 'ZDT_EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
                 'ZDT_ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
                 'ZDT_RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
@@ -132,6 +132,25 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
                 },
                 'ZDT_MemoryCollectorListener' => function($sm) {
                     return new Listener\EventCollectorListener($sm->get('ZDT_MemoryCollector'));
+                },
+                'ZDT_DbCollector' => function($sm) {
+                    $p  = false;
+                    $db = new Collector\DbCollector();
+
+                    if ($sm->has('Zend\Db\Adapter\Adapter')) {
+                        $adapter = $sm->get('Zend\Db\Adapter\Adapter');
+                        if ($adapter instanceof ProfilingAdapter) {
+                            $p = true;
+                            $db->setProfiler($adapter->getProfiler());
+                        }
+                    } elseif (!$p && $sm->has('ZDT_Zend_Db')) {
+                        $adapter = $sm->get('ZDT_Zend_Db');
+                        if ($adapter instanceof ProfilingAdapter) {
+                            $db->setProfiler($adapter->getProfiler());
+                        }
+                    }
+
+                    return $db;
                 },
             ),
         );

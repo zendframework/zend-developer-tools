@@ -10,6 +10,13 @@ In your `index.php` add the following:
 
     define('REQUEST_MICROTIME', microtime(true));
 
+
+If you wish to profile Zend\Db, you have to install and enable [BjyProfiler](https://github.com/bjyoungblood/BjyProfiler). You can do so by running composer's `require` command.
+
+    php composer.phar require bjyoungblood/BjyProfiler:dev-master
+
+Zend Developer Tools will try to grab the Profiler from your Zend\Db adapter instance, using the `Zend\Db\Adapter\Adapter` or `ZDT_Zend_Db` service name.
+
 Redux
 =====
 
