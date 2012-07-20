@@ -11,17 +11,18 @@
 namespace ZendDeveloperTools;
 
 use Zend\EventManager\EventInterface;
-use Zend\ModuleManager\Feature\ConfigProviderInterface as ConfigProvider;
-use Zend\ModuleManager\Feature\ServiceProviderInterface as ServiceProvider;
+use Zend\ModuleManager\Feature\ConfigProviderInterface as Config;
+use Zend\ModuleManager\Feature\ServiceProviderInterface as Service;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface as BootstrapListener;
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface as AutoloaderProvider;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface as Autoloader;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface as ViewHelper;
 use BjyProfiler\Db\Adapter\ProfilingAdapter;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
  */
-class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, BootstrapListener
+class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelper
 {
     /**
      * Zend\Mvc\MvcEvent::EVENT_BOOTSTRAP event callback
@@ -60,7 +61,7 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
         return include __DIR__ . '/config/module.config.php';
     }
 
-   public function getViewHelperConfiguration()
+   public function getViewHelperConfig()
     {
         return array(
             'invokables' => array(
@@ -76,7 +77,7 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
     /**
      * @inheritdoc
      */
-    public function getServiceConfiguration()
+    public function getServiceConfig()
     {
         return array(
             'aliases' => array(
@@ -94,7 +95,7 @@ class Module implements ConfigProvider, ServiceProvider, AutoloaderProvider, Boo
             ),
             'factories' => array(
                 'ZDT_Options' => function ($sm) {
-                    $config = $sm->get('Configuration');
+                    $config = $sm->get('Config');
                     $config = isset($config['zdt']) ? $config['zdt'] : null;
 
                     return new Options($config, $sm->get('ZDT_Report'));
