@@ -35,19 +35,19 @@
         <span class="zdt-toolbar-info zdt-toolbar-info-heading zdt-toolbar-topspacing">Time</span>
         <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">create</span>
-            <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->collector->getQueryTime(Profiler::INSERT); ?></span>
+            <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->ZDT_Time($this->collector->getQueryTime(Profiler::INSERT)); ?></span>
         </span>
         <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">read</span>
-            <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->collector->getQueryTime(Profiler::SELECT); ?></span>
+            <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->ZDT_Time($this->collector->getQueryTime(Profiler::SELECT)); ?></span>
         </span>
         <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">update</span>
-            <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->collector->getQueryTime(Profiler::UPDATE); ?></span>
+            <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->ZDT_Time($this->collector->getQueryTime(Profiler::UPDATE)); ?></span>
         </span>
         <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">delete</span>
-            <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->collector->getQueryTime(Profiler::DELETE); ?></span>
+            <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->ZDT_Time($this->collector->getQueryTime(Profiler::DELETE)); ?></span>
         </span>
 
         <span class="zdt-toolbar-info zdt-toolbar-info-heading zdt-toolbar-info-redundant zdt-toolbar-topspacing">Total</span>
