@@ -41,14 +41,14 @@ class Profiler implements EventManagerAwareInterface
      *
      * @var int
      */
-    const PRIORITY_FLUSH = -99999;
+    const PRIORITY_FLUSH = -8999;
 
     /**
      * Profiler listener priority.
      *
      * @var int
      */
-    const PRIORITY_PROFILER = -100000;
+    const PRIORITY_PROFILER = -9000;
 
     /**
      * Storage listener priority.
