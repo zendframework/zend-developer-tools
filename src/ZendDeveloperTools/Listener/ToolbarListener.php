@@ -21,7 +21,7 @@
 
 namespace ZendDeveloperTools\Listener;
 
-use Zend\Version;
+use Zend\Version\Version;
 use Zend\View\Model\ViewModel;
 use Zend\View\Exception\RuntimeException;
 use ZendDeveloperTools\Options;
