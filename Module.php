@@ -46,7 +46,9 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
             return;
         }
 
-        $report = $sm->get('ZendDeveloperTools\Report');
+        $report   = $sm->get('ZendDeveloperTools\Report');
+        $profiler = $sm->get('ZendDeveloperTools\Profiler');
+        $em->trigger(ProfilerEvent::EVENT_PROFILER_INIT, $sm->get('ZendDeveloperTools\Event'));
 
         if ($options->canFlushEarly()) {
             $em->attachAggregate($sm->get('ZendDeveloperTools\FlushListener'));
@@ -124,7 +126,7 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
                 'ZendDeveloperTools\FlushListener'      => 'ZendDeveloperTools\Listener\FlushListener',
             ),
             'factories' => array(
-                'Profiler' => function($sm) {
+                'ZendDeveloperTools\Profiler' => function($sm) {
                     $a = new Profiler($sm->get('ZendDeveloperTools\Report'));
                     $a->setEvent($sm->get('ZendDeveloperTools\Event'));
                     return $a;
