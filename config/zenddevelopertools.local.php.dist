@@ -140,19 +140,17 @@ return array(
 
             /**
              * Contains a list with all collector toolbar templates. The name
-             * of the array key must be same as the key name used in the
-             * 'collectors' array.
-             *
-             * Note: You have to add the template to the template map.
-             *
+             * of the array key must be same as the name of the collector.
+             *             *
              * Example: 'profiler' => array(
              *              'collectors' => array(
+             *                  // My_Collector_Example::getName() -> mycollector
              *                  'MyCollector' => 'My_Collector_Example',
              *              )
              *          ),
              *          'toolbar' => array(
              *              'entries' => array(
-             *                  'MyCollector' => 'example/toolbar/my-collector',
+             *                  'mycollector' => 'example/toolbar/my-collector',
              *              )
              *          ),
              *
