@@ -11,7 +11,7 @@ return array(
              * Expects: boolean
              * Default: false
              */
-            'enabled' => false,
+            'enabled' => true,
 
             /**
              * Enables or disables the strict mode. If the strict mode is
@@ -21,7 +21,7 @@ return array(
              * Expects: boolean
              * Default: true
              */
-            'strict' => true,
+            'strict' => false,
 
             /**
              * Enables or disables verbose profiling. If enabled, the profiler
@@ -33,7 +33,7 @@ return array(
              * Expects: boolean
              * Default: false
              */
-            'verbose' => false,
+            'verbose' => true,
 
             /**
              * If enabled, the profiler tries to flush the content before the it
@@ -41,7 +41,7 @@ return array(
              * is enabled.
              *
              * Note: The flush listener listens to the MvcEvent::EVENT_FINISH event
-             *       with a priority of -99999. You have to disbale this function if
+             *       with a priority of -9400. You have to disbale this function if
              *       you wish to modify the output with a lower priority.
              *
              * Expects: boolean
@@ -62,38 +62,16 @@ return array(
             'cache_dir' => 'data/cache',
 
             /**
-             * Matcher settings
+             * If a matches is defined, the profiler will be disabled if the
+             * request does not match the pattern.
+             *
+             * Example: 'matcher' => array('ip' => '127.0.0.1')
+             *          OR
+             *          'matcher' => array('url' => array('path' => '/admin')
              *
              * Note: The matcher is not implemented yet!
              */
-            'matcher' => array(
-                /**
-                 * Enables or disables the matcher. If the matcher is enabled, every request
-                 * that match a defined pattern will disable or enable to profiler.
-                 *
-                 * Expects: boolean
-                 * Default: false
-                 */
-                'enabled' => false,
-
-                /**
-                 * The matcher support multiple rules.
-                 *
-                 * Example: 'rules' => array(
-                 *              'MyRuleName1' => array(
-                 *                  'action' => 'enable',
-                 *                  'match'  => array('ip' => '127.0.0.1')
-                 *              ),
-                 *              'MyRuleName2' => array(
-                 *                  'action' => 'disable',
-                 *                  'match'  => array('url' => array('path' => '/admin'))
-                 *              )
-                 *          )
-                 *
-                 * Expects: array
-                 */
-                'rules' => array(),
-            ),
+            'matcher' => array(),
 
             /**
              * Contains a list with all collector the profiler should run.
@@ -131,7 +109,7 @@ return array(
              * Expects: boolean
              * Default: false
              */
-            'enabled' => false,
+            'enabled' => true,
 
             /**
              * If enabled, every empty collector will be hidden.
@@ -158,7 +136,7 @@ return array(
              * Expects: boolean
              * Default: false
              */
-            'version_check' => false,
+            'version_check' => true,
 
             /**
              * Contains a list with all collector toolbar templates. The name

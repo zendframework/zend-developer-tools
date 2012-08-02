@@ -29,7 +29,6 @@ class Options extends AbstractOptions
     protected $profiler = array(
         'enabled'     => false,
         'strict'      => true,
-        'verbose'     => false,
         'flush_early' => false,
         'cache_dir'   => 'data/cache',
         'matcher'     => array(
@@ -37,19 +36,11 @@ class Options extends AbstractOptions
             'rules'   => array(),
         ),
         'collectors' => array(
-            'db'        => 'ZDT_DbCollector',
-            'event'     => 'ZDT_EventCollector',
-            'exception' => 'ZDT_ExceptionCollector',
-            'request'   => 'ZDT_RequestCollector',
-            'mail'      => 'ZDT_MailCollector',
-            'memory'    => 'ZDT_MemoryCollector',
-            'time'      => 'ZDT_TimeCollector',
-        ),
-        'verbose_listeners' => array(
-            'application' => array(
-                'ZDT_TimeCollectorListener'   => true,
-                'ZDT_MemoryCollectorListener' => true,
-            ),
+            'db'        => 'ZendDeveloperTools\DbCollector',
+            'exception' => 'ZendDeveloperTools\ExceptionCollector',
+            'request'   => 'ZendDeveloperTools\RequestCollector',
+            'memory'    => 'ZendDeveloperTools\MemoryCollector',
+            'time'      => 'ZendDeveloperTools\TimeCollector',
         ),
     );
 
@@ -66,7 +57,6 @@ class Options extends AbstractOptions
             'time'    => 'zend-developer-tools/toolbar/time',
             'memory'  => 'zend-developer-tools/toolbar/memory',
             'db'      => 'zend-developer-tools/toolbar/db',
-            'mail'    => 'zend-developer-tools/toolbar/mail',
         ),
     );
 
@@ -97,9 +87,6 @@ class Options extends AbstractOptions
         if (isset($options['strict'])) {
             $this->profiler['strict'] = (boolean) $options['strict'];
         }
-        if (isset($options['verbose'])) {
-            $this->profiler['verbose'] = (boolean) $options['verbose'];
-        }
         if (isset($options['flush_early'])) {
             $this->profiler['flush_early'] = (boolean) $options['flush_early'];
         }
@@ -112,9 +99,6 @@ class Options extends AbstractOptions
         if (isset($options['collectors'])) {
             $this->setCollectors($options['collectors']);
         }
-        if (isset($options['verbose_listeners'])) {
-            $this->setVerboseListeners($options['verbose_listeners']);
-        }
     }
 
     /**
@@ -126,73 +110,14 @@ class Options extends AbstractOptions
     {
         if (!is_array($options)) {
             $report->addError(sprintf(
-                '[\'zdt\'][\'profiler\'][\'matcher\'] must be an array, %s given.',
+                '[\'zdt\'][\'ZendDeveloperTools\'][\'matcher\'] must be an array, %s given.',
                 gettype($options)
             ));
 
             return;
         }
 
-        if (isset($options['enabled'])) {
-            $this->profiler['matcher']['enabled'] = (boolean) $options['enabled'];
-        }
-        if (isset($options['rules']) && is_array($options['rules'])) {
-            $arrayPath = '[\'zdt\'][\'profiler\'][\'matcher\']';
-            $added     = array();
-
-            foreach ($options['rules'] as $name => $rule) {
-                if (is_array($rule)) {
-                    $added[] = $name;
-
-                    $this->profiler['matcher']['rules'][$name] = array();
-
-                    if (isset($rule['action'])) {
-                        if ($rule['action'] !== 'enable' && $rule['action'] !== 'disable') {
-                            $report->addError(sprintf(
-                                '%s[\'rules\'][\'%s\'][\'action\'] must be "enable" or "disable", %s given.',
-                                $arrayPath,
-                                $name,
-                                $rule['action']
-                            ));
-                        } else {
-                            $this->profiler['matcher']['rules'][$name]['action'] = $rule['action'];
-                        }
-                    } else {
-                        $this->profiler['matcher']['rules'][$name]['action'] = 'enable';
-                    }
-
-                    if (isset($rule['match'])) {
-                        if (!is_array($rule['match'])) {
-                            $report->addError(sprintf(
-                                '%s[\'rules\'][\'%s\'][\'match\'] must be an array, %s given.',
-                                $arrayPath,
-                                gettype($rule['match'])
-                            ));
-                        } else {
-                            $this->profiler['matcher']['rules'][$name]['match'] = $rule['action'];
-                        }
-                    }
-                } else {
-                    $this->report->addError(sprintf(
-                        '%s[\'rules\'][\'%s\'] must be an array, %s given.',
-                        $arrayPath,
-                        $name,
-                        gettype($rule)
-                    ));
-                }
-            }
-
-            foreach ($added as $name) {
-                if (!isset($this->profiler['matcher']['rules'][$name]['match'])) {
-                    unset($this->profiler['matcher']['rules'][$name]);
-                }
-            }
-        } else {
-            $report->addError(sprintf(
-                '[\'zdt\'][\'profiler\'][\'matcher\'][\'rules\'] must be an array, %s given.',
-                gettype($options['rules'])
-            ));
-        }
+        $this->profiler['matcher'] = $options;
     }
 
     /**
@@ -204,7 +129,7 @@ class Options extends AbstractOptions
     {
         if (!is_array($options)) {
             $report->addError(sprintf(
-                '[\'zdt\'][\'profiler\'][\'collectors\'] must be an array, %s given.',
+                '[\'zdt\'][\'ZendDeveloperTools\'][\'collectors\'] must be an array, %s given.',
                 gettype($options)
             ));
 
@@ -216,43 +141,6 @@ class Options extends AbstractOptions
                 unset($this->profiler['collectors'][$name]);
             } else {
                 $this->profiler['collectors'][$name] = $collector;
-            }
-        }
-    }
-
-    /**
-     * Sets verbose listener options.
-     *
-     * @param array $options
-     */
-    protected function setVerboseListeners($options)
-    {
-        if (!is_array($options)) {
-            $report->addError(sprintf(
-                '[\'zdt\'][\'profiler\'][\'verbose_listeners\'] must be an array, %s given.',
-                gettype($options)
-            ));
-
-            return;
-        }
-
-        foreach ($options as $id => $listeners) {
-            if (!is_array($listeners)) {
-                $report->addError(sprintf(
-                    '[\'zdt\'][\'profiler\'][\'verbose_listeners\'][\'%s\'] must be an array, %s given.',
-                    $id,
-                    gettype($listeners)
-                ));
-
-                continue;
-            }
-
-            foreach ($listeners as $service => $mode) {
-                if (!isset($this->profiler['verbose_listeners'][$id])) {
-                    $this->profiler['verbose_listeners'][$id] = array();
-                }
-
-                $this->profiler['verbose_listeners'][$id][$service] = (boolean) $mode;
             }
         }
     }
@@ -279,23 +167,19 @@ class Options extends AbstractOptions
 
     /**
      * Is it allowed to flush the page before the collector runs?
-     * Note: Only possible if the toolbar and firephp is disabled!
+     *
+     * Note: Only possible if the toolbar, firephp and the strict mode is
+     *       disabled.
      *
      * @return boolean
      */
     public function canFlushEarly()
     {
-        return ($this->profiler['flush_early'] && !$this->toolbar['enabled']);
-    }
-
-    /**
-     * Is the verbose mode actived?
-     *
-     * @return boolean
-     */
-    public function isVerbose()
-    {
-        return $this->profiler['verbose'];
+        return (
+            $this->profiler['flush_early'] &&
+            !$this->profiler['strict'] &&
+            !$this->toolbar['enabled']
+        );
     }
 
     /**
@@ -319,16 +203,6 @@ class Options extends AbstractOptions
     public function getCollectors()
     {
         return $this->profiler['collectors'];
-    }
-
-    /**
-     * Returns the verbose listeners.
-     *
-     * @return array
-     */
-    public function getVerboseListeners()
-    {
-        return $this->profiler['verbose_listeners'];
     }
 
     /**

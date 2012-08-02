@@ -202,6 +202,14 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
+    public function getCollectorNames()
+    {
+        return array_keys($this->collectors);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setCollectors(array $collectors)
     {
         foreach ($collectors as $collector) {
