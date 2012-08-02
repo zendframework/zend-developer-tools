@@ -31,6 +31,10 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
      */
     public function onBootstrap(EventInterface $event)
     {
+        if (PHP_SAPI === 'cli') {
+            return;
+        }
+
         $app = $event->getApplication();
         $em  = $app->getEventManager();
         $sem = $em->getSharedManager();
