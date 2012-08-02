@@ -1,6 +1,6 @@
 <?php
 return array(
-    'zdt' => array(
+    'zenddevelopertools' => array(
          /**
           * General Profiler settings
           */

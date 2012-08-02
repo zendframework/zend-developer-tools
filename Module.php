@@ -96,9 +96,9 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
     {
         return array(
             'invokables' => array(
-                'ZDT_Time'        => 'ZendDeveloperTools\View\Helper\Time',
-                'ZDT_Memory'      => 'ZendDeveloperTools\View\Helper\Memory',
-                'ZDT_DetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
+                'ZendDeveloperToolsTime'        => 'ZendDeveloperTools\View\Helper\Time',
+                'ZendDeveloperToolsMemory'      => 'ZendDeveloperTools\View\Helper\Memory',
+                'ZendDeveloperToolsDetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
             ),
         );
     }
@@ -131,7 +131,7 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
                 },
                 'ZendDeveloperTools\Config' => function ($sm) {
                     $config = $sm->get('Configuration');
-                    $config = isset($config['zdt']) ? $config['zdt'] : null;
+                    $config = isset($config['zenddevelopertools']) ? $config['zenddevelopertools'] : null;
 
                     return new Options($config, $sm->get('ZendDeveloperTools\Report'));
                 },
