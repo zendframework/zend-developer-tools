@@ -110,7 +110,7 @@ class Options extends AbstractOptions
     {
         if (!is_array($options)) {
             $report->addError(sprintf(
-                '[\'zdt\'][\'ZendDeveloperTools\'][\'matcher\'] must be an array, %s given.',
+                '[\'zenddevelopertools\'][\'profiler\'][\'matcher\'] must be an array, %s given.',
                 gettype($options)
             ));
 
@@ -129,7 +129,7 @@ class Options extends AbstractOptions
     {
         if (!is_array($options)) {
             $report->addError(sprintf(
-                '[\'zdt\'][\'ZendDeveloperTools\'][\'collectors\'] must be an array, %s given.',
+                '[\'zenddevelopertools\'][\'profiler\'][\'collectors\'] must be an array, %s given.',
                 gettype($options)
             ));
 
@@ -222,7 +222,7 @@ class Options extends AbstractOptions
         if (isset($options['position'])) {
             if ($options['position'] !== 'bottom' && $options['position'] !== 'top') {
                 $report->addError(sprintf(
-                    '[\'zdt\'][\'toolbar\'][\'position\'] must be "top" or "bottom", %s given.',
+                    '[\'zenddevelopertools\'][\'toolbar\'][\'position\'] must be "top" or "bottom", %s given.',
                     $options['position']
                 ));
             } else {
@@ -240,7 +240,7 @@ class Options extends AbstractOptions
                 }
             } else {
                 $report->addError(sprintf(
-                    '[\'zdt\'][\'toolbar\'][\'entries\'] must be an array, %s given.',
+                    '[\'zenddevelopertools\'][\'toolbar\'][\'entries\'] must be an array, %s given.',
                     gettype($options['entries'])
                 ));
             }
