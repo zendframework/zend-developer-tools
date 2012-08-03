@@ -11,19 +11,61 @@
 namespace ZendDeveloperTools;
 
 use Zend\EventManager\EventInterface;
-use Zend\ModuleManager\Feature\ConfigProviderInterface as Config;
-use Zend\ModuleManager\Feature\ServiceProviderInterface as Service;
-use Zend\ModuleManager\Feature\BootstrapListenerInterface as BootstrapListener;
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface as Autoloader;
-use Zend\ModuleManager\Feature\ViewHelperProviderInterface as ViewHelper;
+use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManagerInterface;
+use Zend\ModuleManager\Feature\InitProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use BjyProfiler\Db\Adapter\ProfilingAdapter;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
  */
-class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelper
+class Module implements
+    InitProviderInterface,
+    ConfigProviderInterface,
+    ServiceProviderInterface,
+    AutoloaderProviderInterface,
+    BootstrapListenerInterface,
+    ViewHelperProviderInterface
 {
+    /**
+     * Initialize workflow
+     *
+     * @param  ModuleManagerInterface $manager
+     */
+    public function init(ModuleManagerInterface $manager)
+    {
+        $eventManager = $manager->getEventManager();
+        $eventManager->attach(
+            ModuleEvent::EVENT_LOAD_MODULES_POST,
+            array($this, 'onLoadModulesPost'),
+            -1100
+        );
+    }
+
+    /**
+     * loadModulesPost callback
+     *
+     * @param  $event
+     */
+    public function onLoadModulesPost($event)
+    {
+        $eventManager  = $event->getTarget()->getEventManager();
+        $configuration = $event->getConfigListener()->getMergedConfig(false);
+
+        if (
+            isset($configuration['zenddevelopertools']['profiler']['enabled'])
+            && $configuration['zenddevelopertools']['profiler']['enabled'] === true
+        ) {
+            $eventManager->trigger(ProfilerEvent::EVENT_PROFILER_INIT, $event);
+        }
+    }
+
     /**
      * Zend\Mvc\MvcEvent::EVENT_BOOTSTRAP event callback
      *
@@ -46,9 +88,7 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
             return;
         }
 
-        $report   = $sm->get('ZendDeveloperTools\Report');
-        $profiler = $sm->get('ZendDeveloperTools\Profiler');
-        $em->trigger(ProfilerEvent::EVENT_PROFILER_INIT, $sm->get('ZendDeveloperTools\Event'));
+        $report = $sm->get('ZendDeveloperTools\Report');
 
         if ($options->canFlushEarly()) {
             $em->attachAggregate($sm->get('ZendDeveloperTools\FlushListener'));
