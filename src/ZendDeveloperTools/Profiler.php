@@ -12,6 +12,7 @@ namespace ZendDeveloperTools;
 
 use Zend\Mvc\MvcEvent;
 use Zend\Stdlib\PriorityQueue;
+use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 
@@ -41,14 +42,14 @@ class Profiler implements EventManagerAwareInterface
      *
      * @var int
      */
-    const PRIORITY_FLUSH = -8999;
+    const PRIORITY_FLUSH = -9400;
 
     /**
      * Profiler listener priority.
      *
      * @var int
      */
-    const PRIORITY_PROFILER = -9000;
+    const PRIORITY_PROFILER = -9500;
 
     /**
      * Storage listener priority.
@@ -89,21 +90,14 @@ class Profiler implements EventManagerAwareInterface
      */
     protected $eventManager;
 
-
     /**
      * Constructor.
      *
-     * @param ProfilerEvent   $event
      * @param ReportInterface $report
      */
-    public function __construct(ProfilerEvent $event, ReportInterface $report)
+    public function __construct(ReportInterface $report)
     {
-        $this->event  = $event;
         $this->report = $report;
-
-        $this->event->setTarget($this);
-        $this->event->setProfiler($this)
-                    ->setReport($report);
     }
 
     /**
@@ -117,6 +111,35 @@ class Profiler implements EventManagerAwareInterface
         $this->strict = $mode;
 
         return $this;
+    }
+
+    /**
+     * Set the profiler event object.
+     *
+     * @param  EventInterface $event
+     * @return self
+     */
+    public function setEvent(EventInterface $event)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * Returns the profiler event object.
+     *
+     * @return self
+     */
+    public function getEvent()
+    {
+        if (!isset($this->event)) {
+            $this->event = new ProfilerEvent();
+            $this->event->setTarget($this);
+            $this->event->setProfiler($this);
+        }
+
+        return $this->event;
     }
 
     /**
@@ -159,11 +182,12 @@ class Profiler implements EventManagerAwareInterface
             $this->collectors->insert($collector, $collector->getPriority());
         } else {
             $error = sprintf('%s must implement CollectorInterface.', get_class($collector));
+
             if ($this->strict === true) {
                 throw new Exception\CollectorException($error);
-            } else {
-                $report->addError($error);
             }
+
+            $report->addError($error);
         }
 
         return $this;
@@ -191,15 +215,16 @@ class Profiler implements EventManagerAwareInterface
                 $this->report->addCollector(unserialize(serialize($collector)));
             }
 
-            $this->eventManager->trigger(ProfilerEvent::EVENT_COLLECTED, $this->event);
-        } else {
-            $error = 'There is nothing to collect.';
-            if ($this->strict === true) {
-                throw new Exception\ProfilerException($error);
-            } else {
-                $report->addError($error);
-            }
+            $this->eventManager->trigger(ProfilerEvent::EVENT_COLLECTED, $this->getEvent());
+
+            return $this;
         }
+
+        if ($this->strict === true) {
+            throw new Exception\ProfilerException('There is nothing to collect.');
+        }
+
+        $report->addError('There is nothing to collect.');
 
         return $this;
     }

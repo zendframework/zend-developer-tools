@@ -105,6 +105,11 @@ interface ReportInterface
     public function getCollectors();
 
     /**
+     * @return array
+     */
+    public function getCollectorNames();
+
+    /**
      * @param  array $collectors
      * @return self
      */
