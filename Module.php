@@ -40,6 +40,10 @@ class Module implements
      */
     public function init(ModuleManagerInterface $manager)
     {
+        if (PHP_SAPI === 'cli') {
+            return;
+        }
+
         $eventManager = $manager->getEventManager();
         $eventManager->attach(
             ModuleEvent::EVENT_LOAD_MODULES_POST,
