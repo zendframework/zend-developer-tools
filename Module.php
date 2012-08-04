@@ -11,19 +11,65 @@
 namespace ZendDeveloperTools;
 
 use Zend\EventManager\EventInterface;
-use Zend\ModuleManager\Feature\ConfigProviderInterface as Config;
-use Zend\ModuleManager\Feature\ServiceProviderInterface as Service;
-use Zend\ModuleManager\Feature\BootstrapListenerInterface as BootstrapListener;
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface as Autoloader;
-use Zend\ModuleManager\Feature\ViewHelperProviderInterface as ViewHelper;
+use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManagerInterface;
+use Zend\ModuleManager\Feature\InitProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use BjyProfiler\Db\Adapter\ProfilingAdapter;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
  */
-class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelper
+class Module implements
+    InitProviderInterface,
+    ConfigProviderInterface,
+    ServiceProviderInterface,
+    AutoloaderProviderInterface,
+    BootstrapListenerInterface,
+    ViewHelperProviderInterface
 {
+    /**
+     * Initialize workflow
+     *
+     * @param  ModuleManagerInterface $manager
+     */
+    public function init(ModuleManagerInterface $manager)
+    {
+        if (PHP_SAPI === 'cli') {
+            return;
+        }
+
+        $eventManager = $manager->getEventManager();
+        $eventManager->attach(
+            ModuleEvent::EVENT_LOAD_MODULES_POST,
+            array($this, 'onLoadModulesPost'),
+            -1100
+        );
+    }
+
+    /**
+     * loadModulesPost callback
+     *
+     * @param  $event
+     */
+    public function onLoadModulesPost($event)
+    {
+        $eventManager  = $event->getTarget()->getEventManager();
+        $configuration = $event->getConfigListener()->getMergedConfig(false);
+
+        if (
+            isset($configuration['zenddevelopertools']['profiler']['enabled'])
+            && $configuration['zenddevelopertools']['profiler']['enabled'] === true
+        ) {
+            $eventManager->trigger(ProfilerEvent::EVENT_PROFILER_INIT, $event);
+        }
+    }
+
     /**
      * Zend\Mvc\MvcEvent::EVENT_BOOTSTRAP event callback
      *
@@ -31,9 +77,40 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
      */
     public function onBootstrap(EventInterface $event)
     {
-        $sm      = $event->getApplication()->getServiceManager();
-        $manager = $sm->get('ZDT_Bootstrap');
-        $manager->init();
+        if (PHP_SAPI === 'cli') {
+            return;
+        }
+
+        $app = $event->getApplication();
+        $em  = $app->getEventManager();
+        $sem = $em->getSharedManager();
+        $sm  = $app->getServiceManager();
+
+        $options = $sm->get('ZendDeveloperTools\Config');
+
+        if (!$options->isEnabled()) {
+            return;
+        }
+
+        $report = $sm->get('ZendDeveloperTools\Report');
+
+        if ($options->canFlushEarly()) {
+            $em->attachAggregate($sm->get('ZendDeveloperTools\FlushListener'));
+        }
+
+        if ($options->isStrict() && $report->hasErrors()) {
+            throw new Exception\InvalidOptionException(implode(' ', $report->getErrors()));
+        }
+
+        $em->attachAggregate($sm->get('ZendDeveloperTools\ProfilerListener'));
+
+        if ($options->isToolbarEnabled()) {
+            $sem->attach('profiler', $sm->get('ZendDeveloperTools\ToolbarListener'), null);
+        }
+
+        if ($options->isStrict() && $report->hasErrors()) {
+            throw new Exception\ProfilerException(implode(' ', $report->getErrors()));
+        }
     }
 
     /**
@@ -65,13 +142,11 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
     {
         return array(
             'invokables' => array(
-                'ZDT_Time'        => 'ZendDeveloperTools\View\Helper\Time',
-                'ZDT_Memory'      => 'ZendDeveloperTools\View\Helper\Memory',
-                'ZDT_DetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
+                'ZendDeveloperToolsTime'        => 'ZendDeveloperTools\View\Helper\Time',
+                'ZendDeveloperToolsMemory'      => 'ZendDeveloperTools\View\Helper\Memory',
+                'ZendDeveloperToolsDetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
             ),
         );
-
-
     }
 
     /**
@@ -81,60 +156,48 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
     {
         return array(
             'aliases' => array(
-                'Profiler' => 'ZDT_Profiler',
+                'ZendDeveloperTools\ReportInterface' => 'ZendDeveloperTools\Report',
             ),
             'invokables' => array(
-                'ZDT_Report'             => 'ZendDeveloperTools\Report',
-                'ZDT_EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
-                'ZDT_ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
-                'ZDT_RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
-                'ZDT_RequestCollector'   => 'ZendDeveloperTools\Collector\RequestCollector',
-                'ZDT_MailCollector'      => 'ZendDeveloperTools\Collector\MailCollector',
-                'ZDT_MemoryCollector'    => 'ZendDeveloperTools\Collector\MemoryCollector',
-                'ZDT_TimeCollector'      => 'ZendDeveloperTools\Collector\TimeCollector',
+                'ZendDeveloperTools\Report'             => 'ZendDeveloperTools\Report',
+                'ZendDeveloperTools\EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
+                'ZendDeveloperTools\ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
+                'ZendDeveloperTools\RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
+                'ZendDeveloperTools\RequestCollector'   => 'ZendDeveloperTools\Collector\RequestCollector',
+                'ZendDeveloperTools\MailCollector'      => 'ZendDeveloperTools\Collector\MailCollector',
+                'ZendDeveloperTools\MemoryCollector'    => 'ZendDeveloperTools\Collector\MemoryCollector',
+                'ZendDeveloperTools\TimeCollector'      => 'ZendDeveloperTools\Collector\TimeCollector',
+                'ZendDeveloperTools\FlushListener'      => 'ZendDeveloperTools\Listener\FlushListener',
             ),
             'factories' => array(
-                'ZDT_Options' => function ($sm) {
-                    $config = $sm->get('Config');
-                    $config = isset($config['zdt']) ? $config['zdt'] : null;
+                'ZendDeveloperTools\Profiler' => function($sm) {
+                    $a = new Profiler($sm->get('ZendDeveloperTools\Report'));
+                    $a->setEvent($sm->get('ZendDeveloperTools\Event'));
+                    return $a;
+                },
+                'ZendDeveloperTools\Config' => function ($sm) {
+                    $config = $sm->get('Configuration');
+                    $config = isset($config['zenddevelopertools']) ? $config['zenddevelopertools'] : null;
 
-                    return new Options($config, $sm->get('ZDT_Report'));
+                    return new Options($config, $sm->get('ZendDeveloperTools\Report'));
                 },
-                'ZDT_Bootstrap' => function($sm) {
-                        $opt = $sm->get('ZDT_Options');
-                        $em  = $sm->get('Application')->getEventManager();
-                        $rpt = $sm->get('ZDT_Report');
-
-                        return new Bootstrap($sm, $em, $opt, $rpt);
-                },
-                'ZDT_Profiler' => function($sm) {
-                    return new Profiler($sm->get('ZDT_ProfilerEvent'), $sm->get('ZDT_Report'));
-                },
-                'ZDT_ProfilerEvent' => function($sm) {
+                'ZendDeveloperTools\Event' => function($sm) {
                     $event = new ProfilerEvent();
+                    $event->setReport($sm->get('ZendDeveloperTools\Report'));
                     $event->setApplication($sm->get('Application'));
 
                     return $event;
                 },
-                'ZDT_FlushListener' => function($sm) {
-                    return new Listener\FlushListener($sm);
-                },
-                'ZDT_StorageListener' => function($sm) {
+                'ZendDeveloperTools\StorageListener' => function($sm) {
                     return new Listener\StorageListener($sm);
                 },
-                'ZDT_ToolbarListener' => function($sm) {
-                    return new Listener\ToolbarListener($sm->get('ViewRenderer'), $sm->get('ZDT_Options'));
+                'ZendDeveloperTools\ToolbarListener' => function($sm) {
+                    return new Listener\ToolbarListener($sm->get('ViewRenderer'), $sm->get('ZendDeveloperTools\Config'));
                 },
-                'ZDT_ProfileListener' => function($sm) {
-                    return new Listener\ProfilerListener($sm, $sm->get('ZDT_Options'));
+                'ZendDeveloperTools\ProfilerListener' => function($sm) {
+                    return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));
                 },
-                'ZDT_TimeCollectorListener' => function($sm) {
-                    return new Listener\EventCollectorListener($sm->get('ZDT_TimeCollector'));
-                },
-                'ZDT_MemoryCollectorListener' => function($sm) {
-                    return new Listener\EventCollectorListener($sm->get('ZDT_MemoryCollector'));
-                },
-                'ZDT_DbCollector' => function($sm) {
+                'ZendDeveloperTools\DbCollector' => function($sm) {
                     $p  = false;
                     $db = new Collector\DbCollector();
 
@@ -144,8 +207,8 @@ class Module implements Config, Service, Autoloader, BootstrapListener, ViewHelp
                             $p = true;
                             $db->setProfiler($adapter->getProfiler());
                         }
-                    } elseif (!$p && $sm->has('ZDT_Zend_Db')) {
-                        $adapter = $sm->get('ZDT_Zend_Db');
+                    } elseif (!$p && $sm->has('Zend\Db\Adapter\ProfilingAdapter')) {
+                        $adapter = $sm->get('Zend\Db\Adapter\ProfilingAdapter');
                         if ($adapter instanceof ProfilingAdapter) {
                             $db->setProfiler($adapter->getProfiler());
                         }

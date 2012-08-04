@@ -20,6 +20,15 @@ use Zend\Mvc\ApplicationInterface;
 class ProfilerEvent extends Event
 {
     /**
+     * The EVENT_PROFILER_INIT occurs on bootstrap if the profiler is enabled.
+     *
+     * This event allows you to grab the report.
+     *
+     * @var string
+     */
+    const EVENT_PROFILER_INIT = 'profiler_init';
+
+    /**
      * The EVENT_COLLECTED occurs after all data was collected.
      *
      * This event allows you to grab the report.

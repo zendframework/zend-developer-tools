@@ -90,8 +90,8 @@ class ProfilerListener implements ListenerAggregateInterface
     {
         $strict     = $this->options->isStrict();
         $collectors = $this->options->getCollectors();
-        $report     = $this->serviceLocator->get('ZDT_Report');
-        $profiler   = $this->serviceLocator->get('ZDT_Profiler');
+        $report     = $this->serviceLocator->get('ZendDeveloperTools\Report');
+        $profiler   = $this->serviceLocator->get('ZendDeveloperTools\Profiler');
 
         $profiler->setErrorMode($strict);
 

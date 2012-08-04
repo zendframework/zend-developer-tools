@@ -2,7 +2,7 @@
     <div class="zdt-toolbar-preview">
         <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHAw8kLbbW/+QAAAHwSURBVDjLnVTPq1JBFD7nznivgbcoJQliMnGZK0HbRNhKgsCdC2lh7dy58A/I/gHBv+QhBO8tXnvJlbUIxHIEKXKjoGnjzLR518Z7Nd+732p+fnO+850zCAZms9lTIcQFALhwGgoR3yWTyfeIqL1FBADgnCNjTDcajY9CCAYA4hqESCldt9vtZ5zzBWPsH+EV6ZfFYvFYKUXgmkBE7bouSaVSEW+N7uJXKhGLxW4Zh8GyrACJ1hqUUtoMxoRJuLcxnU7/dDqd74SQPfmFQuFhuVy+I6U8HLU3GA6HPwHgvjeXUl4ul8uhbdtvtN7lXK5Wq1fxePzCJMlkMhggHI1GvwAgASGQTqcxILlerw8A4F4IvtsHJQ8Ggx+m5BsAs9lsMMIrcjRdjkQiYORvZ56U8rTLftcmk8mm1Wp9tSxLmI8Ui8VH1Wo1sd1u/+9yv9/fcxkRLwkh35RSb43zkhDyUghxbpLkcrmgZEqpv0NeAIC/uInW+pxSejShu51KpfIJAO6GMMU9KLnX64Wuw3w+H5S82WyUr/HBtu3AZSklCCE0It6sl8fj8e9ms/mZUrpnZ6lUStVqtQfHevlo2TDGet1ulwshXpufTTQaLc/n87OTpjiO47fuuRCBfxbX6/WZ4zjH28aI6ENYlznnT7zJX1iYwsqME23RAAAAAElFTkSuQmCCSUVORK5CYII=" alt="Memory Peak">
         <span class="zdt-toolbar-info">
-            <?php echo $this->ZDT_Memory($this->collector->getMemory()); ?>
+            <?php echo $this->ZendDeveloperToolsMemory($this->collector->getMemory()); ?>
         </span>
     </div>
     <div class="zdt-toolbar-detail<?php echo ($this->collector->hasEventMemory()) ? '' : ' zdt-toolbar-detail-redundant' ;?>">
@@ -12,7 +12,7 @@
                 echo '<span class="zdt-toolbar-info">';
                 printf('<span class="zdt-detail-label">%s</span>', $key);
                 echo '<span class="zdt-detail-value zdt-detail-value-right">';
-                echo $this->ZDT_Memory($value);
+                echo $this->ZendDeveloperToolsMemory($value);
                 echo '</span>';
                 echo '</span>';
             }
@@ -21,7 +21,7 @@
         <span class="zdt-toolbar-info zdt-toolbar-info-redundant<?php echo ($this->collector->hasEventMemory()) ? ' zdt-toolbar-topspacing' : '' ;?>">
             <span class="zdt-detail-label">Memory Peak</span>
             <span class="zdt-detail-value zdt-detail-value-right">
-                <?php echo $this->ZDT_Memory($this->collector->getMemory()); ?>
+                <?php echo $this->ZendDeveloperToolsMemory($this->collector->getMemory()); ?>
             </span>
         </span>
     </div>
