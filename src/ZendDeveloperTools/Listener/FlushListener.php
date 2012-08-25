@@ -13,6 +13,7 @@ namespace ZendDeveloperTools\Listener;
 
 use Zend\Mvc\MvcEvent;
 use ZendDeveloperTools\Profiler;
+use Zend\Stdlib\ResponseInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 
@@ -63,6 +64,14 @@ class FlushListener implements ListenerAggregateInterface
      */
     public function onFinish(MvcEvent $event)
     {
-        $event->getResponse()->send();
+        $response = $e->getResponse();
+        if (!$response instanceof ResponseInterface) {
+            return;
+        }
+
+
+        if(is_callable(array($response, 'send'))){
+            return $response->send();
+        }
     }
 }
