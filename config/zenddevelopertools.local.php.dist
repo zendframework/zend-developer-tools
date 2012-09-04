@@ -63,9 +63,10 @@ return array(
 
             /**
              * Contains a list with all collector the profiler should run.
-             * Zend Developer Tools ships with 'db' (Zend\Db), 'time', 'event', 'memory',
-             * 'exception', 'request' and 'mail' (Zend\Mail). If you wish to disable a default
-             * collector, simply set the value to null or false.
+             * Zend Developer Tools ships with 'db' (Zend\Db), 'time', 'event',
+             * 'php', 'memory', 'exception', 'request' and 'mail' (Zend\Mail). 
+             * If you wish to disable a defaultcollector, simply set the value
+             * to null or false.
              *
              * Example: 'collectors' => array('db' => null)
              *
