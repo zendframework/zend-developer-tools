@@ -24,18 +24,6 @@ return array(
             'strict' => false,
 
             /**
-             * Enables or disables verbose profiling. If enabled, the profiler
-             * will collect data before the MvcEvent::EVENT_FINISH event.
-             * This adds some overhead during the execution but adds more details
-             * to the report.
-             *
-             * See:     verbose_listeners
-             * Expects: boolean
-             * Default: false
-             */
-            'verbose' => true,
-
-            /**
              * If enabled, the profiler tries to flush the content before the it
              * starts collecting data. This option will be ignored if the Toolbar
              * is enabled.
@@ -84,20 +72,6 @@ return array(
              * Expects: array
              */
             'collectors' => array(),
-
-            /**
-             * Contains a list with all verbose listeners. The array key is used
-             * as event identifier and the array key inside that array is the
-             * service name. If you wish to disable a listerner, simply set the
-             * value to false.
-             *
-             * Default: 'application' => array(
-             *              'ZDT_TimeCollectorListener'   => true,
-             *              'ZDT_MemoryCollectorListener' => true,
-             *          )
-             * Expects: array
-             */
-            'verbose_listeners' => array(),
         ),
          /**
           * General Toolbar settings

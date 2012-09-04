@@ -31,10 +31,7 @@ class Options extends AbstractOptions
         'strict'      => true,
         'flush_early' => false,
         'cache_dir'   => 'data/cache',
-        'matcher'     => array(
-            'enabled' => false,
-            'rules'   => array(),
-        ),
+        'matcher'     => array(),
         'collectors' => array(
             'db'        => 'ZendDeveloperTools\DbCollector',
             'exception' => 'ZendDeveloperTools\ExceptionCollector',
