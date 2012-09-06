@@ -34,6 +34,7 @@ class Options extends AbstractOptions
         'matcher'     => array(),
         'collectors' => array(
             'db'        => 'ZendDeveloperTools\DbCollector',
+            'php'       => 'ZendDeveloperTools\PhpCollector',
             'exception' => 'ZendDeveloperTools\ExceptionCollector',
             'request'   => 'ZendDeveloperTools\RequestCollector',
             'memory'    => 'ZendDeveloperTools\MemoryCollector',
@@ -54,6 +55,7 @@ class Options extends AbstractOptions
             'time'    => 'zend-developer-tools/toolbar/time',
             'memory'  => 'zend-developer-tools/toolbar/memory',
             'db'      => 'zend-developer-tools/toolbar/db',
+            'php'     => 'zend-developer-tools/toolbar/php',
         ),
     );
 

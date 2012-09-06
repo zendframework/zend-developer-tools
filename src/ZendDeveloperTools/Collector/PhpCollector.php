@@ -20,7 +20,7 @@ use Zend\Mvc\MvcEvent;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class PhpCollector extends AbstractCollector implements CollectorInterface, AutoHideInterface
+class PhpCollector extends AbstractCollector implements AutoHideInterface
 {
     /**
      * @inheritdoc
@@ -51,10 +51,6 @@ class PhpCollector extends AbstractCollector implements CollectorInterface, Auto
      */
     public function canHide()
     {
-        if (!isset($this->profiler)) {
-            return false;
-        }
-
         return true;
     }
 }
