@@ -11,24 +11,54 @@
 
 namespace ZendDeveloperTools\Collector;
 
+use Serializable;
+use ZendDeveloperTools\Collector\Feature\PriorityProviderInterface;
+
 /**
- * Serializable Collector base class.
+ * Serializable collector base class.
  *
  * @category   Zend
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-abstract class AbstractCollector implements CollectorInterface, \Serializable
+abstract class AbstractCollector implements
+    Serializable,
+    CollectorInterface,
+    PriorityProviderInterface
 {
     /**
-     * Collected Data
-     *
      * @var array
      */
     protected $data;
 
     /**
-     * @see \Serializable
+     * @var string
+     */
+    protected $name = null;
+
+    /**
+     * @var integer
+     */
+    protected $priority = 0;
+
+    /**
+     * @inheritdoc
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @see Serializable
      */
     public function serialize()
     {
@@ -36,7 +66,8 @@ abstract class AbstractCollector implements CollectorInterface, \Serializable
     }
 
     /**
-     * @see \Serializable
+     * @param string $data
+     * @see   Serializable
      */
     public function unserialize($data)
     {

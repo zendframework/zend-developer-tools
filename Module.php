@@ -11,22 +11,19 @@
 namespace ZendDeveloperTools;
 
 use Zend\EventManager\EventInterface;
-use Zend\ModuleManager\ModuleEvent;
-use Zend\ModuleManager\ModuleManagerInterface;
-use Zend\ModuleManager\Feature\InitProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
-use BjyProfiler\Db\Adapter\ProfilingAdapter;
+use ZendDeveloperTools\Profiler\ProfilerInterface;
+use ZendDeveloperTools\Exception\RuntimeException;
 
 /**
- * @category   Zend
- * @package    ZendDeveloperTools
+ * @category Zend
+ * @package  ZendDeveloperTools
  */
 class Module implements
-    InitProviderInterface,
     ConfigProviderInterface,
     ServiceProviderInterface,
     AutoloaderProviderInterface,
@@ -34,83 +31,15 @@ class Module implements
     ViewHelperProviderInterface
 {
     /**
-     * Initialize workflow
-     *
-     * @param  ModuleManagerInterface $manager
-     */
-    public function init(ModuleManagerInterface $manager)
-    {
-        if (PHP_SAPI === 'cli') {
-            return;
-        }
-
-        $eventManager = $manager->getEventManager();
-        $eventManager->attach(
-            ModuleEvent::EVENT_LOAD_MODULES_POST,
-            array($this, 'onLoadModulesPost'),
-            -1100
-        );
-    }
-
-    /**
-     * loadModulesPost callback
-     *
-     * @param  $event
-     */
-    public function onLoadModulesPost($event)
-    {
-        $eventManager  = $event->getTarget()->getEventManager();
-        $configuration = $event->getConfigListener()->getMergedConfig(false);
-
-        if (
-            isset($configuration['zenddevelopertools']['profiler']['enabled'])
-            && $configuration['zenddevelopertools']['profiler']['enabled'] === true
-        ) {
-            $eventManager->trigger(ProfilerEvent::EVENT_PROFILER_INIT, $event);
-        }
-    }
-
-    /**
-     * Zend\Mvc\MvcEvent::EVENT_BOOTSTRAP event callback
-     *
-     * @param Event $event
+     * @inheritdoc
      */
     public function onBootstrap(EventInterface $event)
     {
-        if (PHP_SAPI === 'cli') {
-            return;
-        }
+        $application    = $event->getApplication();
+        $serviceManager = $application->getServiceManager();
+        $profiler       = $serviceManager->get('ZendDeveloperTools\Profiler\Profiler');
 
-        $app = $event->getApplication();
-        $em  = $app->getEventManager();
-        $sem = $em->getSharedManager();
-        $sm  = $app->getServiceManager();
-
-        $options = $sm->get('ZendDeveloperTools\Config');
-
-        if (!$options->isEnabled()) {
-            return;
-        }
-
-        $report = $sm->get('ZendDeveloperTools\Report');
-
-        if ($options->canFlushEarly()) {
-            $em->attachAggregate($sm->get('ZendDeveloperTools\FlushListener'));
-        }
-
-        if ($options->isStrict() && $report->hasErrors()) {
-            throw new Exception\InvalidOptionException(implode(' ', $report->getErrors()));
-        }
-
-        $em->attachAggregate($sm->get('ZendDeveloperTools\ProfilerListener'));
-
-        if ($options->isToolbarEnabled()) {
-            $sem->attach('profiler', $sm->get('ZendDeveloperTools\ToolbarListener'), null);
-        }
-
-        if ($options->isStrict() && $report->hasErrors()) {
-            throw new Exception\ProfilerException(implode(' ', $report->getErrors()));
-        }
+        $profiler->bootstrap($event);
     }
 
     /**
@@ -140,13 +69,7 @@ class Module implements
 
    public function getViewHelperConfig()
     {
-        return array(
-            'invokables' => array(
-                'ZendDeveloperToolsTime'        => 'ZendDeveloperTools\View\Helper\Time',
-                'ZendDeveloperToolsMemory'      => 'ZendDeveloperTools\View\Helper\Memory',
-                'ZendDeveloperToolsDetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
-            ),
-        );
+        return array();
     }
 
     /**
@@ -156,66 +79,11 @@ class Module implements
     {
         return array(
             'aliases' => array(
-                'ZendDeveloperTools\ReportInterface' => 'ZendDeveloperTools\Report',
             ),
             'invokables' => array(
-                'ZendDeveloperTools\Report'             => 'ZendDeveloperTools\Report',
-                'ZendDeveloperTools\EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
-                'ZendDeveloperTools\ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
-                'ZendDeveloperTools\RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
-                'ZendDeveloperTools\RequestCollector'   => 'ZendDeveloperTools\Collector\RequestCollector',
-                'ZendDeveloperTools\MailCollector'      => 'ZendDeveloperTools\Collector\MailCollector',
-                'ZendDeveloperTools\MemoryCollector'    => 'ZendDeveloperTools\Collector\MemoryCollector',
-                'ZendDeveloperTools\TimeCollector'      => 'ZendDeveloperTools\Collector\TimeCollector',
-                'ZendDeveloperTools\FlushListener'      => 'ZendDeveloperTools\Listener\FlushListener',
             ),
             'factories' => array(
-                'ZendDeveloperTools\Profiler' => function($sm) {
-                    $a = new Profiler($sm->get('ZendDeveloperTools\Report'));
-                    $a->setEvent($sm->get('ZendDeveloperTools\Event'));
-                    return $a;
-                },
-                'ZendDeveloperTools\Config' => function ($sm) {
-                    $config = $sm->get('Configuration');
-                    $config = isset($config['zenddevelopertools']) ? $config['zenddevelopertools'] : null;
-
-                    return new Options($config, $sm->get('ZendDeveloperTools\Report'));
-                },
-                'ZendDeveloperTools\Event' => function($sm) {
-                    $event = new ProfilerEvent();
-                    $event->setReport($sm->get('ZendDeveloperTools\Report'));
-                    $event->setApplication($sm->get('Application'));
-
-                    return $event;
-                },
-                'ZendDeveloperTools\StorageListener' => function($sm) {
-                    return new Listener\StorageListener($sm);
-                },
-                'ZendDeveloperTools\ToolbarListener' => function($sm) {
-                    return new Listener\ToolbarListener($sm->get('ViewRenderer'), $sm->get('ZendDeveloperTools\Config'));
-                },
-                'ZendDeveloperTools\ProfilerListener' => function($sm) {
-                    return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));
-                },
-                'ZendDeveloperTools\DbCollector' => function($sm) {
-                    $p  = false;
-                    $db = new Collector\DbCollector();
-
-                    if ($sm->has('Zend\Db\Adapter\Adapter')) {
-                        $adapter = $sm->get('Zend\Db\Adapter\Adapter');
-                        if ($adapter instanceof ProfilingAdapter) {
-                            $p = true;
-                            $db->setProfiler($adapter->getProfiler());
-                        }
-                    } elseif (!$p && $sm->has('Zend\Db\Adapter\ProfilingAdapter')) {
-                        $adapter = $sm->get('Zend\Db\Adapter\ProfilingAdapter');
-                        if ($adapter instanceof ProfilingAdapter) {
-                            $db->setProfiler($adapter->getProfiler());
-                        }
-                    }
-
-                    return $db;
-                },
+                'ZendDeveloperTools\Profiler\Profiler' => 'ZendDeveloperTools\Service\ProfilerFactory',
             ),
         );
     }

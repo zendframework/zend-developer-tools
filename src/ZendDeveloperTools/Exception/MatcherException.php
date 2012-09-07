@@ -6,20 +6,17 @@
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Exception
  */
 
-namespace ZendDeveloperTools\Collector;
+namespace ZendDeveloperTools\Exception;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Exception
  */
-interface CollectorInterface
+class MatcherException extends RuntimeException
 {
-    /**
-     * @return string
-     */
-    public function getName();
+
 }

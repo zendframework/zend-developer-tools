@@ -20,7 +20,7 @@ use ZendDeveloperTools\Profiler\ProfilerEvent;
  * @package    ZendDeveloperTools
  * @subpackage Listener
  */
-class StorageListener implements ListenerAggregateInterface
+class WebListener implements ListenerAggregateInterface
 {
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -32,7 +32,7 @@ class StorageListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_FINISH, array($this, 'onFinish'), 100);
+        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_FINISH, array($this, 'onFinish'));
     }
 
     /**
@@ -48,12 +48,29 @@ class StorageListener implements ListenerAggregateInterface
     }
 
     /**
-     * ProfilerEvent::EVENT_FINISH callback
+     * Will, based on the options, inject the toolbar or cosole related
+     * features such as FirePHP.
      *
-     * @param  ProfilerEvent $event
+     * @param ProfilerEvent $event
      */
     public function onFinish(ProfilerEvent $event)
     {
+        if (!$event->isAccessible()) {
+            return;
+        }
 
+        $application = $event->getApplication();
+        $request     = $application->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+            return;
+        }
+
+        /**
+         * @todo Grab the ViewModel from the Toolbar Controller instead of
+         *       creating it inside the listener. The Toolbar Controller can
+         *       also be used to reload the toolbar for ajax-based requests
+         *       or applications.
+         */
     }
 }

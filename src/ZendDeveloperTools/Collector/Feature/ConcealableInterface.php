@@ -6,20 +6,22 @@
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Collector_Feature
  */
 
-namespace ZendDeveloperTools\Collector;
+namespace ZendDeveloperTools\Collector\Feature;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Collector_Feature
  */
-interface CollectorInterface
+interface ConcealableInterface
 {
     /**
-     * @return string
+     * Determines wether or not the collector can be hidden, if it is empty.
+     *
+     * @return boolean
      */
-    public function getName();
+    public function isConcealable();
 }

@@ -16,7 +16,7 @@ namespace ZendDeveloperTools\Exception;
  * @package    ZendDeveloperTools
  * @subpackage Exception
  */
-class CollectorException extends \Exception implements ExceptionInterface
+class CollectorException extends RuntimeException
 {
 
 }

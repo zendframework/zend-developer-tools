@@ -6,20 +6,25 @@
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Collector_Feature
  */
 
-namespace ZendDeveloperTools\Collector;
+namespace ZendDeveloperTools\Collector\Feature;
+
+use Zend\Mvc\MvcEvent;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Collector_Feature
  */
-interface CollectorInterface
+interface InjectableMvcEventInterface
 {
     /**
-     * @return string
+     * Injects the MvcEvent in the collector.
+     *
+     * @param  MvcEvent $event
+     * @return self
      */
-    public function getName();
+    public function setMvcEvent(MvcEvent $event);
 }
