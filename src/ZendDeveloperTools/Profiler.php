@@ -63,7 +63,7 @@ class Profiler implements EventManagerAwareInterface
      *
      * @var int
      */
-    const PRIORITY_TOOBAR = 500;
+    const PRIORITY_TOOLBAR = 500;
 
     /**
      * @var boolean
