@@ -6,25 +6,17 @@
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Exception
  */
 
-namespace ZendDeveloperTools\Collector;
+namespace ZendDeveloperTools\Exception;
 
 /**
- * Event Data Collector Interface.
- *
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Collector
+ * @subpackage Exception
  */
-interface EventCollectorInterface
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
-    /**
-     * Saves the current time in microseconds for an specific event.
-     *
-     * @param string                          $id
-     * @param \Zend\EventManager\Event|string $event
-     */
-    public function collectEvent($id, $event);
+
 }

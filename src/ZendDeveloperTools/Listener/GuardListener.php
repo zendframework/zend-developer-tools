@@ -20,7 +20,7 @@ use ZendDeveloperTools\Profiler\ProfilerEvent;
  * @package    ZendDeveloperTools
  * @subpackage Listener
  */
-class StorageListener implements ListenerAggregateInterface
+class GuardListener implements ListenerAggregateInterface
 {
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -32,7 +32,7 @@ class StorageListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_FINISH, array($this, 'onFinish'), 100);
+        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_COLLECT, array($this, 'onCollect'), 10000);
     }
 
     /**
@@ -48,12 +48,46 @@ class StorageListener implements ListenerAggregateInterface
     }
 
     /**
-     * ProfilerEvent::EVENT_FINISH callback
+     * ProfilerEvent::EVENT_COLLECT callback
      *
      * @param  ProfilerEvent $event
+     * @return boolean|null
      */
-    public function onFinish(ProfilerEvent $event)
+    public function onCollect(ProfilerEvent $event)
     {
+        $profiler    = $event->getProfiler();
+        $options     = $profiler->getOptions();
+        $application = $event->getApplication();
+        $response    = $application->getResponse();
 
+        if ($options->hasResponseHook()) {
+            $profiler = $event->getProfiler();
+            $events   = $profiler->getEventManager();
+
+            $events->trigger(ProfilerEvent::EVENT_ACCESS, $event);
+
+            if (!$event->isAccessible()) {
+                return $this->flush($response);
+            }
+        } else {
+            return $this->flush($response);
+        }
+    }
+
+    /**
+     * Tries to flush the repsonse.
+     *
+     * @param  mixed $response
+     * @return boolean
+     */
+    protected function flush($response)
+    {
+        if (!$response instanceof ResponseInterface) {
+            return false;
+        }
+
+        if (is_callable(array($response, 'send'))) {
+            return $response->send();
+        }
     }
 }

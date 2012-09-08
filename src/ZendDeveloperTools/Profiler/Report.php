@@ -2,17 +2,22 @@
 /**
  * Zend Developer Tools for Zend Framework (http://framework.zend.com/)
  *
- * @link      http://github.com/zendframework/ZendDeveloperTools for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   ZendDeveloperTools
+ * @link       http://github.com/zendframework/ZendDeveloperTools for the canonical source repository
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd New BSD License
+ * @package    ZendDeveloperTools
+ * @subpackage Profiler
  */
 
-namespace ZendDeveloperTools;
+namespace ZendDeveloperTools\Profiler;
+
+use DateTime;
+use ZendDeveloperTools\Profiler\Collector\CollectorInterface;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
+ * @subpackage Profiler
  */
 class Report implements ReportInterface
 {
@@ -27,19 +32,14 @@ class Report implements ReportInterface
     protected $uri;
 
     /**
-     * @var integer
+     * @var DateTime
      */
-    protected $time;
+    protected $dateTime;
 
     /**
      * @var string
      */
     protected $token;
-
-    /**
-     * @var array
-     */
-    protected $errors;
 
     /**
      * @var string
@@ -90,9 +90,9 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
-    public function setTime($time)
+    public function setDateTime(DateTime $dateTime)
     {
-        $this->time = $time;
+        $this->dateTime = $dateTime;
 
         return $this;
     }
@@ -100,7 +100,7 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
-    public function getTime()
+    public function getDateTime()
     {
         return $this->time;
     }
@@ -126,36 +126,6 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
-    public function addError($error)
-    {
-        if (!isset($this->errors)) {
-            $this->errors = array();
-        }
-
-        $this->errors[] = $error;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function hasErrors()
-    {
-        return !empty($this->errors);;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function setMethod($method)
     {
         $this->method = $method;
@@ -174,26 +144,6 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
-    public function hasCollector($name)
-    {
-        return isset($this->collectors[$name]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCollector($name)
-    {
-        if (isset($this->collectors[$name])) {
-            return $this->collectors[$name];
-        }
-
-        return null;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getCollectors()
     {
         return $this->collectors;
@@ -202,27 +152,7 @@ class Report implements ReportInterface
     /**
      * @inheritdoc
      */
-    public function getCollectorNames()
-    {
-        return array_keys($this->collectors);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setCollectors(array $collectors)
-    {
-        foreach ($collectors as $collector) {
-            $this->addCollector($collector);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function addCollector(Collector\CollectorInterface $collector)
+    public function addCollector(CollectorInterface $collector)
     {
         $this->collectors[$collector->getName()] = $collector;
     }
@@ -232,6 +162,6 @@ class Report implements ReportInterface
      */
     public function __sleep()
     {
-        return array('ip', 'uri', 'time', 'token', 'errors', 'method', 'collectors');
+        return array('ip', 'uri', 'dateTime', 'token', 'method', 'collectors');
     }
 }

@@ -11,51 +11,28 @@
 
 namespace ZendDeveloperTools\Listener;
 
-use ZendDeveloperTools\Profiler;
-use ZendDeveloperTools\ProfilerEvent;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use ZendDeveloperTools\Profiler\ProfilerEvent;
 
 /**
- * FirePHP Listener
- *
  * @category   Zend
  * @package    ZendDeveloperTools
  * @subpackage Listener
  */
-class FirePhpListener implements ListenerAggregateInterface
+class WebListener implements ListenerAggregateInterface
 {
     /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
-    /**
-     * @var array
+     * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
-
-    /**
-     * Constructor.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
 
     /**
      * @inheritdoc
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(
-            ProfilerEvent::EVENT_COLLECTED,
-            array($this, 'onCollected'),
-            Profiler::PRIORITY_FIREPHP
-        );
+        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_FINISH, array($this, 'onFinish'));
     }
 
     /**
@@ -71,12 +48,29 @@ class FirePhpListener implements ListenerAggregateInterface
     }
 
     /**
-     * ProfilerEvent::EVENT_COLLECTED event callback.
+     * Will, based on the options, inject the toolbar or cosole related
+     * features such as FirePHP.
      *
      * @param ProfilerEvent $event
      */
-    public function onCollected(ProfilerEvent $event)
+    public function onFinish(ProfilerEvent $event)
     {
+        if (!$event->isAccessible()) {
+            return;
+        }
 
+        $application = $event->getApplication();
+        $request     = $application->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+            return;
+        }
+
+        /**
+         * @todo Grab the ViewModel from the Toolbar Controller instead of
+         *       creating it inside the listener. The Toolbar Controller can
+         *       also be used to reload the toolbar for ajax-based requests
+         *       or applications.
+         */
     }
 }

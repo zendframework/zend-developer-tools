@@ -6,17 +6,24 @@
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  * @package    ZendDeveloperTools
- * @subpackage Exception
+ * @subpackage Collector_Feature
  */
 
-namespace ZendDeveloperTools\Exception;
+namespace ZendDeveloperTools\Collector\Feature;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Exception
+ * @subpackage Collector_Feature
  */
-class ProfilerException extends \Exception implements ExceptionInterface
+interface ConcealableInterface
 {
-
+    /**
+     * Determines wether or not the collector can be hidden, if it is empty.
+     *
+     * Note: This interface is only recognized by the toolbar.
+     *
+     * @return boolean
+     */
+    public function isConcealable();
 }

@@ -6,23 +6,22 @@
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector_Feature
  */
 
-namespace ZendDeveloperTools\Controller;
-
-use Zend\View\Model\ViewModel;
-use Zend\Mvc\Controller\AbstractActionController;
+namespace ZendDeveloperTools\Collector\Feature;
 
 /**
  * @category   Zend
  * @package    ZendDeveloperTools
- * @subpackage Controller
+ * @subpackage Collector_Feature
  */
-class IndexController extends AbstractActionController
+interface CollectListenerInterface
 {
-    public function indexAction()
-    {
-        return new ViewModel();
-    }
+    /**
+     * Emulates a subscription on the collect(ProfilerEvent) event.
+     *
+     * @return self
+     */
+    public function onCollect();
 }
