@@ -21,6 +21,8 @@ interface ConcealableInterface
     /**
      * Determines wether or not the collector can be hidden, if it is empty.
      *
+     * Note: This interface is only recognized by the toolbar.
+     *
      * @return boolean
      */
     public function isConcealable();

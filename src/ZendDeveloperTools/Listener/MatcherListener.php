@@ -15,6 +15,7 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use ZendDeveloperTools\Profiler\ProfilerEvent;
 use ZendDeveloperTools\Matcher\MatcherInterface;
+use ZendDeveloperTools\Matcher\LateMatchingInterface;
 use ZendDeveloperTools\Exception\MatcherException;
 
 /**
@@ -25,16 +26,40 @@ use ZendDeveloperTools\Exception\MatcherException;
 class MatcherListener implements ListenerAggregateInterface
 {
     /**
+     * @var boolean
+     */
+    protected $matchEarly;
+
+    /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
+
+    /**
+     * Constructor.
+     *
+     * Sets the matching mode, which determines to which event the matcher
+     * subscribes.
+     *
+     * @param boolean $matchEarly
+     */
+    public function __construct($matchEarly = true)
+    {
+        $this->matchEarly = (boolean) $matchEarly;
+
+    }
 
     /**
      * @inheritdoc
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(ProfilerEvent::EVENT_BOOTSTRAP, array($this, 'onBootstrap'), 10000);
+        if ($this->matchEarly) {
+            $this->listeners[] = $events->attach(ProfilerEvent::EVENT_BOOTSTRAP, array($this, 'match'), 10000);
+        } else {
+            $this->listeners[] = $events->attach(ProfilerEvent::EVENT_COLLECT, array($this, 'match'), 9500);
+        }
+
     }
 
     /**
@@ -50,22 +75,29 @@ class MatcherListener implements ListenerAggregateInterface
     }
 
     /**
-     * ProfilerEvent::EVENT_BOOTSTRAP callback
+     * Starts the matching process
+     *
+     * Iterates over the defined matchers and tries to match the defined
+     * pattern. If a matcher does not match, the profiler will be disabled
+     * and further execution of the event and the iteration will be
+     * interrupted.
      *
      * @param  ProfilerEvent $event
      * @return boolean|null
      */
-    public function onBootstrap(ProfilerEvent $event)
+    public function match(ProfilerEvent $event)
     {
-        $profiler = $event->getProfiler();
-        $options  = $profiler->getOptions();
-        $matcher  = $options->getMatcher();
-        $matchers = $this->createMatchStack($options->getMatchers(), $profiler->getServiceManager());
+        $profiler    = $event->getProfiler();
+        $application = $event->getApplication();
+        $mvcEvent    = $application->getEvent();
+        $options     = $profiler->getOptions();
+        $matcher     = $options->getMatcher();
+        $matchers    = $this->createMatchStack($options->getMatchers(), $profiler->getServiceManager());
 
-        foreach ($matcher as $matcherName => $match) {
+        foreach ($matcher as $matcherName => $pattern) {
             if (isset($matchers[$matcherName])) {
                 $matcherObj = $matchers[$matcherName];
-                $matches    = $matcherObject->match($match);
+                $matches    = $matcherObject->match($pattern, $mvcEvent);
 
                 if ($matches === false) {
                     $profiler->disable();
@@ -102,12 +134,21 @@ class MatcherListener implements ListenerAggregateInterface
                 }
 
                 $matcherName = $matcher->getName();
-                if (is_string($matcherName)) {
+                if (!is_string($matcherName)) {
                     throw new MatcherException(sprintf(
                         '%s::getName must return a string, %s given.',
-                        get_class($collector),
+                        get_class($matcher),
                         gettype($priority)
                     ));
+                }
+
+                if ($this->matchEarly) {
+                    if ($matcher instanceof LateMatchingInterface) {
+                        throw new MatcherException(sprintf(
+                            '%s does not support early matching.',
+                            get_class($matcher)
+                        ));
+                    }
                 }
 
                 $stack[$matcherName] = $matcher;

@@ -19,6 +19,8 @@ namespace ZendDeveloperTools\Collector;
 interface CollectorInterface
 {
     /**
+     * The collector name
+     *
      * @return string
      */
     public function getName();

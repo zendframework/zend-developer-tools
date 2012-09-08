@@ -19,6 +19,8 @@ namespace ZendDeveloperTools\Collector\Feature;
 interface CollectListenerInterface
 {
     /**
+     * Emulates a subscription on the collect(ProfilerEvent) event.
+     *
      * @return self
      */
     public function onCollect();

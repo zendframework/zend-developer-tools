@@ -16,10 +16,23 @@ namespace ZendDeveloperTools\Collector\Feature;
  * @package    ZendDeveloperTools
  * @subpackage Collector_Feature
  */
-interface ToolbarTemplateProviderInterface
+interface TemplateProviderInterface
 {
     /**
-     * @return string
+     * Returns an array containing the template names used for any rendering.
+     *
+     * Supported template types:
+     *   - toolbar
+     *   - browser
+     *
+     * Example:
+     * <code>
+     * array(
+     *     'toolbar' => 'zend-developer-tools/toolbar/example',
+     * )
+     * </code>
+     *
+     * @return array
      */
-    public function getToolbarTemplate();
+    public function getTemplate();
 }

@@ -115,7 +115,7 @@ class CollectorListener implements ListenerAggregateInterface
                     ));
                 }
 
-                if (is_string($collector->getName())) {
+                if (!is_string($collector->getName())) {
                     throw new CollectorException(sprintf(
                         '%s::getName must return a string, %s given.',
                         get_class($collector),

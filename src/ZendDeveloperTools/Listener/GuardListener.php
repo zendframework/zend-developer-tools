@@ -60,7 +60,7 @@ class GuardListener implements ListenerAggregateInterface
         $application = $event->getApplication();
         $response    = $application->getResponse();
 
-        if ($options->isBrowserOutputEnabled()) {
+        if ($options->hasResponseHook()) {
             $profiler = $event->getProfiler();
             $events   = $profiler->getEventManager();
 

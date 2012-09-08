@@ -34,6 +34,8 @@ interface PriorityProviderInterface
     const PRIORITY_HIGH = 75;
 
     /**
+     * Detimines with which priority the collector should run.
+     *
      * @return integer
      */
     public function getPriority();

@@ -10,28 +10,14 @@
 
 namespace ZendDeveloperTools\Matcher;
 
-use Zend\Mvc\MvcEvent;
-
 /**
+ * This interface allows a matcher to specify that it must run in late mode.
+ *
  * @category   Zend
  * @package    ZendDeveloperTools
  * @subpackage Matcher
  */
-interface MatcherInterface
+interface LateMatchingInterface
 {
-    /**
-     * The matcher name.
-     *
-     * @return string
-     */
-    public function getName();
 
-    /**
-     * Tries to match against the pattern.
-     *
-     * @param  mixed    $pattern
-     * @param  MvcEvent $event
-     * @return boolean
-     */
-    public function match($pattern, MvcEvent $event);
 }

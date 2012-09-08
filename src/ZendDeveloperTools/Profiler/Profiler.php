@@ -200,6 +200,10 @@ class Profiler implements ProfilerInterface, EventManagerAwareInterface, Service
 
         $eventManager->trigger(ProfilerEvent::EVENT_COLLECT, $event);
 
+        if ($this->disabled) {
+            return $this;
+        }
+
         $eventManager->trigger(ProfilerEvent::EVENT_FINISH, $event);
 
         $this->profiled = true;
@@ -222,11 +226,11 @@ class Profiler implements ProfilerInterface, EventManagerAwareInterface, Service
 
         $appEvents->attach(MvcEvent::EVENT_FINISH, array($this, 'run'), -9900);
 
-        if ($options->hasMatch()) {
-            $events->attachAggregate(new Listener\MatcherListener());
+        if ($options->hasMatcher()) {
+            $events->attachAggregate(new Listener\MatcherListener($options->getMatchingMode()));
         }
 
-        if ($options->isBrowserOutputEnabled()) {
+        if ($options->hasResponseHook()) {
             $events->attachAggregate(new Listener\WebListener());
         }
 
