@@ -106,7 +106,7 @@ class Options extends AbstractOptions
     protected function setMatcher($options)
     {
         if (!is_array($options)) {
-            $report->addError(sprintf(
+            $this->report->addError(sprintf(
                 '[\'zenddevelopertools\'][\'profiler\'][\'matcher\'] must be an array, %s given.',
                 gettype($options)
             ));
@@ -125,7 +125,7 @@ class Options extends AbstractOptions
     protected function setCollectors($options)
     {
         if (!is_array($options)) {
-            $report->addError(sprintf(
+            $this->report->addError(sprintf(
                 '[\'zenddevelopertools\'][\'profiler\'][\'collectors\'] must be an array, %s given.',
                 gettype($options)
             ));
@@ -218,7 +218,7 @@ class Options extends AbstractOptions
         }
         if (isset($options['position'])) {
             if ($options['position'] !== 'bottom' && $options['position'] !== 'top') {
-                $report->addError(sprintf(
+                $this->report->addError(sprintf(
                     '[\'zenddevelopertools\'][\'toolbar\'][\'position\'] must be "top" or "bottom", %s given.',
                     $options['position']
                 ));
@@ -236,7 +236,7 @@ class Options extends AbstractOptions
                     }
                 }
             } else {
-                $report->addError(sprintf(
+                $this->report->addError(sprintf(
                     '[\'zenddevelopertools\'][\'toolbar\'][\'entries\'] must be an array, %s given.',
                     gettype($options['entries'])
                 ));

@@ -64,11 +64,10 @@ class FlushListener implements ListenerAggregateInterface
      */
     public function onFinish(MvcEvent $event)
     {
-        $response = $e->getResponse();
+        $response = $event->getResponse();
         if (!$response instanceof ResponseInterface) {
             return;
         }
-
 
         if(is_callable(array($response, 'send'))){
             return $response->send();
