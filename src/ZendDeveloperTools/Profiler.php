@@ -187,7 +187,7 @@ class Profiler implements EventManagerAwareInterface
                 throw new Exception\CollectorException($error);
             }
 
-            $report->addError($error);
+            $this->report->addError($error);
         }
 
         return $this;
@@ -224,7 +224,7 @@ class Profiler implements EventManagerAwareInterface
             throw new Exception\ProfilerException('There is nothing to collect.');
         }
 
-        $report->addError('There is nothing to collect.');
+        $this->report->addError('There is nothing to collect.');
 
         return $this;
     }
