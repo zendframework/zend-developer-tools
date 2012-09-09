@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "dev-master"
+        "zendframework/zendframework": "2.*"
     },
     "suggest": {
         "bjyoungblood/bjy-profiler": "Version: dev-master, allows the usage of the (Zend) Db collector."
