@@ -85,7 +85,7 @@ class ToolbarListener implements ListenerAggregateInterface
         $this->listeners[] = $events->attach(
             ProfilerEvent::EVENT_COLLECTED,
             array($this, 'onCollected'),
-            Profiler::PRIORITY_TOOBAR
+            Profiler::PRIORITY_TOOLBAR
         );
     }
 
