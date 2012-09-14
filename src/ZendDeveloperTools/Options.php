@@ -214,7 +214,7 @@ class Options extends AbstractOptions
         }
 
         if (isset($options['version_check'])) {
-            $this->profiler['version_check'] = (boolean) $options['version_check'];
+            $this->toolbar['version_check'] = (boolean) $options['version_check'];
         }
         if (isset($options['position'])) {
             if ($options['position'] !== 'bottom' && $options['position'] !== 'top') {
