@@ -20,7 +20,7 @@ use Zend\Mvc\MvcEvent;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class PhpCollector extends AbstractCollector implements AutoHideInterface
+class PhpCollector extends AbstractCollector
 {
     /**
      * @inheritdoc
@@ -41,16 +41,40 @@ class PhpCollector extends AbstractCollector implements AutoHideInterface
     /**
      * @inheritdoc
      */
+    /**
+     * @inheritdoc
+     */
     public function collect(MvcEvent $mvcEvent)
     {
         return;
     }
 
     /**
-     * @inheritdoc
+     * Get all PHP extensions loaded
+     *
+     * @return array
      */
-    public function canHide()
+    public function getExtensions()
     {
-        return true;
+        //Look at $data, already loaded?
+        if (!is_array($this->data['extensions'])) {
+            $extensions = get_loaded_extensions();
+            foreach ($extensions as $extension) {
+                //Replace 'true' with some function to get details about the
+                //extension. Format output in php toolbar template.
+                $this->data['extensions'][$extension] = true;
+            }
+        }
+        return $this->data['extensions'];
+    }
+
+    /**
+     * Return the version of PHP running
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return PHP_VERSION;
     }
 }
