@@ -110,9 +110,14 @@ class ToolbarListener implements ListenerAggregateInterface
     {
         $application = $event->getApplication();
         $request     = $application->getRequest();
-        $response    = $application->getResponse();
 
         if ($request->isXmlHttpRequest()) {
+            return;
+        }
+
+        $response = $application->getResponse();
+        $headers = $response->getHeaders();
+        if ($headers->has('Content-Type') && false !== strpos($headers->get('Content-Type'), 'html')) {
             return;
         }
 
