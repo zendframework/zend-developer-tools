@@ -62,8 +62,7 @@ class Module implements
         $eventManager  = $event->getTarget()->getEventManager();
         $configuration = $event->getConfigListener()->getMergedConfig(false);
 
-        if (
-            isset($configuration['zenddevelopertools']['profiler']['enabled'])
+        if (isset($configuration['zenddevelopertools']['profiler']['enabled'])
             && $configuration['zenddevelopertools']['profiler']['enabled'] === true
         ) {
             $eventManager->trigger(ProfilerEvent::EVENT_PROFILER_INIT, $event);
@@ -138,7 +137,7 @@ class Module implements
         return include __DIR__ . '/config/module.config.php';
     }
 
-   public function getViewHelperConfig()
+    public function getViewHelperConfig()
     {
         return array(
             'invokables' => array(
@@ -170,7 +169,7 @@ class Module implements
                 'ZendDeveloperTools\FlushListener'      => 'ZendDeveloperTools\Listener\FlushListener',
             ),
             'factories' => array(
-                'ZendDeveloperTools\Profiler' => function($sm) {
+                'ZendDeveloperTools\Profiler' => function ($sm) {
                     $a = new Profiler($sm->get('ZendDeveloperTools\Report'));
                     $a->setEvent($sm->get('ZendDeveloperTools\Event'));
                     return $a;
@@ -181,23 +180,23 @@ class Module implements
 
                     return new Options($config, $sm->get('ZendDeveloperTools\Report'));
                 },
-                'ZendDeveloperTools\Event' => function($sm) {
+                'ZendDeveloperTools\Event' => function ($sm) {
                     $event = new ProfilerEvent();
                     $event->setReport($sm->get('ZendDeveloperTools\Report'));
                     $event->setApplication($sm->get('Application'));
 
                     return $event;
                 },
-                'ZendDeveloperTools\StorageListener' => function($sm) {
+                'ZendDeveloperTools\StorageListener' => function ($sm) {
                     return new Listener\StorageListener($sm);
                 },
-                'ZendDeveloperTools\ToolbarListener' => function($sm) {
+                'ZendDeveloperTools\ToolbarListener' => function ($sm) {
                     return new Listener\ToolbarListener($sm->get('ViewRenderer'), $sm->get('ZendDeveloperTools\Config'));
                 },
-                'ZendDeveloperTools\ProfilerListener' => function($sm) {
+                'ZendDeveloperTools\ProfilerListener' => function ($sm) {
                     return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));
                 },
-                'ZendDeveloperTools\DbCollector' => function($sm) {
+                'ZendDeveloperTools\DbCollector' => function ($sm) {
                     $p  = false;
                     $db = new Collector\DbCollector();
 

@@ -164,10 +164,11 @@ class ToolbarListener implements ListenerAggregateInterface
         list($isLatest, $latest) = $this->getLatestVersion(Version::VERSION);
 
         $zfEntry = new ViewModel(array(
-            'version'   => Version::VERSION,
-            'is_latest' => $isLatest,
-            'latest'    => $latest,
-            'has_intl'  => extension_loaded('intl'),
+            'zf_version'  => Version::VERSION,
+            'is_latest'   => $isLatest,
+            'latest'      => $latest,
+            'php_version' => phpversion(),
+            'has_intl'    => extension_loaded('intl'),
         ));
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
         $entries[] = $this->renderer->render($zfEntry);
