@@ -8,11 +8,12 @@ Framework 2.0 stable.
 
 Install
 =======
-
-1. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
+1. Add the 'ZendDeveloperTools' module to the module section of your
+   application.config.php
+2. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
    `./config/autoload/zenddevelopertools.local.php`. Change the settings
    if you like to.
-2. Add the following in your `index.php`:
+3. Add the following in your `index.php`:
    ```
    define('REQUEST_MICROTIME', microtime(true));
    ```
