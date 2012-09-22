@@ -27,9 +27,9 @@
             <span class="zdt-toolbar-info">
                 <span class="zdt-detail-label">Extensions</span>
                 <span class="zdt-detail-value">
-                    <span class="zdt-toolbar-status zdt-toolbar-status-<?php echo (extension_loaded('intl')) ? 'green' : 'red'; ?>">
-                        intl
-                    </span>
+                    <span class="zdt-toolbar-status zdt-toolbar-status-<?php echo (extension_loaded('intl')) ? 'green' : 'red'; ?>"
+                          title="<?php echo $intlText = 'intl extension ' . (extension_loaded('intl') ? 'enabled' : 'disabled'); ?>"
+                    >intl</span>
                 </span>
             </span>
         </div>
