@@ -167,7 +167,7 @@ class ToolbarListener implements ListenerAggregateInterface
             'version'   => Version::VERSION,
             'is_latest' => $isLatest,
             'latest'    => $latest,
-            'toolbar_version'  => 'dev-1.0.0',
+            'toolbar_version'  => '1.0.0-dev.1',
         ));
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
         $entries[] = $this->renderer->render($zfEntry);

@@ -41,9 +41,6 @@ class PhpCollector extends AbstractCollector
     /**
      * @inheritdoc
      */
-    /**
-     * @inheritdoc
-     */
     public function collect(MvcEvent $mvcEvent)
     {
         return;
@@ -75,6 +72,6 @@ class PhpCollector extends AbstractCollector
      */
     public function getVersion()
     {
-        return PHP_VERSION;
+        return phpversion();
     }
 }
