@@ -72,7 +72,9 @@ class Module implements
     /**
      * Zend\Mvc\MvcEvent::EVENT_BOOTSTRAP event callback
      *
-     * @param Event $event
+     * @param  EventInterface $event
+     * @throws Exception\InvalidOptionException
+     * @throws Exception\ProfilerException
      */
     public function onBootstrap(EventInterface $event)
     {

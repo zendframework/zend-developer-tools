@@ -73,7 +73,7 @@ class ProfilerEvent extends Event
     /**
      * Set profiler
      *
-     * @param  Profiler $report
+     * @param  Profiler $profiler
      * @return self
      */
     public function setProfiler(Profiler $profiler)
