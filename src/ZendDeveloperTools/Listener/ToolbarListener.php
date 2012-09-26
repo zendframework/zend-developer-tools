@@ -129,7 +129,7 @@ class ToolbarListener implements ListenerAggregateInterface
 
     /**
      * Tries to injects the toolbar into the view. The toolbar is only injected in well
-     * formed HTML by repleacing the closing body tag, leaving ESI untouched.
+     * formed HTML by replacing the closing body tag, leaving ESI untouched.
      *
      * @param ProfilerEvent $event
      */
