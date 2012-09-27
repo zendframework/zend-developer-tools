@@ -33,7 +33,7 @@ use Zend\View\Helper\AbstractHelper;
 class Time extends AbstractHelper
 {
     /**
-     * Returns the formated time.
+     * Returns the formatted time.
      *
      * @param  integer|float $time
      * @param  integer       $precision Will only be used for seconds.
