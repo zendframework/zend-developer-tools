@@ -33,7 +33,7 @@ use Zend\View\Helper\AbstractHelper;
 class Memory extends AbstractHelper
 {
     /**
-     * Returns the formated time.
+     * Returns the formatted time.
      *
      * @param  integer $size
      * @param  integer $precision Only used for MegaBytes

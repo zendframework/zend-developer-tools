@@ -19,7 +19,7 @@ namespace ZendDeveloperTools;
 interface MatchInterface
 {
     /**
-     * The (case-insensetiv) name of the matcher.
+     * The (case-insensitive) name of the matcher.
      *
      * @return string
      */
