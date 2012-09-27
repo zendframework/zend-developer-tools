@@ -171,6 +171,7 @@ class Profiler implements EventManagerAwareInterface
      *
      * @param  Collector\CollectorInterface $collector
      * @return self
+     * @throws Exception\CollectorException
      */
     public function addCollector($collector)
     {
@@ -198,7 +199,8 @@ class Profiler implements EventManagerAwareInterface
      *
      * @triggers ProfilerEvent::EVENT_COLLECTED
      * @param    MvcEvent $mvcEvent
-     * @return   self
+     * @return   Profiler
+     * @throws   Exception\ProfilerException
      */
     public function collect(MvcEvent $mvcEvent)
     {

@@ -84,7 +84,8 @@ class ProfilerListener implements ListenerAggregateInterface
     /**
      * MvcEvent::EVENT_FINISH event callback
      *
-     * @param MvcEvent $event
+     * @param  MvcEvent $event
+     * @throws ServiceNotFoundException
      */
     public function onFinish(MvcEvent $event)
     {

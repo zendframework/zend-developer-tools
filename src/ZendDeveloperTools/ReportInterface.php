@@ -77,7 +77,7 @@ interface ReportInterface
     public function hasErrors();
 
     /**
-     * @param  string $ip
+     * @param  string $method
      * @return self
      */
     public function setMethod($method);
