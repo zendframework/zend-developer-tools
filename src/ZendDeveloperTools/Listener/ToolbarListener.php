@@ -161,7 +161,9 @@ class ToolbarListener implements ListenerAggregateInterface
     /**
      * Renders all toolbar entries.
      *
-     * @param ProfilerEvent $event
+     * @param  ProfilerEvent $event
+     * @return array
+     * @throws InvalidOptionException
      */
     protected function renderEntries(ProfilerEvent $event)
     {

@@ -28,7 +28,8 @@ interface MatchInterface
     /**
      * Matches the pattern against data.
      *
-     * @return boolean
+     * @param  string $pattern
+     * @return mixed
      */
     public function matches($pattern);
 }
