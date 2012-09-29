@@ -8,7 +8,7 @@ Framework 2.0 stable.
 
 Install
 =======
-1. Add the 'ZendDeveloperTools' module to the module section of your
+1. Add the `ZendDeveloperTools` module to the module section of your
    application.config.php
 2. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
    `./config/autoload/zenddevelopertools.local.php`. Change the settings
