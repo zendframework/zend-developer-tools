@@ -51,6 +51,13 @@ class ToolbarListener implements ListenerAggregateInterface
     const VERSION_CACHE_TTL = 3600;
 
     /**
+     * Documentation URI pattern.
+     *
+     * @var string
+     */
+    const DOC_URI_PATTERN = 'http://zf2.readthedocs.org/en/%s/index.html';
+
+    /**
      * @var object
      */
     protected $renderer;
@@ -171,6 +178,14 @@ class ToolbarListener implements ListenerAggregateInterface
         $report  = $event->getReport();
 
         list($isLatest, $latest) = $this->getLatestVersion(Version::VERSION);
+        
+        if (($pos = strpos(Version::VERSION, 'dev')) === false) {
+            $docVersion = 'release-' . Version::VERSION;
+        } else { // unreleased dev branch - compare minor part of versions
+            $partsCurrent = explode('.', substr(Version::VERSION, 0, $pos)); 
+            $partsLatestRelease = explode('.', $latest); 
+            $docVersion = $partsLatestRelease[1] == $partsCurrent[1] ? 'latest' : 'develop';
+        }
 
         $zfEntry = new ViewModel(array(
             'zf_version'  => Version::VERSION,
@@ -178,6 +193,7 @@ class ToolbarListener implements ListenerAggregateInterface
             'latest'      => $latest,
             'php_version' => phpversion(),
             'has_intl'    => extension_loaded('intl'),
+            'doc_uri'     => sprintf(self::DOC_URI_PATTERN, $docVersion),
         ));
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
         $entries[] = $this->renderer->render($zfEntry);
