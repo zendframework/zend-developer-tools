@@ -12,9 +12,9 @@
             ?>
         </span>
     </div>
-    <div class="zdt-toolbar-detail">
+    <div class="zdt-toolbar-detail zdt-toolbar-dbquery-detail">
         <?php if ($this->collector->hasProfiler()) : ?>
-        <span class="zdt-toolbar-info zdt-toolbar-info-heading">Queries</span>
+        <span class="zdt-toolbar-info zdt-toolbar-info-heading">Quantity</span>
         <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">create</span>
             <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->collector->getQueryCount(Profiler::INSERT); ?></span>
@@ -50,18 +50,33 @@
             <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->ZendDeveloperToolsTime($this->collector->getQueryTime(Profiler::DELETE)); ?></span>
         </span>
 
-        <span class="zdt-toolbar-info zdt-toolbar-info-heading zdt-toolbar-info-redundant zdt-toolbar-topspacing">Total</span>
-        <span class="zdt-toolbar-info zdt-toolbar-info-redundant">
-            <span class="zdt-detail-label">Queries</span>
-            <span class="zdt-detail-value zdt-detail-value-right">
-                <?php echo $this->collector->getQueryCount(); ?>
+        <span class="zdt-toolbar-info zdt-toolbar-info-heading zdt-toolbar-topspacing zdt-toolbar-dbquery-heading">Query Profiles</span>
+        <span class="zdt-toolbar-info zdt-toolbar-dbquery">
+        <?php $profiler = $this->collector->getProfiler(); ?>
+        <?php foreach ($profiler->getQueryProfiles() as $profile): ?>
+            <?php $query = $profile->toArray(); ?>
+            <hr />
+            <span class="zdt-detail-label">SQL</span>
+            <span class="zdt-detail-value zdt-detail-dbquery zdt-detail-dbquery-sql">
+                <?php /* highlight UPPERCASE words in the query, which should mostly match SQL keywords */ ?>
+                <?php echo preg_replace('/([A-Z]+)/', '<span class="highlight">$1</span>', $this->escapeHtml($query['sql'])) ?>
             </span>
-        </span>
-        <span class="zdt-toolbar-info zdt-toolbar-info-redundant">
+            <span class="clear"></span>
+            <?php if (isset($query['parameters']) && is_array($query['parameters']) && count($query['parameters']) > 0): ?>
+            <span class="zdt-detail-label">Params</span>
+            <span class="zdt-detail-value zdt-detail-dbquery zdt-detail-dbquery-params">
+                <?php foreach($query['parameters'] as $key => $value): ?>
+                    <?php echo $this->escapeHtml("{$key} => " . var_export($value, true)); ?><br />
+                <?php endforeach ?>
+            </span>
+            <span class="clear"></span>
+            <?php endif ?>
             <span class="zdt-detail-label">Time</span>
-            <span class="zdt-detail-value zdt-detail-value-right">
-                <?php echo $this->ZendDeveloperToolsTime($this->collector->getQueryTime()); ?>
+            <span class="zdt-detail-value zdt-detail-dbquery zdt-detail-dbquery-time">
+                <?php echo $this->escapeHtml($this->ZendDeveloperToolsTime($query['elapsed'])) ?>
             </span>
+            <span class="clear"></span>
+        <?php endforeach; ?>
         </span>
         <?php else: ?>
         <span class="zdt-toolbar-info zdt-toolbar-info-heading">Error</span>
@@ -71,3 +86,39 @@
         <?php endif ?>
     </div>
 </div>
+<style>
+.zdt-toolbar-entry .zdt-toolbar-detail .zdt-toolbar-dbquery {
+    font-size: 11px;
+    max-width: 600px;
+    width: 600px;
+    max-height: 300px;
+    min-height: 100px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.zdt-toolbar-entry .zdt-toolbar-dbquery-detail .zdt-detail-value-right {
+
+}
+
+.zdt-toolbar-entry .zdt-toolbar-detail .zdt-detail-dbquery {
+    white-space: normal;
+    width: 400px;
+}
+
+.zdt-toolbar-entry .zdt-toolbar-detail .zdt-detail-dbquery .highlight {
+    color: #80DC09;
+    font-weight: bold;
+}
+
+.zdt-toolbar-entry .zdt-toolbar-info .clear {
+    clear: both;
+    display: block;
+}
+
+.zdt-toolbar-entry .zdt-toolbar-detail .zdt-toolbar-dbquery hr {
+    border: 0;
+    border-top: 1px solid #80DC09;
+    clear: both;
+}
+</style>
