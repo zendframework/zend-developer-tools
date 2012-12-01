@@ -180,11 +180,11 @@ class ToolbarListener implements ListenerAggregateInterface
         list($isLatest, $latest) = $this->getLatestVersion(Version::VERSION);
         
         if (($pos = strpos(Version::VERSION, 'dev')) === false) {
-            $doc_verson = 'release-' . Version::VERSION; 
+            $docVersion = 'release-' . Version::VERSION;
         } else { // unreleased dev branch - compare minor part of versions
             $partsCurrent = explode('.', substr(Version::VERSION, 0, $pos)); 
             $partsLatestRelease = explode('.', $latest); 
-            $docVerson = $partsLatestRelease[1] == $partsCurrent[1] ? 'latest' : 'develop'; 
+            $docVersion = $partsLatestRelease[1] == $partsCurrent[1] ? 'latest' : 'develop';
         }
 
         $zfEntry = new ViewModel(array(
@@ -193,7 +193,7 @@ class ToolbarListener implements ListenerAggregateInterface
             'latest'      => $latest,
             'php_version' => phpversion(),
             'has_intl'    => extension_loaded('intl'),
-            'doc_uri'     => sprintf(self::DOC_URI_PATTERN, $docVerson),
+            'doc_uri'     => sprintf(self::DOC_URI_PATTERN, $docVersion),
         ));
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
         $entries[] = $this->renderer->render($zfEntry);
