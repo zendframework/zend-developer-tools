@@ -188,6 +188,18 @@
     color: #9d9d9d;
 }
 
+.zdt-toolbar-info-ul {
+    margin: 0 0 0 20px;
+    padding: 0;
+    list-style-type: disc;
+}
+.zdt-toolbar-info-ul-hidden {
+    display: none;
+}
+.zdt-toolbar-info-maxheight {
+    height: 150px;
+}
+
 #zend-developer-toolbar .zdf-toolbar-hide-button {
     top: 0;
     right: 8px;

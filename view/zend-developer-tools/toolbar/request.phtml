@@ -42,5 +42,7 @@ $color = ($this->collector->getStatusCode() < 400)
             <span class="zdt-detail-value"><?php echo $this->collector->getRouteName(); ?></span>
         </span>
         <?php echo $this->ZendDeveloperToolsDetailArray('Templates', $this->collector->getTemplateNames()); ?>
+        <?php echo $this->ZendDeveloperToolsDetailMultiArray('Config', $this->collector->getConfig()); ?>
+        <?php echo $this->ZendDeveloperToolsDetailMultiArray('Services', $this->collector->getServices()); ?>
     </div>
 </div>
