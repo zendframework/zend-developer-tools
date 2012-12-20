@@ -57,6 +57,9 @@ class RequestCollector extends AbstractCollector
             $templates[] = 'N/A';
         }
 
+        $app = $mvcEvent->getApplication();
+        $sm = $app->getServiceManager();
+
         $this->data = array(
             'templates'  => $templates,
             'method'     => $mvcEvent->getRequest()->getMethod(),
@@ -64,6 +67,8 @@ class RequestCollector extends AbstractCollector
             'route'      => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
             'action'     => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
             'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A'),
+            'config'     => $app->getConfig(),
+            'services'   => $sm->getRegisteredServices()
         );
     }
 
@@ -149,5 +154,25 @@ class RequestCollector extends AbstractCollector
     public function getTemplateNames()
     {
         return $this->data['templates'];
+    }
+
+    /**
+     * Returns the current config of the application
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->data['config'];
+    }
+
+    /**
+     * Returns a complete list of registered services
+     *
+     * @return array
+     */
+    public function getServices()
+    {
+        return $this->data['services'];
     }
 }
