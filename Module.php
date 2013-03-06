@@ -40,6 +40,8 @@ class Module implements
      */
     public function init(ModuleManagerInterface $manager)
     {
+        defined('REQUEST_MICROTIME') || define('REQUEST_MICROTIME', microtime(true));
+
         if (PHP_SAPI === 'cli') {
             return;
         }
