@@ -132,7 +132,7 @@ class ToolbarListener implements ListenerAggregateInterface
         $response = $application->getResponse();
         $headers = $response->getHeaders();
         if ($headers->has('Content-Type')
-            && false !== strpos($headers->get('Content-Type')->getFieldValue(), 'html')
+            && false === strpos($headers->get('Content-Type')->getFieldValue(), 'html')
         ) {
             return;
         }
