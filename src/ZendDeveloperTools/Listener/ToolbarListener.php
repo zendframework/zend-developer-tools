@@ -191,9 +191,19 @@ class ToolbarListener implements ListenerAggregateInterface
         } else { // unreleased dev branch - compare minor part of versions
             $partsCurrent       = explode('.', substr(Version::VERSION, 0, $pos));
             $partsLatestRelease = explode('.', $latest);
+            $placeholder = '';
+            if(isset($partsLatestRelease[1])){
+                if($partsLatestRelease[1] == $partsCurrent[1]){ 
+                    $placeholder = 'latest';
+                }else{
+                    $placeholder = 'develop';
+                }
+            }else{
+                $placeholder = 'unknown';
+            }
             $docUri             = sprintf(
                 self::DEV_DOC_URI_PATTERN,
-                $partsLatestRelease[1] == $partsCurrent[1] ? 'latest' : 'develop'
+                $placeholder
             );
         }
 
