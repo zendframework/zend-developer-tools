@@ -140,7 +140,6 @@ class Module implements
                 'ZendDeveloperToolsTime'                => 'ZendDeveloperTools\View\Helper\Time',
                 'ZendDeveloperToolsMemory'              => 'ZendDeveloperTools\View\Helper\Memory',
                 'ZendDeveloperToolsDetailArray'         => 'ZendDeveloperTools\View\Helper\DetailArray',
-                'ZendDeveloperToolsDetailMultiArray'    => 'ZendDeveloperTools\View\Helper\DetailMultiArray',
             ),
         );
     }

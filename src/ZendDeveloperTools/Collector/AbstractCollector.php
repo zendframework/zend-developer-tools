@@ -23,11 +23,34 @@ abstract class AbstractCollector implements CollectorInterface, \Serializable
     protected $data;
 
     /**
+     * This function will replace Closure instances with the string 'Closure' to prevent serialize problems.
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function _preSerialize($data)
+    {
+        if (!$data) {
+            return $data;
+        }
+
+        foreach ($data as $key => $value) {
+            if ($value instanceof \Closure) {
+                $value = 'Closure';
+            } elseif (is_array($value)) {
+                $value = $this->_preSerialize($value);
+            }
+            $data[$key] = $value;
+        }
+        return $data;
+    }
+
+    /**
      * @see \Serializable
      */
     public function serialize()
     {
-        return serialize($this->data);
+        return serialize($this->_preSerialize($this->data));
     }
 
     /**
