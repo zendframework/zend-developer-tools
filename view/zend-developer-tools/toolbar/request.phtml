@@ -43,11 +43,11 @@ $color = ($this->collector->getStatusCode() < 400)
         </span>
         <?php echo $this->ZendDeveloperToolsDetailArray('Templates', $this->collector->getTemplateNames()); ?>
         <form action="<?php echo $this->url('zend_developer_tools_config'); ?>" method="post" target="_blank">
-            <input type="hidden" name="config" value="<?php echo $this->escapeHtmlAttr($this->json($this->collector->getConfig())) ?>" />
+            <input type="hidden" name="data" value="<?php echo $this->escapeHtmlAttr($this->json($this->collector->getConfig())) ?>" />
             <span class="zdt-toolbar-info"></span><input type="submit" class="zdt-btn-label" value="Show configuration" /></span>
         </form>
         <form action="<?php echo $this->url('zend_developer_tools_services'); ?>" method="post" target="_blank">
-            <input type="hidden" name="services" value="<?php echo $this->escapeHtmlAttr($this->json($this->collector->getServices())) ?>" />
+            <input type="hidden" name="data" value="<?php echo $this->escapeHtmlAttr($this->json($this->collector->getServices())) ?>" />
             <span class="zdt-toolbar-info"></span><input type="submit" class="zdt-btn-label" value="Show services" /></span>
         </form>
     </div>

@@ -6,8 +6,8 @@ return array(
         ),
     ),
     'controllers' => array(
-        'invokables' => array(
-            'ZendDeveloperTools\\Controller\\Request' => 'ZendDeveloperTools\\Controller\\RequestController',
+        'factories' => array(
+            'ZendDeveloperTools\\Controller\\Datadump' => 'ZendDeveloperTools\\Controller\\Factory\\DatadumpControllerFactory',
         ),
     ),
     'router' => array(
@@ -17,8 +17,9 @@ return array(
                 'options' => array(
                     'route' => '/zdt/request/config',
                     'defaults' => array(
-                        'controller' => 'ZendDeveloperTools\\Controller\\Request',
-                        'action'     => 'config',
+                        'controller' => 'ZendDeveloperTools\\Controller\\Datadump',
+                        'action'     => 'show',
+                        'title'      => 'Loaded Configuration'
                     ),
                 ),
             ),
@@ -27,8 +28,9 @@ return array(
                 'options' => array(
                     'route' => '/zdt/request/services',
                     'defaults' => array(
-                        'controller' => 'ZendDeveloperTools\\Controller\\Request',
-                        'action'     => 'services',
+                        'controller' => 'ZendDeveloperTools\\Controller\\Datadump',
+                        'action'     => 'show',
+                        'title'      => 'Loaded Services'
                     ),
                 ),
             ),
