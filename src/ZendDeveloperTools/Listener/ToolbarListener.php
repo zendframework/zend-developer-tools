@@ -193,7 +193,7 @@ class ToolbarListener implements ListenerAggregateInterface
             $partsLatestRelease = explode('.', $latest);
             $docUri             = sprintf(
                 self::DEV_DOC_URI_PATTERN,
-                $partsLatestRelease[1] == $partsCurrent[1] ? 'latest' : 'develop'
+                current($partsLatestRelease) == $partsCurrent[1] ? 'latest' : 'develop'
             );
         }
 
