@@ -67,7 +67,7 @@ interface ReportInterface
     public function getErrors();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasErrors();
 
@@ -84,7 +84,7 @@ interface ReportInterface
 
     /**
      * @param  string $name
-     * @return boolean
+     * @return bool
      */
     public function hasCollector($name);
 

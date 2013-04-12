@@ -31,7 +31,7 @@ class DetailArray extends AbstractHelper
      *
      * @param  string  $label Label name
      * @param  array   $details Value array (list)
-     * @param  boolean $redundant Marks this detail as redundant.
+     * @param  bool $redundant Marks this detail as redundant.
      * @return string
      */
     public function __invoke($label, array $details, $redundant = false)

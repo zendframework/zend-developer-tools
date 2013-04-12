@@ -97,7 +97,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
     /**
      * Event times collected?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasEventTimes()
     {
