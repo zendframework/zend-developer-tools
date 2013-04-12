@@ -5,8 +5,6 @@
  * @link       http://github.com/zendframework/ZendDeveloperTools for the canonical source repository
  * @copyright  Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
- * @package    ZendDeveloperTools
- * @subpackage Listener
  */
 
 namespace ZendDeveloperTools\Listener;
@@ -24,9 +22,6 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
  *
  * Listens to the MvcEvent::EVENT_FINISH event and starts collecting data.
  *
- * @category   Zend
- * @package    ZendDeveloperTools
- * @subpackage Listener
  */
 class ProfilerListener implements ListenerAggregateInterface
 {
