@@ -48,7 +48,7 @@ class RequestCollector extends AbstractCollector
 
         $templates[] = $mvcEvent->getViewModel()->getTemplate();
         if ($mvcEvent->getViewModel()->hasChildren()) {
-            foreach ($mvcEvent->getViewModel()->getChildren() as $i => $child) {
+            foreach ($mvcEvent->getViewModel()->getChildren() as $child) {
                 $templates[] = $child->getTemplate();
             }
         }
