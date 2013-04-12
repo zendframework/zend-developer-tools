@@ -16,10 +16,6 @@ use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 
-/**
- * @category   Zend
- * @package    ZendDeveloperTools
- */
 class Profiler implements EventManagerAwareInterface
 {
     /**

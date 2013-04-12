@@ -12,9 +12,6 @@
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
  *
- * @category   Zend
- * @package    ZendDeveloperTools
- * @subpackage Listener
  * @copyright  Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -35,9 +32,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * Developer Toolbar Listener
  *
- * @category   Zend
- * @package    ZendDeveloperTools
- * @subpackage Listener
  * @copyright  Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
