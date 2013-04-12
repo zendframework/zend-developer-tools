@@ -74,13 +74,13 @@ class Options extends AbstractOptions
     public function setProfiler(array $options)
     {
         if (isset($options['enabled'])) {
-            $this->profiler['enabled'] = (boolean) $options['enabled'];
+            $this->profiler['enabled'] = (bool) $options['enabled'];
         }
         if (isset($options['strict'])) {
-            $this->profiler['strict'] = (boolean) $options['strict'];
+            $this->profiler['strict'] = (bool) $options['strict'];
         }
         if (isset($options['flush_early'])) {
-            $this->profiler['flush_early'] = (boolean) $options['flush_early'];
+            $this->profiler['flush_early'] = (bool) $options['flush_early'];
         }
         if (isset($options['cache_dir'])) {
             $this->profiler['cache_dir'] = (string) $options['cache_dir'];
@@ -140,7 +140,7 @@ class Options extends AbstractOptions
     /**
      * Is the Profiler enabled?
      *
-     * @return boolean
+     * @return bool
      */
     public function isEnabled()
     {
@@ -150,7 +150,7 @@ class Options extends AbstractOptions
     /**
      * Is strict mode enabled?
      *
-     * @return boolean
+     * @return bool
      */
     public function isStrict()
     {
@@ -163,7 +163,7 @@ class Options extends AbstractOptions
      * Note: Only possible if the toolbar, firephp and the strict mode is
      *       disabled.
      *
-     * @return boolean
+     * @return bool
      */
     public function canFlushEarly()
     {
@@ -205,11 +205,11 @@ class Options extends AbstractOptions
     public function setToolbar(array $options)
     {
         if (isset($options['enabled'])) {
-            $this->toolbar['enabled'] = (boolean) $options['enabled'];
+            $this->toolbar['enabled'] = (bool) $options['enabled'];
         }
 
         if (isset($options['version_check'])) {
-            $this->toolbar['version_check'] = (boolean) $options['version_check'];
+            $this->toolbar['version_check'] = (bool) $options['version_check'];
         }
         if (isset($options['position'])) {
             if ($options['position'] !== 'bottom' && $options['position'] !== 'top') {
@@ -242,7 +242,7 @@ class Options extends AbstractOptions
     /**
      * Is the Toolbar enabled?
      *
-     * @return boolean
+     * @return bool
      */
     public function isToolbarEnabled()
     {
@@ -252,7 +252,7 @@ class Options extends AbstractOptions
     /**
      * Is the Zend Framework version check enabled?
      *
-     * @return boolean
+     * @return bool
      */
     public function isVersionCheckEnabled()
     {
@@ -262,7 +262,7 @@ class Options extends AbstractOptions
     /**
      * Can hide Toolbar entries?
      *
-     * @return boolean
+     * @return bool
      */
     public function getToolbarAutoHide()
     {

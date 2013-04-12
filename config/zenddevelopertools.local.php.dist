@@ -8,7 +8,7 @@ return array(
             /**
              * Enables or disables the profiler.
              *
-             * Expects: boolean
+             * Expects: bool
              * Default: false
              */
             'enabled' => true,
@@ -18,7 +18,7 @@ return array(
              * enabled, any error will throw an exception, otherwise all
              * errors will be added to the report (and shown in the toolbar).
              *
-             * Expects: boolean
+             * Expects: bool
              * Default: true
              */
             'strict' => false,
@@ -32,7 +32,7 @@ return array(
              *       with a priority of -9400. You have to disbale this function if
              *       you wish to modify the output with a lower priority.
              *
-             * Expects: boolean
+             * Expects: bool
              * Default: false
              */
             'flush_early' => false,
@@ -80,7 +80,7 @@ return array(
             /**
              * Enables or disables the Toolbar.
              *
-             * Expects: boolean
+             * Expects: bool
              * Default: false
              */
             'enabled' => true,
@@ -88,7 +88,7 @@ return array(
             /**
              * If enabled, every empty collector will be hidden.
              *
-             * Expects: boolean
+             * Expects: bool
              * Default: false
              */
             'auto_hide' => false,
@@ -107,7 +107,7 @@ return array(
              *
              * Note: The check will only occur once every hour.
              *
-             * Expects: boolean
+             * Expects: bool
              * Default: false
              */
             'version_check' => true,

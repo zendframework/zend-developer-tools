@@ -30,7 +30,7 @@ interface AutoHideInterface
     /**
      * Returns true if the collector can be hidden, because it is empty.
      *
-     * @return boolean
+     * @return bool
      */
     public function canHide();
 }

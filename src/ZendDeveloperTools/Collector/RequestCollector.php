@@ -115,7 +115,7 @@ class RequestCollector extends AbstractCollector
     /**
      * Returns the controller and action name if possible, otherwise N/A.
      *
-     * @param  boolean $short Removes the namespace.
+     * @param  bool $short Removes the namespace.
      * @return string
      */
     public function getFullControllerName($short = true)

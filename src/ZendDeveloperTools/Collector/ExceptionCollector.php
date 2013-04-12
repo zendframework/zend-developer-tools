@@ -50,7 +50,7 @@ class ExceptionCollector extends AbstractCollector
     /**
      * Checks if an exception was thrown during the runtime.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasException()
     {
@@ -60,7 +60,7 @@ class ExceptionCollector extends AbstractCollector
     /**
      * Checks if an exception was re-thrown during the runtime.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasPreviousException()
     {
