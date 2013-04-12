@@ -64,7 +64,7 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
     /**
      * Has the collector access to Bjy's Db Profiler?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasProfiler()
     {

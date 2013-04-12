@@ -62,7 +62,7 @@ class Profiler implements EventManagerAwareInterface
     const PRIORITY_TOOLBAR = 500;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $strict;
 
@@ -99,7 +99,7 @@ class Profiler implements EventManagerAwareInterface
     /**
      * Set the error mode.
      *
-     * @param  boolean $mode
+     * @param  bool $mode
      * @return self
      */
     public function setErrorMode($mode)
