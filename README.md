@@ -8,12 +8,13 @@ Framework 2.0 stable.
 
 Install
 =======
-1. Add the `ZendDeveloperTools` module to the module section of your
+1. Install the module via composer `php composer.phar require zendframework/zend-developer-tools:dev-master` or download it directly from github.
+2. Add the `ZendDeveloperTools` module to the module section of your
    application.config.php
-2. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
+3. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
    `./config/autoload/zenddevelopertools.local.php`. Change the settings
    if you like to.
-3. Add the following in your `index.php`:
+4. Add the following in your `index.php`:
    ```
    define('REQUEST_MICROTIME', microtime(true));
    ```
