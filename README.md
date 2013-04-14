@@ -8,11 +8,7 @@ Framework 2.0 stable.
 
 Install
 =======
-1. Install the module via composer
-
-    php composer.phar require zendframework/zend-developer-tools:dev-master
-    
-or download it directly from github.
+1. Install the module via composer `php composer.phar require zendframework/zend-developer-tools:dev-master` or download it directly from github.
 2. Add the `ZendDeveloperTools` module to the module section of your
    application.config.php
 3. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
