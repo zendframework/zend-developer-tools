@@ -196,7 +196,7 @@ class Module implements
                     $p  = false;
                     $db = new Collector\DbCollector();
 
-                    if ($sm->has('Zend\Db\Adapter\Adapter')) {
+                    if ($sm->has('Zend\Db\Adapter\Adapter',false)) {
                         $adapter = $sm->get('Zend\Db\Adapter\Adapter');
                         if ($adapter instanceof ProfilingAdapter) {
                             $p = true;
