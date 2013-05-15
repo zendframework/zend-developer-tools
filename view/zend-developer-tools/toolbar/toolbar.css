@@ -188,6 +188,18 @@
     color: #9d9d9d;
 }
 
+.zdt-toolbar-info-ul {
+    margin: 0 0 0 20px;
+    padding: 0;
+    list-style-type: disc;
+}
+.zdt-toolbar-info-ul-hidden {
+    display: none;
+}
+.zdt-toolbar-info-maxheight {
+    height: 150px;
+}
+
 #zend-developer-toolbar .zdf-toolbar-hide-button {
     top: 0;
     right: 8px;
@@ -201,6 +213,46 @@
 #zend-developer-toolbar .zdf-toolbar-hide-button:hover {
     color: #eb4a4a;
     text-decoration: none;
+}
+
+.zdt-btn-label {
+    background: none;
+    border: 0;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    color: #80DC09;
+    font-size: 90%;
+}
+
+.zdt-btn-label:hover {
+    text-decoration: underline;
+}
+
+.zdt-list, .zdt-list li {
+    list-style: none;
+    margin: 0;
+    padding: 0px;
+}
+
+.zdt-list-collapsible {
+    display: none;
+    border: 1px solid #333333;
+    border-collapse: collapse;
+    padding: 10px;
+}
+
+.zdt-list-collapser {
+    background: #333333;
+    display: block;
+    height: 25px;
+    color: #FFF;
+    padding: 5px;
+    margin: 5px 0 0 0 ;
+}
+
+.zdt-list-collapser:hover {
+    color: #80DC09;
 }
 
 @media screen and (max-width: 780px) {
