@@ -35,7 +35,7 @@ class ProfilerEvent extends Event
     /**
      * Set Application
      *
-     * @return string
+     * @return ApplicationInterface|null
      */
     public function getApplication()
     {
