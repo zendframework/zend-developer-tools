@@ -1,33 +1,29 @@
 Zend Developer Tools
-=====================
+====================
 
-Module for developer and debug tools for working with the ZF2 MVC layer.
-While this is still an early version, it is planned to be finished before Zend
-Framework 2.0 stable.
+Module providing debug tools for working with the [Zend Framework 2](https://github.com/zendframework/zf2) MVC
+layer.
 
+Installation
+============
 
-Install
-=======
-1. Install the module via composer `php composer.phar require zendframework/zend-developer-tools:dev-master` or download it directly from github.
-2. Add the `ZendDeveloperTools` module to the module section of your
-   application.config.php
+1. Install the module via composer by running:
+
+   ```sh
+   php composer.phar require zendframework/zend-developer-tools:dev-master
+   ```
+   or download it directly from github and place it in your application's `module/` directory.
+2. Add the `ZendDeveloperTools` module to the module section of your `config/application.config.php`
 3. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
-   `./config/autoload/zenddevelopertools.local.php`. Change the settings
-   if you like to.
+   `./config/autoload/zenddevelopertools.local.php`. Change any settings in it
+   according to your needs.
 4. Add the following in your `index.php`:
    ```
    define('REQUEST_MICROTIME', microtime(true));
    ```
 
-> **Note:** The displayed execution time in the toolbar will be highly inaccurate
-            if you don't define `REQUEST_MICROTIME`.
+   **Note:** The displayed execution time in the toolbar will be highly if you don't define `REQUEST_MICROTIME`.
 
 
-If you wish to profile Zend\Db, you have to install and enable [BjyProfiler](https://github.com/bjyoungblood/BjyProfiler).
-You can do so by running composer's `require` command.
-
-    php composer.phar require bjyoungblood/BjyProfiler:dev-master
-
-Zend Developer Tools will try to grab the Profiler from your Zend\Db adapter
-instance, using the `Zend\Db\Adapter\Adapter` or `Zend\Db\Adapter\ProfilingAdapter`
-service name.
+If you wish to profile `Zend\Db` queries, you will have to install and enable
+[BjyProfiler](https://github.com/bjyoungblood/BjyProfiler).
