@@ -22,7 +22,7 @@ Installation
    define('REQUEST_MICROTIME', microtime(true));
    ```
 
-   **Note:** The displayed execution time in the toolbar will be highly if you don't define `REQUEST_MICROTIME`.
+   **Note:** The displayed execution time in the toolbar will be highly inaccurate if you don't define `REQUEST_MICROTIME`.
 
 
 If you wish to profile `Zend\Db` queries, you will have to install and enable
