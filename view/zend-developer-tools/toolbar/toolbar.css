@@ -203,6 +203,26 @@
     text-decoration: none;
 }
 
+#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-detail,
+#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-info {
+    font-size: 11px;
+    witdh: 600px;
+    max-height: 400px;
+    max-width: 700px;
+    overflow: hidden;
+}
+
+#zend-developer-toolbar .zdt-toolbar-info .zdt-detail-value pre {
+    max-height: 350px;
+    max-width: 650px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    display: inline-block;
+    white-space: pre;
+    word-break: keep-all;
+    word-wrap: normal;
+}
+
 @media screen and (max-width: 780px) {
     .zdt-toolbar-preview .zdt-toolbar-extra-info {
         display: none;

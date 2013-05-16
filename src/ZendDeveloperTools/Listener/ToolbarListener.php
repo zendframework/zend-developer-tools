@@ -151,14 +151,12 @@ class ToolbarListener implements ListenerAggregateInterface
         $toolbarView = new ViewModel(array('entries' => $entries));
         $toolbarView->setTemplate('zend-developer-tools/toolbar/toolbar');
         $toolbar     = $this->renderer->render($toolbarView);
-        $toolbar     = str_replace("\n", '', $toolbar);
 
         $toolbarCss  = new ViewModel(array(
             'position' => $this->options->getToolbarPosition(),
         ));
         $toolbarCss->setTemplate('zend-developer-tools/toolbar/style');
         $style       = $this->renderer->render($toolbarCss);
-        $style       = str_replace(array("\n", '  '), '', $style);
 
         $injected    = preg_replace('/<\/body>/i', $toolbar . "\n</body>", $response->getBody(), 1);
         $injected    = preg_replace('/<\/head>/i', $style . "\n</head>", $injected, 1);
