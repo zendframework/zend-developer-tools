@@ -146,7 +146,7 @@ class ToolbarListener implements ListenerAggregateInterface
     protected function injectToolbar(ProfilerEvent $event)
     {
         $entries     = $this->renderEntries($event);
-        $response    = $event->getApplication()->getResponse();;
+        $response    = $event->getApplication()->getResponse();
 
         $toolbarView = new ViewModel(array('entries' => $entries));
         $toolbarView->setTemplate('zend-developer-tools/toolbar/toolbar');
@@ -196,6 +196,7 @@ class ToolbarListener implements ListenerAggregateInterface
             'php_version' => phpversion(),
             'has_intl'    => extension_loaded('intl'),
             'doc_uri'     => $docUri,
+            'modules'     => $this->getModules($event),
         ));
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
 
@@ -293,5 +294,18 @@ class ToolbarListener implements ListenerAggregateInterface
         );
 
         return array($isLatest, $latest);
+    }
+
+    private function getModules(ProfilerEvent $event)
+    {
+        if (!$application = $event->getApplication()) {
+            return null;
+        }
+
+        $serviceManager = $application->getServiceManager();
+        /* @var $moduleManager \Zend\ModuleManager\ModuleManagerInterface */
+        $moduleManager  = $serviceManager->get('ModuleManager');
+
+        return array_keys($moduleManager->getLoadedModules());
     }
 }
