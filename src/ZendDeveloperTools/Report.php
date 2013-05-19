@@ -79,7 +79,7 @@ class Report implements ReportInterface
      */
     public function getUri()
     {
-        return $this->url;
+        return $this->uri;
     }
 
     /**
