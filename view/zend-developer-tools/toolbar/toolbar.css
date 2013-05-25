@@ -206,7 +206,6 @@
 #zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-detail,
 #zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-info {
     font-size: 11px;
-    witdh: 600px;
     max-height: 400px;
     max-width: 700px;
     overflow: hidden;
