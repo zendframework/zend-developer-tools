@@ -62,22 +62,17 @@
                 <?php echo preg_replace('/([A-Z]+)/', '<span class="highlight">$1</span>', $this->escapeHtml($query['sql'])) ?>
             </span>
             <span class="clear"></span>
-            <?php if (isset($query['parameters'])):
-            
-                    if (is_array($query['parameters']) 
-                        || ($query['parameters'] instanceof \Iterator && $query['parameters'] instanceof \Countable)):
-                        if (count($query['parameters']) > 0): ?>
-                            
-                            <span class="zdt-detail-label">Params</span>
-                            <span class="zdt-detail-value zdt-detail-dbquery zdt-detail-dbquery-params">
-                                <?php foreach($query['parameters'] as $key => $value): ?>
-                                    <?php echo $this->escapeHtml("{$key} => " . var_export($value, true)); ?><br />
-                                <?php endforeach ?>
-                            </span>
-                            <span class="clear"></span>
-                            
-                        <?php endif ?>
-                    <?php endif ?>
+            <?php if (isset($query['parameters'])
+                    && (is_array($query['parameters'])
+                        || ($query['parameters'] instanceof \Iterator && $query['parameters'] instanceof \Countable))
+                    && count($query['parameters']) > 0): ?>
+                        <span class="zdt-detail-label">Params</span>
+                        <span class="zdt-detail-value zdt-detail-dbquery zdt-detail-dbquery-params">
+                            <?php foreach($query['parameters'] as $key => $value): ?>
+                                <?php echo $this->escapeHtml("{$key} => " . var_export($value, true)); ?><br />
+                            <?php endforeach ?>
+                        </span>
+                        <span class="clear"></span>
             <?php endif ?>
             <span class="zdt-detail-label">Time</span>
             <span class="zdt-detail-value zdt-detail-dbquery zdt-detail-dbquery-time">
