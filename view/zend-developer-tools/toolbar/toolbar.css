@@ -148,6 +148,19 @@
     white-space: nowrap;
 }
 
+.zdt-toolbar-info .zdt-detail-pre {
+    display: block;
+    font-family: monospace;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    line-height: 15px;
+    max-height: 400px;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
 .zdt-toolbar-info .zdt-detail-extra-value {
     margin-left: 100px;
 }
