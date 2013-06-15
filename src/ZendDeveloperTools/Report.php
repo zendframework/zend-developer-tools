@@ -145,7 +145,7 @@ class Report implements ReportInterface
      */
     public function hasErrors()
     {
-        return !empty($this->errors);;
+        return !empty($this->errors);
     }
 
     /**
