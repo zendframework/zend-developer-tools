@@ -161,7 +161,7 @@
     word-wrap: break-word;
 }
 
-.zdt-toolbar-info .zdt-detail-pre pre {
+.zdt-toolbar-info .zdt-detail-pre pre:not(.xdebug-var-dump)  {
     color: #eee;
 }
 
