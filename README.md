@@ -17,12 +17,13 @@ Installation
 3. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
    `./config/autoload/zenddevelopertools.local.php`. Change any settings in it
    according to your needs.
-4. Add the following in your `index.php`:
+4. If server version of PHP is lower than 5.4.0 add the following in your `index.php`:
    ```
    define('REQUEST_MICROTIME', microtime(true));
    ```
 
-   **Note:** The displayed execution time in the toolbar will be highly inaccurate if you don't define `REQUEST_MICROTIME`.
+   **Note:** The displayed execution time in the toolbar will be highly inaccurate
+    if you don't define `REQUEST_MICROTIME` at PHP < 5.4.0.
 
 
 If you wish to profile `Zend\Db` queries, you will have to install and enable
