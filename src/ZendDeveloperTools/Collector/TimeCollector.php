@@ -39,7 +39,9 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        if (defined('REQUEST_MICROTIME')) {
+        if (PHP_VERSION_ID >= 50400) {
+            $start = $mvcEvent->getRequest()->getServer()->get('REQUEST_TIME_FLOAT');
+        } elseif (defined('REQUEST_MICROTIME')) {
             $start = REQUEST_MICROTIME;
         } else {
             $start = $mvcEvent->getRequest()->getServer()->get('REQUEST_TIME');
