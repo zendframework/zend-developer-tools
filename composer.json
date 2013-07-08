@@ -31,7 +31,8 @@
         "zendframework/zend-debug":          "2.*"
     },
     "suggest": {
-        "bjyoungblood/bjy-profiler": "Version: dev-master, allows the usage of the (Zend) Db collector."
+        "bjyoungblood/bjy-profiler": "Version: dev-master, allows the usage of the (Zend) Db collector.",
+        "ocramius/ocra-service-manager": "OcraServiceManager can help you track dependencies within your application."
     },
     "autoload": {
         "psr-0": {
