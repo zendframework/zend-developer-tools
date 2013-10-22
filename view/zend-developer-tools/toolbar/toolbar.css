@@ -267,3 +267,9 @@
         margin: 0;
     }
 }
+
+@media print {
+    #zend-developer-toolbar{
+        display: none;
+    }
+}
