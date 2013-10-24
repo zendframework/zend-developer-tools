@@ -29,7 +29,7 @@ return array(
              * is enabled.
              *
              * Note: The flush listener listens to the MvcEvent::EVENT_FINISH event
-             *       with a priority of -9400. You have to disbale this function if
+             *       with a priority of -9400. You have to disable this function if
              *       you wish to modify the output with a lower priority.
              *
              * Expects: bool
