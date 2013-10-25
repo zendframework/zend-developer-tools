@@ -195,6 +195,8 @@ class ToolbarListener implements ListenerAggregateInterface
             'latest'      => $latest,
             'php_version' => phpversion(),
             'has_intl'    => extension_loaded('intl'),
+            'has_apc'     => extension_loaded('apc'),
+            'has_opcache' => extension_loaded('Zend OPcache'),
             'doc_uri'     => $docUri,
             'modules'     => $this->getModules($event),
         ));

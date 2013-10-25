@@ -33,7 +33,13 @@
                 <span class="zdt-detail-value">
                     <span class="zdt-toolbar-status zdt-toolbar-status-<?php echo ($this->has_intl) ? 'green' : 'red'; ?>"
                           title="<?php echo $intlText = 'intl extension ' . ($this->has_intl ? 'enabled' : 'disabled'); ?>"
-                    >intl</span>
+                        >intl</span>
+                    <span class="zdt-toolbar-status zdt-toolbar-status-<?php echo ($this->has_apc) ? 'green' : 'red'; ?>"
+                          title="<?php echo $apcText = 'apc extension ' . ($this->has_apc ? 'enabled' : 'disabled'); ?>"
+                        >apc</span>
+                     <span class="zdt-toolbar-status zdt-toolbar-status-<?php echo ($this->has_opcache) ? 'green' : 'red'; ?>"
+                           title="<?php echo $opcacheText = 'opcache extension ' . ($this->has_opcache ? 'enabled' : 'disabled'); ?>"
+                         >ZO+</span>
                 </span>
             </span>
             <?php if (isset($this->modules)) : ?>
