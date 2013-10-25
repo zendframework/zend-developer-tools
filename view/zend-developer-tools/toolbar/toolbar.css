@@ -15,6 +15,7 @@
     background: -o-linear-gradient(top, #333, #222);
     background: linear-gradient(top, #333, #222);
     font: normal 13px/40px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -moz-box-sizing: content-box;
 }
 
 #zend-developer-toolbar a {
