@@ -55,6 +55,27 @@ class Options extends AbstractOptions
     );
 
     /**
+     * @var array
+     */
+    protected $firePhp = array(
+        'enabled' => false,
+        'group_label' => 'Zend Developer Tools',
+        'group_options' => array(
+            'Collapsed' => false,
+            'Color'     => FirePhp\GroupOptionsProviderInterface::COLOR_ZF_GREEN,
+        ),
+        'logs' => array(
+            'zf2'                => 'ZendDeveloperTools\ZfLog',
+            'request'            => 'ZendDeveloperTools\RequestLog',
+            'time'               => 'ZendDeveloperTools\TimeLog',
+            'memory'             => 'ZendDeveloperTools\MemoryLog',
+            'config'             => 'ZendDeveloperTools\ConfigLog',
+            'application_config' => 'ZendDeveloperTools\ApplicationConfigLog',
+            'db'                 => 'ZendDeveloperTools\DbLog',
+        ),
+    );
+
+    /**
      * Overloading Constructor.
      *
      * @param  array|Traversable|null $options
@@ -291,5 +312,138 @@ class Options extends AbstractOptions
         return $this->toolbar['entries'];
     }
 
-    // todo: storage and firephp options.
+    /**
+     * Returns the FirePHP options
+     *
+     * @return array $firePhp
+     */
+    public function getFirePhp()
+    {
+        return $this->firePhp;
+    }
+
+    /**
+     * Set the FirePHP options
+     *
+     * @param array $options
+     * @return this
+     */
+    public function setFirePhp(array $options)
+    {
+        if (isset($options['enabled'])) {
+            $this->firePhp['enabled'] = (bool) $options['enabled'];
+        }
+
+        if (isset($options['group_label'])) {
+            $this->firePhp['group_label'] = (string) $options['group_label'];
+        }
+
+        if (isset($options['group_options'])) {
+            $this->setFirePhpGroupOptions($options['group_options']);
+        }
+
+        if (isset($options['logs'])) {
+            $this->setFirePhpLogs($options['logs']);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Is the FirePHP listener enabled?
+     *
+     * @return bool
+     */
+    public function isFirePhpEnabled()
+    {
+        return $this->firePhp['enabled'];
+    }
+
+    /**
+     * Returns the FirePHP group label.
+     *
+     * @return string
+     */
+    public function getFirePhpGroupLabel()
+    {
+        return $this->firePhp['group_label'];
+    }
+
+    /**
+     * Returns the FirePHP group options.
+     *
+     * @return array
+     */
+    public function getFirePhpGroupOptions()
+    {
+        return $this->firePhp['group_options'];
+    }
+
+    /**
+     * Sets FirePHP group options.
+     *
+     * @param array $options
+     * @return \ZendDeveloperTools\Options
+     */
+    public function setFirePhpGroupOptions(array $options)
+    {
+        if (!is_array($options)) {
+            $this->report->addError(sprintf(
+                '[\'zenddevelopertools\'][\'fire_php\'][\'group_options\'] must be an array, %s given.',
+                gettype($options)
+            ));
+
+            return $this;
+        }
+
+        foreach ($options as $name => $option) {
+            if (($option === false || $option === null)) {
+                unset($this->firePhp['group_options'][$name]);
+            } else {
+                $this->firePhp['group_options'][$name] = $option;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the FirePHP logs.
+     *
+     * @return array
+     */
+    public function getFirePhpLogs()
+    {
+        return $this->firePhp['logs'];
+    }
+
+    /**
+     * Sets FirePHP logs options.
+     *
+     * @param array $options
+     * @return \ZendDeveloperTools\Options
+     */
+    public function setFirePhpLogs(array $options)
+    {
+        if (!is_array($options)) {
+            $this->report->addError(sprintf(
+                '[\'zenddevelopertools\'][\'fire_php\'][\'logs\'] must be an array, %s given.',
+                gettype($options)
+            ));
+
+            return $this;
+        }
+
+        foreach ($options as $name => $log) {
+            if (($log === false || $log === null)) {
+                unset($this->firePhp['logs'][$name]);
+            } else {
+                $this->firePhp['logs'][$name] = $log;
+            }
+        }
+
+        return $this;
+    }
+
+    // todo: storage options.
 }

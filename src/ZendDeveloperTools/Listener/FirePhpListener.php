@@ -9,6 +9,8 @@
 
 namespace ZendDeveloperTools\Listener;
 
+use FirePHP;
+use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
 use ZendDeveloperTools\ProfilerEvent;
 use Zend\EventManager\EventManagerInterface;
@@ -27,6 +29,16 @@ class FirePhpListener implements ListenerAggregateInterface
     protected $serviceLocator;
 
     /**
+     * @var Options
+     */
+    protected $options;
+
+    /**
+     * @var FirePHP
+     */
+    protected $firePhp;
+
+    /**
      * @var array
      */
     protected $listeners = array();
@@ -36,9 +48,11 @@ class FirePhpListener implements ListenerAggregateInterface
      *
      * @param ServiceLocatorInterface $serviceLocator
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+    public function __construct(ServiceLocatorInterface $serviceLocator, Options $options, FirePHP $firePhp)
     {
         $this->serviceLocator = $serviceLocator;
+        $this->options        = $options;
+        $this->firePhp        = $firePhp;
     }
 
     /**
@@ -72,6 +86,33 @@ class FirePhpListener implements ListenerAggregateInterface
      */
     public function onCollected(ProfilerEvent $event)
     {
+        $firePhp = $this->firePhp;
+        $options = $this->options;
+        $report  = $event->getReport();
 
+        if (!$firePhp->getEnabled() || !$firePhp->detectClientExtension()) {
+            return;
+        }
+
+        $logs       = $options->getFirePhpLogs();
+        $collectors = $this->options->getCollectors();
+
+        $firePhp->group($options->getFirePhpGroupLabel(), $options->getFirePhpGroupOptions());
+
+        foreach ($logs as $name => $logKey) {
+            $log = $this->serviceLocator->get($logKey);
+
+            if (!$log instanceof \ZendDeveloperTools\FirePhp\LogWriterInterface) {
+                throw new \RuntimeException('FirePHP log has to implement LogWriterInterface');
+            }
+
+            if (isset($collectors[$name])) {
+                $log->setCollector($report->getCollector($name));
+            }
+
+            $log->writeLog();
+        }
+
+        $firePhp->groupEnd();
     }
 }
