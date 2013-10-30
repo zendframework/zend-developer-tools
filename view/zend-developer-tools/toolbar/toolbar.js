@@ -12,11 +12,16 @@
         var container = document.getElementById("zend-developer-toolbar");
         /** @type {number} */
         var width = container.offsetWidth;
+        /** @type {number} */
+        var windowWidthDifference = window.innerWidth - width;
         /** @type {HTMLElement} */
         var toggleTrigger = document.getElementById("zdf-toolbar-toggle");
         /** @type {boolean} */
         var hidden;
+        /** @type {string} */
         var cookieKeyHidden = "zdt-hidden";
+        /** @type {number} */
+        var widthHiddenState = 25;
 
         self.toggle = function() {
             !self.isHidden() ? self.hide() : self.show();
@@ -35,7 +40,7 @@
         };
 
         self.hide = function() {
-            slide((25 - width));
+            slide((widthHiddenState - width));
 
             toggleTrigger.innerHTML = "►";
             toggleTrigger.setAttribute("title", "Show Toolbar");
@@ -65,7 +70,8 @@
         }
 
         function initEvents() {
-            toggleTrigger.addEventListener("click", self.toggle);
+            bindEvent(toggleTrigger, "click", self.toggle);
+            bindEvent(window, "resize", resize);
         }
 
         /**
@@ -102,6 +108,28 @@
             container.style.left = newPosition + "px";
 
             setTimeout(function() { slide(toPosition); }, 3);
+        }
+
+        /**
+         * @param {HTMLElement} node
+         * @param {string} event
+         * @param {function} handler
+         */
+        function bindEvent(node, event, handler) {
+            if (node.attachEvent) {
+                node.attachEvent("on" + event, handler);
+            } else if (node.addEventListener) {
+                node.addEventListener(event, handler, false);
+            }
+        }
+
+        function resize() {
+            var newWidth = window.innerWidth - windowWidthDifference;
+
+            container.style.width = newWidth + "px";
+            width = newWidth;
+
+            self.isHidden() ? self.hide() : self.show();
         }
 
         return self;
