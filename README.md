@@ -14,7 +14,7 @@ Installation
    ```
    or download it directly from github and place it in your application's `module/` directory.
 2. Add the `ZendDeveloperTools` module to the module section of your `config/application.config.php`
-3. Copy `ZendDeveloperTools/config/zenddevelopertools.local.php.dist` to
+3. Copy `./vendor/zendframework/zend-developer-tools/config/zenddevelopertools.local.php.dist` to
    `./config/autoload/zenddevelopertools.local.php`. Change any settings in it
    according to your needs.
 4. If server version of PHP is lower than 5.4.0 add the following in your `index.php`:
