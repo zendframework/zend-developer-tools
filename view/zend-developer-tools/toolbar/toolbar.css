@@ -8,12 +8,12 @@
     position: fixed;
     border-top: 1px solid #111;
     background: #2C2C2C;
-    background: -moz-linear-gradient(top,#333, #222);
-    background: -ms-linear-gradient(top,#333, #222);
+    background: -moz-linear-gradient(to bottom,#333, #222);
+    background: -ms-linear-gradient(to bottom,#333, #222);
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#222));
-    background: -webkit-linear-gradient(top, 333, #222);
-    background: -o-linear-gradient(top, #333, #222);
-    background: linear-gradient(top, #333, #222);
+    background: -webkit-linear-gradient(to bottom, 333, #222);
+    background: -o-linear-gradient(to bottom, #333, #222);
+    background: linear-gradient(to bottom, #333, #222);
     font: normal 13px/40px 'Helvetica Neue', Helvetica, Arial, sans-serif;
     direction: ltr;
 }
