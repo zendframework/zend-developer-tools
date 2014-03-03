@@ -86,7 +86,7 @@ class Module implements
 
         $options = $sm->get('ZendDeveloperTools\Config');
 
-        if (!$options->isEnabled()) {
+        if (!$options->isToolbarEnabled()) {
             return;
         }
 
