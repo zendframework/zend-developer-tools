@@ -9,6 +9,8 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use Zend\EventManager\Event;
+use ZendDeveloperTools\EventLogging\EventContextProvider;
 
 /**
  * Memory Data Collector.
@@ -49,11 +51,19 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
      * Saves the current memory usage.
      *
      * @param string $id
-     * @param array $context
+     * @param Event  $event
      */
-    public function collectEvent($id, $context)
+    public function collectEvent($id, Event $event)
     {
+        $contextProvider   = new EventContextProvider($event);
+        $context['name']   = $contextProvider->getEvent()->getName();
+        $context['target'] = $contextProvider->getEventTarget();
+        $context['file']   = $contextProvider->getEventTriggerFile();
+        $context['line']   = $contextProvider->getEventTriggerLine();
         $context['memory'] = memory_get_usage(true);
+
+        unset($contextProvider);
+
         if (!isset($this->data['event'][$id])) {
             $this->data['event'][$id] = array();
         }

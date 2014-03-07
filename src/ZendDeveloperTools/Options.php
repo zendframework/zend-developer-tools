@@ -44,8 +44,8 @@ class Options extends AbstractOptions
     protected $events = array(
         'enabled'    => false,
         'collectors' => array(
-            'memory'    => 'ZendDeveloperTools\MemoryCollector',
-            'time'      => 'ZendDeveloperTools\TimeCollector',
+            'memory' => 'ZendDeveloperTools\MemoryCollector',
+            'time'   => 'ZendDeveloperTools\TimeCollector',
         ),
         'identifiers' => array(
         	'all' => '*'
