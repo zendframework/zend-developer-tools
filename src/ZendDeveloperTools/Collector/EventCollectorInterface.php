@@ -16,10 +16,11 @@ namespace ZendDeveloperTools\Collector;
 interface EventCollectorInterface
 {
     /**
-     * Saves the current time in microseconds for an specific event.
+     * Collects event-level information
      *
-     * @param string                          $id
-     * @param \Zend\EventManager\Event|string $event
+     * @param string $id The
+     * @param array  $context Array of contextual information to be used in the collector. Currently the file that
+     *                        triggered the event, the line number, and target classname.
      */
-    public function collectEvent($id, $event);
+    public function collectEvent($id, $context);
 }

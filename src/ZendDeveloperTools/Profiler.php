@@ -209,7 +209,6 @@ class Profiler implements EventManagerAwareInterface
         if (isset($this->collectors)) {
             foreach ($this->collectors as $collector) {
                 $collector->collect($mvcEvent);
-
                 $this->report->addCollector(unserialize(serialize($collector)));
             }
 

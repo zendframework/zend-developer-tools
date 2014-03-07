@@ -100,6 +100,10 @@ class Module implements
             throw new Exception\InvalidOptionException(implode(' ', $report->getErrors()));
         }
 
+        if ($options->eventCollectionEnabled()) {
+            $sem->attachAggregate($sm->get('ZendDeveloperTools\EventListener'));
+        }
+
         $em->attachAggregate($sm->get('ZendDeveloperTools\ProfilerListener'));
 
         if ($options->isToolbarEnabled()) {
@@ -175,7 +179,7 @@ class Module implements
                     $config = $sm->get('Configuration');
                     $config = isset($config['zenddevelopertools']) ? $config['zenddevelopertools'] : null;
 
-                    return new Options($config, $sm->get('ZendDeveloperTools\Report'));
+                    return new Options($sm->get('ZendDeveloperTools\Report'), $config);
                 },
                 'ZendDeveloperTools\Event' => function ($sm) {
                     $event = new ProfilerEvent();
@@ -192,6 +196,9 @@ class Module implements
                 },
                 'ZendDeveloperTools\ProfilerListener' => function ($sm) {
                     return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));
+                },
+                'ZendDeveloperTools\EventListener' => function ($sm) {
+                    return new Listener\EventListener($sm, $sm->get('ZendDeveloperTools\Config'));
                 },
                 'ZendDeveloperTools\DbCollector' => function ($sm) {
                     $p  = false;

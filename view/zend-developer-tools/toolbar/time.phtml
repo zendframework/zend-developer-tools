@@ -5,15 +5,16 @@
             <?php echo $this->ZendDeveloperToolsTime($this->collector->getExecutionTime()); ?>
         </span>
     </div>
-    <div class="zdt-toolbar-detail<?php echo ($this->collector->hasEventTimes()) ? '' : ' zdt-toolbar-detail-redundant' ;?>">
+    <div class="zdt-toolbar-detail<?php echo ($this->collector->hasEventTimes()) ? ' zdt-toolbar-detail-overflow' : ' zdt-toolbar-detail-redundant' ;?>">
         <?php
         if ($this->collector->hasEventTimes()) {
             foreach ($this->collector->getApplicationEventTimes() as $key => $value) {
                 echo '<span class="zdt-toolbar-info">';
-                printf('<span class="zdt-detail-label">%s</span>', $key);
+                printf('<span class="zdt-detail-label">%d. %s</span>', ($key + 1), $value['name']);
                 echo '<span class="zdt-detail-value zdt-detail-value-right">';
-                echo $this->ZendDeveloperToolsTime($value);
+                echo $this->ZendDeveloperToolsTime($value['elapsed']);
                 echo '</span>';
+                printf('<div class="zdt-detail-context">File: %s - Line: %s<br>Target: %s</div>', $value['file'], $value['line'], $value['target']);
                 echo '</span>';
             }
         }

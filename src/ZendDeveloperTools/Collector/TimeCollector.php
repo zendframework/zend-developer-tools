@@ -6,15 +6,12 @@
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  */
-
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
-use Zend\EventManager\Event;
 
 /**
  * Time Data Collector.
- *
  */
 class TimeCollector extends AbstractCollector implements EventCollectorInterface
 {
@@ -59,21 +56,16 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
      * Saves the current time in microseconds for a specific event.
      *
      * @param string $id
-     * @param string $name
+     * @param array  $context
      */
-    public function collectEvent($id, $name)
+    public function collectEvent($id, $context)
     {
-        if (!isset($this->data)) {
-            $this->data = array();
-        }
-        if (!isset($this->data['event'])) {
-            $this->data['event'] = array();
-        }
+        $context['time'] = microtime(true);
         if (!isset($this->data['event'][$id])) {
             $this->data['event'][$id] = array();
         }
 
-        $this->data['event'][$id][$name] = microtime(true);
+        $this->data['event'][$id][] = $context;
     }
 
     /**
@@ -121,34 +113,14 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
 
         $app = $this->data['event']['application'];
 
-        if (isset($app['bootstrap'])) {
-            $result['request'] = $app['bootstrap'] - $this->data['start'];
-        }
-
-        if (isset($app['bootstrap']) && isset($app['route'])) {
-            $result['bootstrap'] = $app['route'] - $app['bootstrap'];
-        }
-
-        if (isset($app['dispatch']) && isset($app['route'])) {
-            $result['route'] = $app['dispatch']- $app['route'];
-        }
-        if (isset($app['dispatch.error']) && isset($app['route'])) {
-            $result['route'] = $app['dispatch.error']- $app['route'];
-        }
-
-        if (isset($app['dispatch']) && isset($app['render'])) {
-            $result['dispatch'] = $app['render'] - $app['dispatch'];
-        }
-        if (isset($app['dispatch.error']) && isset($app['render'])) {
-            $result['dispatch (e)'] = $app['render'] - $app['dispatch.error'];
-        }
-
-        if (isset($app['render']) && isset($app['finish'])) {
-            $result['render'] = $app['finish'] - $app['render'];
-        }
-
-        if (isset($app['finish'])) {
-            $result['finish'] = $this->data['end'] - $app['finish'];
+        $previous = null;
+        while (list($index, $context) = each($app)) {
+            $result[$index] = $context;
+            $result[$index]['elapsed'] = ($previous)
+                ? ($context['time'] - $previous['time'])
+                : ($context['time'] - $this->data['start']);
+            $previous = prev($app);
+            next($app);
         }
 
         return $result;

@@ -1,15 +1,15 @@
 #zend-developer-toolbar {
     left: 0;
     bottom: 0;
-    width:100%;
+    width: 100%;
     height: 40px;
     color: #eee;
     z-index: 1337;
     position: fixed;
     border-top: 1px solid #111;
     background: #2C2C2C;
-    background: -moz-linear-gradient(to bottom,#333, #222);
-    background: -ms-linear-gradient(to bottom,#333, #222);
+    background: -moz-linear-gradient(to bottom, #333, #222);
+    background: -ms-linear-gradient(to bottom, #333, #222);
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#222));
     background: -webkit-linear-gradient(to bottom, 333, #222);
     background: -o-linear-gradient(to bottom, #333, #222);
@@ -31,8 +31,7 @@
     font-weight: bold;
 }
 
-.zdt-toolbar-entry,
-.zdt-toolbar-detail {
+.zdt-toolbar-entry,.zdt-toolbar-detail {
     float: left;
     display: block;
     padding: 0 8px;
@@ -93,8 +92,7 @@
     border-top-right-radius: 5px;
 }
 
-.zdt-toolbar-detail:before,
-.zdt-toolbar-detail:after {
+.zdt-toolbar-detail:before,.zdt-toolbar-detail:after {
     content: '';
     width: 0;
     height: 0;
@@ -106,13 +104,23 @@
     border-right: 8px solid transparent;
 }
 
+.zdt-toolbar-detail-overflow {
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    max-height: 475px;
+}
+
+.zdt-toolbar-detail-overflow:before, .zdt-toolbar-detail-overflow:after {
+    display: none;
+}
+
 .zdt-toolbar-detail-redundant {
     display: none;
     opacity: 0;
 }
 
-.zdt-toolbar-detail .zdt-toolbar-info-redundant,
-.zdt-toolbar-detail .zdt-toolbar-extra-info-redundant {
+.zdt-toolbar-detail .zdt-toolbar-info-redundant,.zdt-toolbar-detail .zdt-toolbar-extra-info-redundant
+    {
     display: none;
 }
 
@@ -137,6 +145,21 @@
     min-width: 100px;
     font-weight: bold;
     text-transform: capitalize;
+}
+
+.zdt-toolbar-info .zdt-detail-context {
+    text-align: left;
+    clear: both;
+    min-width: 100px;
+    color: #aaaaaa;
+    font-size: 9px;
+    margin-bottom: 3px;;
+    line-height: 10px;
+    white-space: nowrap;
+}
+
+.zdt-toolbar-detail-overflow .zdt-detail-context {
+    padding-right: 15px;
 }
 
 .zdt-toolbar-info .zdt-detail-label:after {
@@ -217,8 +240,8 @@
     text-decoration: none;
 }
 
-#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-detail,
-#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-info {
+#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-detail,#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-info
+    {
     font-size: 11px;
     max-width: 700px;
 }
@@ -238,11 +261,9 @@
     .zdt-toolbar-preview .zdt-toolbar-extra-info {
         display: none;
     }
-
     .zdt-toolbar-entry:hover .zdt-toolbar-extra-info-redundant {
         display: block;
     }
-
     .zdt-toolbar-preview .zdt-toolbar-spacing {
         margin: 0;
     }
@@ -252,12 +273,10 @@
     .zdt-toolbar-preview .zdt-toolbar-info {
         display: none;
     }
-
     .zdt-toolbar-entry:hover .zdt-toolbar-detail-redundant {
         display: block;
         opacity: 1;
     }
-
     .zdt-toolbar-entry:hover .zdt-toolbar-info-redundant {
         display: block;
     }
@@ -270,7 +289,7 @@
 }
 
 @media print {
-    #zend-developer-toolbar{
+    #zend-developer-toolbar {
         display: none;
     }
 }
