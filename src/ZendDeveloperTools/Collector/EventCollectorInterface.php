@@ -9,6 +9,7 @@
 
 namespace ZendDeveloperTools\Collector;
 
+use Zend\EventManager\Event;
 /**
  * Event Data Collector Interface.
  *
@@ -18,9 +19,8 @@ interface EventCollectorInterface
     /**
      * Collects event-level information
      *
-     * @param string $id The
-     * @param array  $context Array of contextual information to be used in the collector. Currently the file that
-     *                        triggered the event, the line number, and target classname.
+     * @param string $id
+     * @param Event  $event
      */
-    public function collectEvent($id, $context);
+    public function collectEvent($id, Event $event);
 }

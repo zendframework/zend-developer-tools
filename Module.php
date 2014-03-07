@@ -101,7 +101,7 @@ class Module implements
         }
 
         if ($options->eventCollectionEnabled()) {
-            $sem->attachAggregate($sm->get('ZendDeveloperTools\EventListener'));
+            $sem->attachAggregate($sm->get('ZendDeveloperTools\EventLoggingListenerAggregate'));
         }
 
         $em->attachAggregate($sm->get('ZendDeveloperTools\ProfilerListener'));
@@ -197,8 +197,8 @@ class Module implements
                 'ZendDeveloperTools\ProfilerListener' => function ($sm) {
                     return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));
                 },
-                'ZendDeveloperTools\EventListener' => function ($sm) {
-                    return new Listener\EventListener($sm, $sm->get('ZendDeveloperTools\Config'));
+                'ZendDeveloperTools\EventLoggingListenerAggregate' => function ($sm) {
+                    return new Listener\EventLoggingListenerAggregate($sm, $sm->get('ZendDeveloperTools\Config'));
                 },
                 'ZendDeveloperTools\DbCollector' => function ($sm) {
                     $p  = false;

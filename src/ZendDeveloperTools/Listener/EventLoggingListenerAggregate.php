@@ -8,14 +8,13 @@
  */
 namespace ZendDeveloperTools\Listener;
 
+use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
+use Zend\EventManager\SharedListenerAggregateInterface;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\EventManager\SharedListenerAggregateInterface;
-use Zend\EventManager\Event;
-use Zend\Debug\Debug;
-use Zend\EventManager\SharedEventManagerInterface;
 
 /**
  * Listens to defined events to allow event-level collection of statistics.
@@ -23,7 +22,7 @@ use Zend\EventManager\SharedEventManagerInterface;
  * @author Mark Garrett <mark@moderndeveloperllc.com>
  * @since 0.0.3
  */
-class EventListener implements SharedListenerAggregateInterface
+class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
 {
 
     /**
@@ -90,14 +89,14 @@ class EventListener implements SharedListenerAggregateInterface
      */
     public function onCollectEvent(Event $event)
     {
-        $eventContext = $this->provideEventContext($event);
+
         $strict = $this->options->isStrict();
         $collectors = $this->options->getEventCollectors();
         $report = $this->serviceLocator->get('ZendDeveloperTools\Report');
 
         foreach ($collectors as $name => $collector) {
             if ($this->serviceLocator->has($collector)) {
-                $this->serviceLocator->get($collector)->collectEvent('application', $eventContext);
+                $this->serviceLocator->get($collector)->collectEvent('application', $event);
             } else {
                 $error = sprintf('Unable to fetch or create an instance for %s.', $collector);
                 if ($strict === true) {
@@ -107,23 +106,5 @@ class EventListener implements SharedListenerAggregateInterface
                 }
             }
         }
-    }
-
-    /**
-     * Build the event context array for use with event-level collectors.
-     *
-     * @param Event $event
-     * @return string
-     */
-    private function provideEventContext(Event $event)
-    {
-        $context = array();
-        $backtrace = debug_backtrace();
-        $context['name'] = $event->getName();
-        $context['file'] = basename(dirname($backtrace[4]['file'])) . '/' . basename($backtrace[4]['file']);
-        $context['line'] = $backtrace[4]['line'];
-        $context['target'] = (is_object($event->getTarget())) ? get_class($event->getTarget()) : $event->getTarget();
-
-        return $context;
     }
 }

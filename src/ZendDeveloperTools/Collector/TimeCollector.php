@@ -9,6 +9,8 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use Zend\EventManager\Event;
+use ZendDeveloperTools\EventLogging\EventContextProvider;
 
 /**
  * Time Data Collector.
@@ -56,11 +58,19 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
      * Saves the current time in microseconds for a specific event.
      *
      * @param string $id
-     * @param array  $context
+     * @param Event  $event
      */
-    public function collectEvent($id, $context)
+    public function collectEvent($id, Event $event)
     {
-        $context['time'] = microtime(true);
+        $contextProvider   = new EventContextProvider($event);
+        $context['time']   = microtime(true);
+        $context['name']   = $contextProvider->getEvent()->getName();
+        $context['target'] = $contextProvider->getEventTarget();
+        $context['file']   = $contextProvider->getEventTriggerFile();
+        $context['line']   = $contextProvider->getEventTriggerLine();
+
+        unset($contextProvider);
+
         if (!isset($this->data['event'][$id])) {
             $this->data['event'][$id] = array();
         }
