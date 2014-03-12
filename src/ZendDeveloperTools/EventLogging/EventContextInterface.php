@@ -1,7 +1,7 @@
 <?php
 namespace ZendDeveloperTools\EventLogging;
 
-use Zend\EventManager\Event;
+use Zend\EventManager\EventInterface;
 
 /**
  * Interface for classes that want to provide event context in the event-level collectors.
@@ -15,7 +15,7 @@ interface EventContextInterface
      *
      * @return null
      */
-    public function setEvent(Event $event);
+    public function setEvent(EventInterface $event);
 
     /**
      * Collector Priority.

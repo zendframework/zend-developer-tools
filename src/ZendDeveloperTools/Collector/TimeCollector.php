@@ -69,8 +69,6 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
         $context['file']   = $contextProvider->getEventTriggerFile();
         $context['line']   = $contextProvider->getEventTriggerLine();
 
-        unset($contextProvider);
-
         if (!isset($this->data['event'][$id])) {
             $this->data['event'][$id] = array();
         }

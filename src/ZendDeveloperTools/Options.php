@@ -72,11 +72,11 @@ class Options extends AbstractOptions
     /**
      * Overloading Constructor.
      *
-     * @param  ReportInterface        $report
      * @param  array|Traversable|null $options
+     * @param  ReportInterface        $report
      * @throws \Zend\Stdlib\Exception\InvalidArgumentException
      */
-    public function __construct(ReportInterface $report, $options = null)
+    public function __construct($options, ReportInterface $report)
     {
         $this->report = $report;
 

@@ -1,7 +1,7 @@
 <?php
 namespace ZendDeveloperTools\EventLogging;
 
-use Zend\EventManager\Event;
+use Zend\EventManager\EventInterface;
 
 /**
  * Class to provide context information for a passed event.
@@ -11,7 +11,7 @@ use Zend\EventManager\Event;
 class EventContextProvider implements EventContextInterface
 {
     /**
-     * @var Event
+     * @var EventInterface
      */
     protected $event;
 
@@ -22,13 +22,12 @@ class EventContextProvider implements EventContextInterface
     private $debugBacktrace = array();
 
     /**
-     *
-     * @param Event $event (Optional) The event to provide context to. The event must be set either here or with
-     * {@see setEvent()} before any other methods can be used.
+     * @param EventInterface $event (Optional) The event to provide context to. The event must be set either here or
+     * with {@see setEvent()} before any other methods can be used.
      */
-    public function __construct(Event $event = null)
+    public function __construct(EventInterface $event = null)
     {
-        if (is_a($event, 'Zend\EventManager\EventInterface')) {
+        if ($event) {
             $this->setEvent($event);
         }
     }
@@ -38,7 +37,7 @@ class EventContextProvider implements EventContextInterface
      * @param  Event $event The event to add context to.
      * @return null
      */
-    public function setEvent(Event $event)
+    public function setEvent(EventInterface $event)
     {
         $this->event = $event;
     }
@@ -76,7 +75,7 @@ class EventContextProvider implements EventContextInterface
      *
      * @return string
      */
-    public function getDebugBacktrace()
+    private function getDebugBacktrace()
     {
         if (!$this->debugBacktrace) {
             //Remove the levels this method introduces

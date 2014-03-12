@@ -62,8 +62,6 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
         $context['line']   = $contextProvider->getEventTriggerLine();
         $context['memory'] = memory_get_usage(true);
 
-        unset($contextProvider);
-
         if (!isset($this->data['event'][$id])) {
             $this->data['event'][$id] = array();
         }
