@@ -179,7 +179,7 @@ class Module implements
                     $config = $sm->get('Configuration');
                     $config = isset($config['zenddevelopertools']) ? $config['zenddevelopertools'] : null;
 
-                    return new Options($sm->get('ZendDeveloperTools\Report'), $config);
+                    return new Options($config, $sm->get('ZendDeveloperTools\Report'));
                 },
                 'ZendDeveloperTools\Event' => function ($sm) {
                     $event = new ProfilerEvent();
