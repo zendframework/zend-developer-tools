@@ -15,6 +15,7 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
+use ZendDeveloperTools\ReportInterface;
 
 /**
  * Listens to defined events to allow event-level collection of statistics.
@@ -44,15 +45,23 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     protected $listeners = array();
 
     /**
+     *
+     * @var ReportInterface
+     */
+    protected $report;
+
+    /**
      * Constructor.
      *
      * @param ServiceLocatorInterface $serviceLocator
      * @param Options $options
+     * @param ReportInterface $report
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator, Options $options)
+    public function __construct(ServiceLocatorInterface $serviceLocator, Options $options, ReportInterface $report)
     {
-        $this->options = $options;
+        $this->options        = $options;
         $this->serviceLocator = $serviceLocator;
+        $this->report         = $report;
     }
 
     /**
@@ -89,10 +98,8 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
      */
     public function onCollectEvent(Event $event)
     {
-
         $strict = $this->options->isStrict();
         $collectors = $this->options->getEventCollectors();
-        $report = $this->serviceLocator->get('ZendDeveloperTools\Report');
 
         foreach ($collectors as $name => $collector) {
             if ($this->serviceLocator->has($collector)) {
@@ -102,7 +109,7 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
                 if ($strict === true) {
                     throw new ServiceNotFoundException($error);
                 } else {
-                    $report->addError($error);
+                    $this->report->addError($error);
                 }
             }
         }
