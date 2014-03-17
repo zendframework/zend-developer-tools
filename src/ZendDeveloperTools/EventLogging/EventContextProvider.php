@@ -94,7 +94,11 @@ class EventContextProvider implements EventContextInterface
     public function getEventTriggerFile()
     {
         $backtrace = $this->getDebugBacktrace();
-        return basename(dirname($backtrace[4]['file'])) . '/' . basename($backtrace[4]['file']);
+        if (file_exists($backtrace[4]['file'])) {
+            return basename(dirname($backtrace[4]['file'])) . '/' . basename($backtrace[4]['file']);
+        }
+
+        return '';
     }
 
     /**
@@ -105,6 +109,10 @@ class EventContextProvider implements EventContextInterface
     public function getEventTriggerLine()
     {
         $backtrace = $this->getDebugBacktrace();
-        return $backtrace[4]['line'];
+        if (isset($backtrace[4]['line'])) {
+            return $backtrace[4]['line'];
+        }
+
+        return '';
     }
 }
