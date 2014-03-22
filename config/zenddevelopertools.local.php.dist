@@ -11,7 +11,7 @@ return array(
              * Expects: bool
              * Default: false
              */
-            'enabled' => true,
+            'enabled' => false,
 
             /**
              * Enables or disables the strict mode. If the strict mode is
@@ -21,7 +21,7 @@ return array(
              * Expects: bool
              * Default: true
              */
-            'strict' => false,
+            'strict' => true,
 
             /**
              * If enabled, the profiler tries to flush the content before the it
