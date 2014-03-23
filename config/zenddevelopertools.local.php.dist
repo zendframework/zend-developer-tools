@@ -9,7 +9,7 @@ return array(
              * Enables or disables the profiler.
              *
              * Expects: bool
-             * Default: false
+             * Default: true
              */
             'enabled' => true,
 
@@ -21,7 +21,7 @@ return array(
              * Expects: bool
              * Default: true
              */
-            'strict' => false,
+            'strict' => true,
 
             /**
              * If enabled, the profiler tries to flush the content before the it
