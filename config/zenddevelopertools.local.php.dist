@@ -9,9 +9,9 @@ return array(
              * Enables or disables the profiler.
              *
              * Expects: bool
-             * Default: false
+             * Default: true
              */
-            'enabled' => false,
+            'enabled' => true,
 
             /**
              * Enables or disables the strict mode. If the strict mode is
