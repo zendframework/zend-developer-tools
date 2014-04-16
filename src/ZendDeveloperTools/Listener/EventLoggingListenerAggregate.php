@@ -25,7 +25,6 @@ use ZendDeveloperTools\ReportInterface;
  */
 class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
 {
-
     /**
      *
      * @var ServiceLocatorInterface
@@ -98,14 +97,18 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
      */
     public function onCollectEvent(Event $event)
     {
-        $strict = $this->options->isStrict();
+        $strict     = $this->options->isStrict();
         $collectors = $this->options->getEventCollectors();
 
-        foreach ($collectors as $name => $collector) {
+        foreach ($collectors as $collector) {
             if ($this->serviceLocator->has($collector)) {
-                $this->serviceLocator->get($collector)->collectEvent('application', $event);
+                /* @var $currentCollector \ZendDeveloperTools\Collector\EventCollectorInterface */
+                $currentCollector = $this->serviceLocator->get($collector);
+
+                $currentCollector->collectEvent('application', $event);
             } else {
                 $error = sprintf('Unable to fetch or create an instance for %s.', $collector);
+
                 if ($strict === true) {
                     throw new ServiceNotFoundException($error);
                 } else {
@@ -113,5 +116,7 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
                 }
             }
         }
+
+        return true; // @TODO workaround, to be removed when https://github.com/zendframework/zf2/pull/6147 is fixed
     }
 }
