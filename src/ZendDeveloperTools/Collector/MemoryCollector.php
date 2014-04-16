@@ -17,7 +17,6 @@ use ZendDeveloperTools\EventLogging\EventContextProvider;
  */
 class MemoryCollector extends AbstractCollector implements EventCollectorInterface
 {
-
     /**
      * @inheritdoc
      */

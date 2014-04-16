@@ -10,6 +10,7 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\EventManager\Event;
+
 /**
  * Event Data Collector Interface.
  *
