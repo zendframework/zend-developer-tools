@@ -29,7 +29,7 @@ return array(
              * is enabled.
              *
              * Note: The flush listener listens to the MvcEvent::EVENT_FINISH event
-             *       with a priority of -9400. You have to disable this function if
+             *       with a priority of -9400. You have to disbale this function if
              *       you wish to modify the output with a lower priority.
              *
              * Expects: bool
@@ -131,6 +131,60 @@ return array(
              * Expects: array
              */
             'entries' => array(),
+        ),
+        /**
+         * General FirePHP settings
+         */
+        'fire_php' => array(
+
+            /**
+             * Enables or disables the FirePHP-Listener.
+             *
+             * Expects: bool
+             * Default: false
+             */
+            'enabled' => true,
+
+            /**
+             * The label of main group wrapper element.
+             *
+             * Expects: string
+             * Default: Zend Developer Tools
+             */
+            'group_label' => 'Zend Developer Tools',
+
+            /**
+             * The group options of the main group wrapper element
+             *
+             * Example: 'group_options' => array('Collapsed' => false, 'Color' => GroupOptionsProviderInterface::COLOR_ZF_GREEN)
+             *
+             * Expects: array
+             */
+            'group_options' => array(
+                'Collapsed' => false,
+                'Color'     => \ZendDeveloperTools\FirePhp\GroupOptionsProviderInterface::COLOR_ZF_GREEN,
+            ),
+
+            /**
+             * Contains a list with all collector log writers. The name
+             * of the array key must be same as the name of the collector.
+             *             *
+             * Example: 'profiler' => array(
+             *              'collectors' => array(
+             *                  // My_Collector_Example::getName() -> mycollector
+             *                  'MyCollector' => 'My_Collector_Example',
+             *              )
+             *          ),
+             *          'toolbar' => array(
+             *              'entries' => array(
+             *                  'mycollector' => 'example/toolbar/my-collector',
+             *              )
+             *          ),
+             *
+             * Expects: array
+             */
+            'logs' => array(
+            ),
         ),
     ),
 );

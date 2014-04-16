@@ -102,6 +102,10 @@ class Module implements
 
         $em->attachAggregate($sm->get('ZendDeveloperTools\ProfilerListener'));
 
+        if ($options->isFirePhpEnabled()) {
+            $sem->attach('profiler', $sm->get('ZendDeveloperTools\FirePhpListener'), null);
+        }
+
         if ($options->isToolbarEnabled()) {
             $sem->attach('profiler', $sm->get('ZendDeveloperTools\ToolbarListener'), null);
         }
@@ -154,16 +158,25 @@ class Module implements
                 'ZendDeveloperTools\ReportInterface' => 'ZendDeveloperTools\Report',
             ),
             'invokables' => array(
-                'ZendDeveloperTools\Report'             => 'ZendDeveloperTools\Report',
-                'ZendDeveloperTools\EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
-                'ZendDeveloperTools\ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
-                'ZendDeveloperTools\RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
-                'ZendDeveloperTools\RequestCollector'   => 'ZendDeveloperTools\Collector\RequestCollector',
-                'ZendDeveloperTools\ConfigCollector'    => 'ZendDeveloperTools\Collector\ConfigCollector',
-                'ZendDeveloperTools\MailCollector'      => 'ZendDeveloperTools\Collector\MailCollector',
-                'ZendDeveloperTools\MemoryCollector'    => 'ZendDeveloperTools\Collector\MemoryCollector',
-                'ZendDeveloperTools\TimeCollector'      => 'ZendDeveloperTools\Collector\TimeCollector',
-                'ZendDeveloperTools\FlushListener'      => 'ZendDeveloperTools\Listener\FlushListener',
+                'ZendDeveloperTools\Report'               => 'ZendDeveloperTools\Report',
+                'ZendDeveloperTools\EventCollector'       => 'ZendDeveloperTools\Collector\EventCollector',
+                'ZendDeveloperTools\ExceptionCollector'   => 'ZendDeveloperTools\Collector\ExceptionCollector',
+                'ZendDeveloperTools\RouteCollector'       => 'ZendDeveloperTools\Collector\RouteCollector',
+                'ZendDeveloperTools\RequestCollector'     => 'ZendDeveloperTools\Collector\RequestCollector',
+                'ZendDeveloperTools\ConfigCollector'      => 'ZendDeveloperTools\Collector\ConfigCollector',
+                'ZendDeveloperTools\MailCollector'        => 'ZendDeveloperTools\Collector\MailCollector',
+                'ZendDeveloperTools\MemoryCollector'      => 'ZendDeveloperTools\Collector\MemoryCollector',
+                'ZendDeveloperTools\TimeCollector'        => 'ZendDeveloperTools\Collector\TimeCollector',
+                'ZendDeveloperTools\ZfCollector'          => 'ZendDeveloperTools\Collector\ZfCollector',
+                'ZendDeveloperTools\FlushListener'        => 'ZendDeveloperTools\Listener\FlushListener',
+                'ZendDeveloperTools\ApplicationConfigLog' => 'ZendDeveloperTools\FirePhp\ApplicationConfigLog',
+                'ZendDeveloperTools\ConfigLog'            => 'ZendDeveloperTools\FirePhp\ConfigLog',
+                'ZendDeveloperTools\DbLog'                => 'ZendDeveloperTools\FirePhp\DbLog',
+                'ZendDeveloperTools\MemoryLog'            => 'ZendDeveloperTools\FirePhp\MemoryLog',
+                'ZendDeveloperTools\RequestLog'           => 'ZendDeveloperTools\FirePhp\RequestLog',
+                'ZendDeveloperTools\TimeLog'              => 'ZendDeveloperTools\FirePhp\TimeLog',
+                'ZendDeveloperTools\ZfLog'                => 'ZendDeveloperTools\FirePhp\ZfLog',
+
             ),
             'factories' => array(
                 'ZendDeveloperTools\Profiler' => function ($sm) {
@@ -183,6 +196,17 @@ class Module implements
                     $event->setApplication($sm->get('Application'));
 
                     return $event;
+                },
+                'ZendDeveloperTools\FirePhp' => function ($sm) {
+                    $logger        = \FirePHP::init();
+                    return $logger;
+                },
+                'ZendDeveloperTools\FirePhpListener' => function ($sm) {
+                    return new Listener\FirePhpListener(
+                        $sm,
+                        $sm->get('ZendDeveloperTools\Config'),
+                        $sm->get('ZendDeveloperTools\FirePhp')
+                    );
                 },
                 'ZendDeveloperTools\StorageListener' => function ($sm) {
                     return new Listener\StorageListener($sm);
