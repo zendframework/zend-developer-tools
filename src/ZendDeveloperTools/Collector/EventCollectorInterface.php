@@ -9,6 +9,7 @@
 
 namespace ZendDeveloperTools\Collector;
 
+use Zend\EventManager\Event;
 /**
  * Event Data Collector Interface.
  *
@@ -16,10 +17,10 @@ namespace ZendDeveloperTools\Collector;
 interface EventCollectorInterface
 {
     /**
-     * Saves the current time in microseconds for an specific event.
+     * Collects event-level information
      *
-     * @param string                          $id
-     * @param \Zend\EventManager\Event|string $event
+     * @param string $id
+     * @param Event  $event
      */
-    public function collectEvent($id, $event);
+    public function collectEvent($id, Event $event);
 }
