@@ -14,6 +14,7 @@ use Zend\EventManager\SharedEventManagerInterface;
 use Zend\EventManager\SharedListenerAggregateInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZendDeveloperTools\Collector\CollectorInterface;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
 use ZendDeveloperTools\ReportInterface;
@@ -26,6 +27,11 @@ use ZendDeveloperTools\ReportInterface;
  */
 class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
 {
+    /**
+     * @var \ZendDeveloperTools\Collector\EventCollectorInterface[]
+     */
+    protected $collectors;
+
     /**
      * @var ServiceLocatorInterface
      */
@@ -45,14 +51,19 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     /**
      * Constructor.
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param \ZendDeveloperTools\Collector\EventCollectorInterface[] $collectors
      * @param Options $options
      * @param ReportInterface $report
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator, Options $options, ReportInterface $report)
+    public function __construct(array $collectors, Options $options, ReportInterface $report)
     {
+        $this->collectors     = array_map(
+            function (CollectorInterface $collector) {
+                return $collector;
+            },
+            $collectors
+        );
         $this->options        = $options;
-        $this->serviceLocator = $serviceLocator;
         $this->report         = $report;
     }
 
@@ -88,24 +99,11 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
      */
     public function onCollectEvent(Event $event)
     {
-        $strict     = $this->options->isStrict();
-        $collectors = $this->options->getEventCollectors();
+        foreach ($this->collectors as $collector) {
+            /* @var $currentCollector \ZendDeveloperTools\Collector\EventCollectorInterface */
+            $currentCollector = $this->serviceLocator->get($collector);
 
-        foreach ($collectors as $collector) {
-            if ($this->serviceLocator->has($collector)) {
-                /* @var $currentCollector \ZendDeveloperTools\Collector\EventCollectorInterface */
-                $currentCollector = $this->serviceLocator->get($collector);
-
-                $currentCollector->collectEvent('application', $event);
-            } else {
-                $error = sprintf('Unable to fetch or create an instance for %s.', $collector);
-
-                if ($strict === true) {
-                    throw new ServiceNotFoundException($error);
-                } else {
-                    $this->report->addError($error);
-                }
-            }
+            $currentCollector->collectEvent('application', $event);
         }
 
         return true; // @TODO workaround, to be removed when https://github.com/zendframework/zf2/pull/6147 is fixed
