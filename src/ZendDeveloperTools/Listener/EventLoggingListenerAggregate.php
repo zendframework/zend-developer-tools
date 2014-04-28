@@ -33,37 +33,30 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     protected $collectors;
 
     /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
-    /**
      * @var Options
      */
     protected $options;
 
     /**
-     * @var ReportInterface
-     */
-    protected $report;
-
-    /**
      * Constructor.
      *
      * @param \ZendDeveloperTools\Collector\EventCollectorInterface[] $collectors
-     * @param Options $options
-     * @param ReportInterface $report
+     * @param string[]                                                $identifiers
      */
-    public function __construct(array $collectors, Options $options, ReportInterface $report)
+    public function __construct(array $collectors, array $identifiers)
     {
-        $this->collectors     = array_map(
+        $this->collectors = array_map(
             function (CollectorInterface $collector) {
                 return $collector;
             },
             $collectors
         );
-        $this->options        = $options;
-        $this->report         = $report;
+        $this->identifiers = array_values(array_map(
+            function ($identifier) {
+                return (string) $identifier;
+            },
+            $identifiers
+        ));
     }
 
     /**
@@ -71,12 +64,7 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
      */
     public function attachShared(SharedEventManagerInterface $events)
     {
-        $events->attach(
-            array_values($this->options->getEventIdentifiers()),
-            '*',
-            array($this,'onCollectEvent'),
-            Profiler::PRIORITY_EVENT_COLLECTOR
-        );
+        $events->attach($this->identifiers, '*', array($this,'onCollectEvent'), Profiler::PRIORITY_EVENT_COLLECTOR);
     }
 
     /**
@@ -99,10 +87,7 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     public function onCollectEvent(Event $event)
     {
         foreach ($this->collectors as $collector) {
-            /* @var $currentCollector \ZendDeveloperTools\Collector\EventCollectorInterface */
-            $currentCollector = $this->serviceLocator->get($collector);
-
-            $currentCollector->collectEvent('application', $event);
+            $collector->collectEvent('application', $event);
         }
 
         return true; // @TODO workaround, to be removed when https://github.com/zendframework/zf2/pull/6147 is fixed
