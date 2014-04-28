@@ -198,11 +198,12 @@ class Module implements
                     return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));
                 },
                 'ZendDeveloperTools\EventLoggingListenerAggregate' => function ($sm) {
-                    return new Listener\EventLoggingListenerAggregate(
-                        $sm,
-                        $sm->get('ZendDeveloperTools\Config'),
-                        $sm->get('ZendDeveloperTools\Report')
-                    );
+                    /* @var $config \ZendDeveloperTools\Config */
+                    $config = $sm->get('ZendDeveloperTools\Config');
+                    /* @var $report \ZendDeveloperTools\Report */
+                    $report = $sm->get('ZendDeveloperTools\Report');
+
+                    return new Listener\EventLoggingListenerAggregate($sm, $config, $report);
                 },
                 'ZendDeveloperTools\DbCollector' => function ($sm) {
                     $p  = false;
