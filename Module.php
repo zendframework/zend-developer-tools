@@ -202,7 +202,7 @@ class Module implements
                     $config = $sm->get('ZendDeveloperTools\Config');
 
                     return new Listener\EventLoggingListenerAggregate(
-                        array_map([$sm, 'get'], $config->getEventCollectors()),
+                        array_map(array($sm, 'get'), $config->getEventCollectors()),
                         $config->getEventIdentifiers()
                     );
                 },
