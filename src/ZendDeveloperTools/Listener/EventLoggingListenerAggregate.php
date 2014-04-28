@@ -6,16 +6,16 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license http://framework.zend.com/license/new-bsd New BSD License
  */
+
 namespace ZendDeveloperTools\Listener;
 
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\EventManager\SharedListenerAggregateInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use ZendDeveloperTools\Collector\CollectorInterface;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
-use ZendDeveloperTools\ReportInterface;
 
 /**
  * Listens to defined events to allow event-level collection of statistics.
@@ -26,95 +26,66 @@ use ZendDeveloperTools\ReportInterface;
 class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
 {
     /**
-     *
-     * @var ServiceLocatorInterface
+     * @var \ZendDeveloperTools\Collector\EventCollectorInterface[]
      */
-    protected $serviceLocator;
+    protected $collectors;
 
     /**
-     *
      * @var Options
      */
     protected $options;
 
     /**
-     *
-     * @var array
-     */
-    protected $listeners = array();
-
-    /**
-     *
-     * @var ReportInterface
-     */
-    protected $report;
-
-    /**
      * Constructor.
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param Options $options
-     * @param ReportInterface $report
+     * @param \ZendDeveloperTools\Collector\EventCollectorInterface[] $collectors
+     * @param string[]                                                $identifiers
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator, Options $options, ReportInterface $report)
+    public function __construct(array $collectors, array $identifiers)
     {
-        $this->options        = $options;
-        $this->serviceLocator = $serviceLocator;
-        $this->report         = $report;
+        $this->collectors = array_map(
+            function (CollectorInterface $collector) {
+                return $collector;
+            },
+            $collectors
+        );
+        $this->identifiers = array_values(array_map(
+            function ($identifier) {
+                return (string) $identifier;
+            },
+            $identifiers
+        ));
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attachShared(SharedEventManagerInterface $events)
     {
-        $identifiers = array_values($this->options->getEventIdentifiers());
-        $this->listeners[] = $events->attach(
-            $identifiers,
-            '*',
-            array($this,'onCollectEvent'),
-            Profiler::PRIORITY_EVENT_COLLECTOR
-        );
+        $events->attach($this->identifiers, '*', array($this,'onCollectEvent'), Profiler::PRIORITY_EVENT_COLLECTOR);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function detachShared(SharedEventManagerInterface $events)
     {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
+        // can't be detached
     }
 
     /**
      * Callback to process events
      *
      * @param Event $event
+     *
+     * @return bool
+     *
      * @throws ServiceNotFoundException
      */
     public function onCollectEvent(Event $event)
     {
-        $strict     = $this->options->isStrict();
-        $collectors = $this->options->getEventCollectors();
-
-        foreach ($collectors as $collector) {
-            if ($this->serviceLocator->has($collector)) {
-                /* @var $currentCollector \ZendDeveloperTools\Collector\EventCollectorInterface */
-                $currentCollector = $this->serviceLocator->get($collector);
-
-                $currentCollector->collectEvent('application', $event);
-            } else {
-                $error = sprintf('Unable to fetch or create an instance for %s.', $collector);
-
-                if ($strict === true) {
-                    throw new ServiceNotFoundException($error);
-                } else {
-                    $this->report->addError($error);
-                }
-            }
+        foreach ($this->collectors as $collector) {
+            $collector->collectEvent('application', $event);
         }
 
         return true; // @TODO workaround, to be removed when https://github.com/zendframework/zf2/pull/6147 is fixed
