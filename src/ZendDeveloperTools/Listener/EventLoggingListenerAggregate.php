@@ -14,7 +14,6 @@ use Zend\EventManager\SharedEventManagerInterface;
 use Zend\EventManager\SharedListenerAggregateInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use ZendDeveloperTools\Collector\CollectorInterface;
-use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
 
 /**
@@ -31,9 +30,9 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     protected $collectors;
 
     /**
-     * @var Options
+     * @var The event identifiers to collect
      */
-    protected $options;
+    protected $identifiers;
 
     /**
      * Constructor.
