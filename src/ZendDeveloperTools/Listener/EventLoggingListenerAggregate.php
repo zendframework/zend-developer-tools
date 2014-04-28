@@ -13,11 +13,9 @@ use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\EventManager\SharedListenerAggregateInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use ZendDeveloperTools\Collector\CollectorInterface;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
-use ZendDeveloperTools\ReportInterface;
 
 /**
  * Listens to defined events to allow event-level collection of statistics.
