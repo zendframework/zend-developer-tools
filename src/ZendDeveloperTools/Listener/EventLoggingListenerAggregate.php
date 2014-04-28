@@ -6,6 +6,7 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license http://framework.zend.com/license/new-bsd New BSD License
  */
+
 namespace ZendDeveloperTools\Listener;
 
 use Zend\EventManager\Event;
@@ -26,7 +27,6 @@ use ZendDeveloperTools\ReportInterface;
 class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
 {
     /**
-     *
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
@@ -38,13 +38,6 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     protected $options;
 
     /**
-     *
-     * @var array
-     */
-    protected $listeners = array();
-
-    /**
-     *
      * @var ReportInterface
      */
     protected $report;
@@ -68,9 +61,8 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
      */
     public function attachShared(SharedEventManagerInterface $events)
     {
-        $identifiers = array_values($this->options->getEventIdentifiers());
-        $this->listeners[] = $events->attach(
-            $identifiers,
+        $events->attach(
+            array_values($this->options->getEventIdentifiers()),
             '*',
             array($this,'onCollectEvent'),
             Profiler::PRIORITY_EVENT_COLLECTOR
@@ -82,17 +74,16 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
      */
     public function detachShared(SharedEventManagerInterface $events)
     {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
+        // can't be detached
     }
 
     /**
      * Callback to process events
      *
      * @param Event $event
+     *
+     * @return bool
+     *
      * @throws ServiceNotFoundException
      */
     public function onCollectEvent(Event $event)
