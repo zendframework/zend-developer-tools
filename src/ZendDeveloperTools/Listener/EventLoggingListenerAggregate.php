@@ -38,7 +38,6 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     protected $serviceLocator;
 
     /**
-     *
      * @var Options
      */
     protected $options;
@@ -68,7 +67,7 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attachShared(SharedEventManagerInterface $events)
     {
@@ -81,7 +80,7 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function detachShared(SharedEventManagerInterface $events)
     {
