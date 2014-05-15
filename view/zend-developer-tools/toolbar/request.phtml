@@ -43,10 +43,11 @@ $color = ($this->collector->getStatusCode() < 400)
         </span>
         <?php 
         foreach($this->collector->getViews() as $key => $value){
-            $vars = $value['vars']->getArrayCopy();
-            $varsKey = array_keys($vars);
-            sort($varsKey);
-            
+            $varsKey = array();
+            if(is_array($value['vars'])){
+                $varsKey = array_keys($value['vars']);
+                sort($varsKey);
+            }            
             echo '<span class="zdt-toolbar-info">';
             printf('<span class="zdt-detail-label">%s</span>', $value['template']);
             printf('<p class="zdt-detail-context">&nbsp;&nbsp;%s</p>', implode('<br />&nbsp;&nbsp;',$varsKey));
