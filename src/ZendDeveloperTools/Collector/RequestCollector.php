@@ -9,6 +9,7 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use Zend\View\Variables;
 
 /**
  * Request Data Collector.
@@ -40,16 +41,25 @@ class RequestCollector extends AbstractCollector
         $views = array();
         $match = $mvcEvent->getRouteMatch();
         
+        $vars = $mvcEvent->getViewModel()->getVariables();
+        if($vars instanceof Variables){
+            $vars = $vars->getArrayCopy();
+        }
         $views[] = array(
             'template' => $mvcEvent->getViewModel()->getTemplate(),
-            'vars' => $mvcEvent->getViewModel()->getVariables()
+            'vars' => $vars
         );
         
         if ($mvcEvent->getViewModel()->hasChildren()) {
             foreach ($mvcEvent->getViewModel()->getChildren() as $child) {
+                $vars = $child->getVariables();
+                if($vars instanceof Variables){
+                    $vars = $vars->getArrayCopy();
+                }
+                
                 $views[] = array(
                     'template' => $child->getTemplate(),
-                    'vars' => $child->getVariables()
+                    'vars' => $vars
                 );
             }
         }
@@ -57,7 +67,7 @@ class RequestCollector extends AbstractCollector
         if (empty($views)) {
             $views[] = array(
                 'template' => 'N/A',
-                'vars' => 'N/A'
+                'vars' => array()
             );
         }
         
