@@ -84,12 +84,13 @@ class Module implements
         $sem = $em->getSharedManager();
         $sm  = $app->getServiceManager();
 
-        $options = $sm->get('ZendDeveloperTools\Config');
+        $profiler = $sm->get('ZendDeveloperTools\Profiler');
 
-        if (!$options->isToolbarEnabled()) {
+        if (!$profiler->isEnabled()) {
             return;
         }
 
+        $options = $profiler->getOptions();
         $report = $sm->get('ZendDeveloperTools\Report');
 
         if ($options->canFlushEarly()) {
@@ -158,6 +159,7 @@ class Module implements
                 'ZendDeveloperTools\ReportInterface' => 'ZendDeveloperTools\Report',
             ),
             'invokables' => array(
+                'ZendDeveloperTools\MatchManager'       => 'ZendDeveloperTools\MatchManager',
                 'ZendDeveloperTools\Report'             => 'ZendDeveloperTools\Report',
                 'ZendDeveloperTools\EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
                 'ZendDeveloperTools\ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
@@ -171,7 +173,7 @@ class Module implements
             ),
             'factories' => array(
                 'ZendDeveloperTools\Profiler' => function ($sm) {
-                    $a = new Profiler($sm->get('ZendDeveloperTools\Report'));
+                    $a = new Profiler($sm->get('ZendDeveloperTools\Report'), $sm->get('ZendDeveloperTools\Config'), $sm->get('ZendDeveloperTools\MatchManager'));
                     $a->setEvent($sm->get('ZendDeveloperTools\Event'));
                     return $a;
                 },

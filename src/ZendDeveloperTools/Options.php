@@ -48,7 +48,7 @@ class Options extends AbstractOptions
             'time'   => 'ZendDeveloperTools\TimeCollector',
         ),
         'identifiers' => array(
-        	'all' => '*'
+            'all' => '*'
         )
     );
 
@@ -282,7 +282,16 @@ class Options extends AbstractOptions
         return $this->profiler['cache_dir'];
     }
 
-    // todo: getter for matcher
+    /**
+     * Returns the matcher
+     *
+     * @return array
+     */
+    public function getMatcher()
+    {
+        return $this->profiler['matcher'];
+    }
+    
 
     /**
      * Returns the collectors.
