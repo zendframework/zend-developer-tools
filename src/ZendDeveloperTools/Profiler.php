@@ -75,6 +75,16 @@ class Profiler implements EventManagerAwareInterface
      * @var ReportInterface
      */
     protected $report;
+    
+    /**
+     * @var Options
+     */
+    protected $options;
+    
+    /**
+     * @var MatchManager
+     */
+    protected $matchManager;
 
     /**
      * @var PriorityQueue
@@ -91,11 +101,54 @@ class Profiler implements EventManagerAwareInterface
      *
      * @param ReportInterface $report
      */
-    public function __construct(ReportInterface $report)
+    public function __construct(ReportInterface $report, Options $options, MatchManager $matchManager)
     {
         $this->report = $report;
+        $this->options = $options;
+        $this->matchManager = $matchManager;
     }
 
+    /**
+     * Is the Profiler enabled?
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        $options = $this->getOptions();
+        $enabled = $options->isEnabled();
+        $matcher = $options->getMatcher();
+        foreach ($matcher as $key => $pattern) {
+            /* @var $match Match\MatchInterface */
+            $match = $this->getMatchManager()->get($key);
+            if (!$match->matches($pattern)) {
+                return false;
+            }
+        }
+    
+        return $enabled;
+    }
+    
+    /**
+     * Returns Options object
+     *
+     * @return Options
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+    
+    /**
+     * Returns MatchManager object
+     *
+     * @return MatchManager
+     */
+    public function getMatchManager()
+    {
+        return $this->matchManager;
+    }
+    
     /**
      * Set the error mode.
      *
