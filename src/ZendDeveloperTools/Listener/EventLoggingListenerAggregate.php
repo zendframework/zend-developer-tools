@@ -86,7 +86,5 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
         foreach ($this->collectors as $collector) {
             $collector->collectEvent('application', $event);
         }
-
-        return true; // @TODO workaround, to be removed when https://github.com/zendframework/zf2/pull/6147 is fixed
     }
 }
