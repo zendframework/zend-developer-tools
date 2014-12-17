@@ -209,7 +209,9 @@ class Options extends AbstractOptions
         if (isset($options['enabled'])) {
             $this->toolbar['enabled'] = (bool) $options['enabled'];
         }
-
+        if (isset($options['auto_hide'])) {
+            $this->toolbar['auto_hide'] = (bool) $options['auto_hide'];
+        }
         if (isset($options['version_check'])) {
             $this->toolbar['version_check'] = (bool) $options['version_check'];
         }
