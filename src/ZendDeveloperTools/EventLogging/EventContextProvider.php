@@ -66,19 +66,31 @@ class EventContextProvider implements EventContextInterface
     public function getEventTarget()
     {
         $event = $this->getEvent();
-        $target = $event->getTarget();
 
+        return $this->getEventTargetAsString($event->getTarget());
+    }
+
+    /**
+     * Determines a string label to represent an event target.
+     *
+     * @param mixed $target
+     * @return String
+     */
+    private function getEventTargetAsString($target)
+    {
         if (is_object($target)) {
             return get_class($target);
-        } elseif (is_array($target)) {
-            return 'Array';
-        } elseif (is_resource($target)) {
+        }
+
+        if (is_resource($target)) {
             return get_resource_type($target);
-        } elseif (is_scalar($target)) {
+        }
+
+        if (is_scalar($target)) {
             return (string) $target;
         }
 
-        return 'Unknown';
+        return gettype($target);
     }
 
     /**
