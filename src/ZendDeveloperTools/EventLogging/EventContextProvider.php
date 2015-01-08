@@ -66,7 +66,19 @@ class EventContextProvider implements EventContextInterface
     public function getEventTarget()
     {
         $event = $this->getEvent();
-        return (is_object($event->getTarget())) ? get_class($event->getTarget()) : (string) $event->getTarget();
+        $target = $event->getTarget();
+
+        if (is_object($target)) {
+            return get_class($target);
+        } elseif (is_array($target)) {
+            return 'Array';
+        } elseif (is_resource($target)) {
+            return get_resource_type($target);
+        } elseif (is_scalar($target)) {
+            return (string) $target;
+        }
+
+        return 'Unknown';
     }
 
     /**
