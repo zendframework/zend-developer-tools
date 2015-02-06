@@ -6,9 +6,11 @@
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  */
+
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ModelInterface;
 use Zend\View\Variables;
 
 /**
@@ -16,7 +18,6 @@ use Zend\View\Variables;
  */
 class RequestCollector extends AbstractCollector
 {
-
     /**
      * @inheritdoc
      */
@@ -40,37 +41,33 @@ class RequestCollector extends AbstractCollector
     {
         $views = array();
         $match = $mvcEvent->getRouteMatch();
-        
-        $vars = $mvcEvent->getViewModel()->getVariables();
-        if($vars instanceof Variables){
-            $vars = $vars->getArrayCopy();
-        }
-        $views[] = array(
-            'template' => $mvcEvent->getViewModel()->getTemplate(),
-            'vars' => $vars
-        );
-        
-        if ($mvcEvent->getViewModel()->hasChildren()) {
-            foreach ($mvcEvent->getViewModel()->getChildren() as $child) {
+        $viewModel = $mvcEvent->getViewModel();
+
+        $addToView = function ($template, $vars) use ($views) {
+            $vars = array_keys($vars);
+            sort($vars);
+
+            $views[] = array(
+                'template' => $template,
+                'vars' => (array) $vars,
+            );
+        };
+        $addToViewFromModel = function (ModelInterface $child) use ($addToView) {
                 $vars = $child->getVariables();
-                if($vars instanceof Variables){
+
+                if ($vars instanceof Variables) {
                     $vars = $vars->getArrayCopy();
                 }
-                
-                $views[] = array(
-                    'template' => $child->getTemplate(),
-                    'vars' => $vars
-                );
-            }
-        }
-        
+                $addToView($child->getTemplate(), $vars);
+        };
+
+        $addToViewFromModel($viewModel);
+        $this->addChildrenToView($viewModel, $addToViewFromModel);
+
         if (empty($views)) {
-            $views[] = array(
-                'template' => 'N/A',
-                'vars' => array()
-            );
+            $addToView('N/A', array());
         }
-        
+
         $this->data = array(
             'views' => $views,
             'method' => $mvcEvent->getRequest()->getMethod(),
@@ -79,6 +76,20 @@ class RequestCollector extends AbstractCollector
             'action' => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
             'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A')
         );
+    }
+
+    /**
+     * @param ModelInterface $viewModel
+     * @param callable $addToViewFromModel
+     */
+    protected function addChildrenToView(ModelInterface $viewModel, $addToViewFromModel)
+    {
+        if ($viewModel->hasChildren()) {
+            foreach ($viewModel->getChildren() as $child) {
+                $addToViewFromModel($child);
+                $this->addChildrenToView($viewModel, $addToViewFromModel);
+            }
+        }
     }
 
     /**
@@ -146,9 +157,9 @@ class RequestCollector extends AbstractCollector
         } else {
             $controller = $this->data['controller'];
         }
-        
+
         $return = sprintf('%s::%s', $controller, $this->data['action']);
-        
+
         if ($return === 'N/A::N/A') {
             return 'N/A';
         } else {
