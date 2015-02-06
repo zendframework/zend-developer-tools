@@ -43,7 +43,7 @@ class RequestCollector extends AbstractCollector
         $match = $mvcEvent->getRouteMatch();
         $viewModel = $mvcEvent->getViewModel();
 
-        $addToView = function ($template, $vars) use ($views) {
+        $addToView = function ($template, $vars) use (&$views) {
             $vars = array_keys($vars);
             sort($vars);
 
@@ -87,7 +87,7 @@ class RequestCollector extends AbstractCollector
         if ($viewModel->hasChildren()) {
             foreach ($viewModel->getChildren() as $child) {
                 $addToViewFromModel($child);
-                $this->addChildrenToView($viewModel, $addToViewFromModel);
+                $this->addChildrenToView($child, $addToViewFromModel);
             }
         }
     }
