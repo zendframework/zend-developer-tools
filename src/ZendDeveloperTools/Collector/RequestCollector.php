@@ -6,17 +6,17 @@
  * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd New BSD License
  */
-
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use Zend\View\Variables;
 
 /**
  * Request Data Collector.
- *
  */
 class RequestCollector extends AbstractCollector
 {
+
     /**
      * @inheritdoc
      */
@@ -38,27 +38,46 @@ class RequestCollector extends AbstractCollector
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        $templates   = array();
-        $match       = $mvcEvent->getRouteMatch();
-
-        $templates[] = $mvcEvent->getViewModel()->getTemplate();
+        $views = array();
+        $match = $mvcEvent->getRouteMatch();
+        
+        $vars = $mvcEvent->getViewModel()->getVariables();
+        if($vars instanceof Variables){
+            $vars = $vars->getArrayCopy();
+        }
+        $views[] = array(
+            'template' => $mvcEvent->getViewModel()->getTemplate(),
+            'vars' => $vars
+        );
+        
         if ($mvcEvent->getViewModel()->hasChildren()) {
             foreach ($mvcEvent->getViewModel()->getChildren() as $child) {
-                $templates[] = $child->getTemplate();
+                $vars = $child->getVariables();
+                if($vars instanceof Variables){
+                    $vars = $vars->getArrayCopy();
+                }
+                
+                $views[] = array(
+                    'template' => $child->getTemplate(),
+                    'vars' => $vars
+                );
             }
         }
-
-        if (empty($templates)) {
-            $templates[] = 'N/A';
+        
+        if (empty($views)) {
+            $views[] = array(
+                'template' => 'N/A',
+                'vars' => array()
+            );
         }
-
+        
         $this->data = array(
-            'templates'  => $templates,
-            'method'     => $mvcEvent->getRequest()->getMethod(),
-            'status'     => $mvcEvent->getResponse()->getStatusCode(),
-            'route'      => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
-            'action'     => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
-            'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A'),
+            'views' => $views,
+            'method' => $mvcEvent->getRequest()->getMethod(),
+            'status' => $mvcEvent->getResponse()->getStatusCode(),
+            'route' => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
+            'action' => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
+            'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A')
         );
     }
 
@@ -115,7 +134,8 @@ class RequestCollector extends AbstractCollector
     /**
      * Returns the controller and action name if possible, otherwise N/A.
      *
-     * @param  bool $short Removes the namespace.
+     * @param bool $short
+     *            Removes the namespace.
      * @return string
      */
     public function getFullControllerName($short = true)
@@ -126,9 +146,9 @@ class RequestCollector extends AbstractCollector
         } else {
             $controller = $this->data['controller'];
         }
-
+        
         $return = sprintf('%s::%s', $controller, $this->data['action']);
-
+        
         if ($return === 'N/A::N/A') {
             return 'N/A';
         } else {
@@ -141,8 +161,8 @@ class RequestCollector extends AbstractCollector
      *
      * @return string
      */
-    public function getTemplateNames()
+    public function getViews()
     {
-        return $this->data['templates'];
+        return $this->data['views'];
     }
 }

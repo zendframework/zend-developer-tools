@@ -16,7 +16,7 @@ $color = ($this->collector->getStatusCode() < 400)
             </span>
         </span>
     </div>
-    <div class="zdt-toolbar-detail">
+    <div class="zdt-toolbar-detail zdt-toolbar-detail-overflow">
         <span class="zdt-toolbar-info zdt-toolbar-info-redundant">
             <span class="zdt-detail-label">Status code</span>
             <span class="zdt-detail-value zdt-toolbar-bold zdt-toolbar-color-<?php echo $color; ?>">
@@ -41,6 +41,18 @@ $color = ($this->collector->getStatusCode() < 400)
             <span class="zdt-detail-label">Route</span>
             <span class="zdt-detail-value"><?php echo $this->collector->getRouteName(); ?></span>
         </span>
-        <?php echo $this->ZendDeveloperToolsDetailArray('Templates', $this->collector->getTemplateNames()); ?>
+        <?php 
+        foreach($this->collector->getViews() as $key => $value){
+            $varsKey = array();
+            if(is_array($value['vars'])){
+                $varsKey = array_keys($value['vars']);
+                sort($varsKey);
+            }            
+            echo '<span class="zdt-toolbar-info">';
+            printf('<span class="zdt-detail-label">%s</span>', $value['template']);
+            printf('<p class="zdt-detail-context">&nbsp;&nbsp;%s</p>', implode('<br />&nbsp;&nbsp;',$varsKey));
+            echo '</span>';
+        }
+        ?>
     </div>
 </div>
