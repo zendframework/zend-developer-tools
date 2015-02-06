@@ -43,30 +43,26 @@ class RequestCollector extends AbstractCollector
         $match = $mvcEvent->getRouteMatch();
         $viewModel = $mvcEvent->getViewModel();
 
-        $addToView = function ($template, $vars) use (&$views) {
-            $vars = array_keys($vars);
+        $addToViewFromModel = function (ModelInterface $child) use (&$views) {
+            $vars = $child->getVariables();
+
+            if ($vars instanceof Variables) {
+                $vars = $vars->getArrayCopy();
+            }
+            $vars = (array) $vars;
+
+            foreach ($vars as $key => &$var) {
+                $var = $key . ': ' . (is_object($var) ? get_class($var) : gettype($var));
+            }
             sort($vars);
-
             $views[] = array(
-                'template' => $template,
-                'vars' => (array) $vars,
+                'template' => $child->getTemplate(),
+                'vars' => $vars,
             );
-        };
-        $addToViewFromModel = function (ModelInterface $child) use ($addToView) {
-                $vars = $child->getVariables();
-
-                if ($vars instanceof Variables) {
-                    $vars = $vars->getArrayCopy();
-                }
-                $addToView($child->getTemplate(), $vars);
         };
 
         $addToViewFromModel($viewModel);
         $this->addChildrenToView($viewModel, $addToViewFromModel);
-
-        if (empty($views)) {
-            $addToView('N/A', array());
-        }
 
         $this->data = array(
             'views' => $views,

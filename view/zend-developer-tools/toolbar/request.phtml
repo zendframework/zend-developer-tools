@@ -42,7 +42,8 @@ $color = ($statusCode < 400)
         </span>
         <?php foreach($this->collector->getViews() as $value): ?>
             <span class="zdt-toolbar-info">
-                <span class="zdt-detail-label"><?php echo $value['template']; ?></span>
+                <span class="zdt-detail-label">Template</span>
+                <span class="zdt-detail-value zdt-detail-value-right"><?php echo $value['template']; ?></span>
                 <p class="zdt-detail-context">&nbsp;&nbsp;<?php echo implode('<br />&nbsp;&nbsp;', $value['vars']); ?></p>
             </span>
         <?php endforeach; ?>
