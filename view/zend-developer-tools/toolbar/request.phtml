@@ -1,6 +1,7 @@
 <?php
-$color = ($this->collector->getStatusCode() < 400)
-       ? ($this->collector->getStatusCode() === 200) ? 'green' : 'yellow'
+$statusCode = $this->collector->getStatusCode();
+$color = ($statusCode < 400)
+       ? ($statusCode === 200) ? 'green' : 'yellow'
        : 'red';
 ?>
 <div class="zdt-toolbar-entry">
@@ -8,7 +9,7 @@ $color = ($this->collector->getStatusCode() < 400)
         <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAA0JJREFUOMudVEFoI1UY/t4kk2yUylZlFNuaDduw2A2IiCD0WgQPqVUsewgt6kXQXEpPnoqnii3tJeAacVdahNLSiyClttCSgdimCZWCuOykk5mNEtYsNGYmTCaZ934vWai4ibXf6f3vfXx8//++9xi6QNO0d0Oh0LoQouW67s1oNGrgApDOF4ZhfGea5hQAnJ2dRTjnPtd1n2o0Gi8BgGmaXxiG8WUvQfZ4USqV7vp8vg+EEGCMnTLGrneOCAAjIgPANQAQQnwSiUS+6uqwv79fSqVST3POCQCI6HogEIBt2+S6LvP5fCCia0QEy7L48vLyMxdp/4qqqm3DMEjXdZFMJu8DSEuStLqwsPDANE0yTZN2d3dNAL6eSsVi8X1N05K6rlO5XKbZ2dmfAQyco9xcXFy8XyqVSNd1R9O0j4rF4uSTtPydmawRESMiVKtVpFKpWwD+OMf7tVKpfFqv138KhUJBAN8QEQHYeKKgZVlMlmUWCAQgyzKazebvjLF/EKempiqSJEEIwZrNJjjn6OpwYmLie0VRXlhbW3srGAwin89/C+DD80TO+bIsy3Acx0skEj82Gg2rZ2wAYHt7mw8ODkpEBCL6mohuA5AZY58DeFuSJOi6Xo7H4y//Zw5PTk6WOOczjDF0WgOAdudGpcd7RNSWZfnjWCx2t9dLkVRVDQshUKvV2rlc7qFt24Jz7uecs1qtxo+Ojv50HIc3m03f1tbWiwBQKBQCvdITmZyc/CUej98G8NrMzMydg4MDoaoqjY2NfQbg9enp6d3x8fEdAFcBIJfL3Ts+Ppa6zhDAFQAyAGtlZWU6HA7fcV0X1Wr1lUQioQF4fmNj4+rAwEBGkqQMY+wWEW0KId4kondGR0cLrJvdoaGhG4yx9wB4RJQul8t/AUA0Gn1uaWnpkaIoOD09dSORSLBer2Nzc3MknU7/hv+LTCZD2WyW5ufnKwCSc3NzejabpUwm4/3r+7oIdnZ2XNu2xfDwsENEP8RisbrjOLS/v29dStC27Tc8z2OKokT29vbuKYryqud58Pv9E5cSbLVarXw+/2h1dTXX19cXWl9fLxweHj6s1WptXBJ+ADcAPDsyMmIwxsKdOggAfwOpZLGNo7pH7AAAAABJRU5ErkJggg==" alt="Request and Response">
         <span class="zdt-toolbar-info">
             <span class="zdt-toolbar-bold zdt-toolbar-color-<?php echo $color; ?> zdt-toolbar-spacing">
-                <?php echo $this->collector->getStatusCode(); ?> </span>
+                <?php echo $statusCode; ?> </span>
             <span class="zdt-toolbar-extra-info">
                 <abbr title="<?php echo $this->collector->getFullControllerName(false); ?>">
                     <?php echo $this->collector->getFullControllerName(); ?>
@@ -16,18 +17,16 @@ $color = ($this->collector->getStatusCode() < 400)
             </span>
         </span>
     </div>
-    <div class="zdt-toolbar-detail">
+    <div class="zdt-toolbar-detail zdt-toolbar-detail-overflow">
         <span class="zdt-toolbar-info zdt-toolbar-info-redundant">
             <span class="zdt-detail-label">Status code</span>
             <span class="zdt-detail-value zdt-toolbar-bold zdt-toolbar-color-<?php echo $color; ?>">
-                <?php echo $this->collector->getStatusCode(); ?>
+                <?php echo $statusCode; ?>
             </span>
         </span>
         <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">Method</span>
-            <span class="zdt-detail-value">
-                <?php echo $this->collector->getMethod(); ?>
-            </span>
+            <span class="zdt-detail-value"><?php echo $this->collector->getMethod(); ?></span>
         </span>
         <span class="zdt-toolbar-info zdt-toolbar-extra-info-redundant">
             <span class="zdt-detail-label">Controller</span>
@@ -41,6 +40,12 @@ $color = ($this->collector->getStatusCode() < 400)
             <span class="zdt-detail-label">Route</span>
             <span class="zdt-detail-value"><?php echo $this->collector->getRouteName(); ?></span>
         </span>
-        <?php echo $this->ZendDeveloperToolsDetailArray('Templates', $this->collector->getTemplateNames()); ?>
+        <?php foreach($this->collector->getViews() as $value): ?>
+            <span class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Template</span>
+                <span class="zdt-detail-value zdt-detail-value-right"><?php echo $value['template']; ?></span>
+                <p class="zdt-detail-context">&nbsp;&nbsp;<?php echo implode('<br />&nbsp;&nbsp;', $value['vars']); ?></p>
+            </span>
+        <?php endforeach; ?>
     </div>
 </div>

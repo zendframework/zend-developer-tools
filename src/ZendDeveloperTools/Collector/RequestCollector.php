@@ -10,10 +10,11 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ModelInterface;
+use Zend\View\Variables;
 
 /**
  * Request Data Collector.
- *
  */
 class RequestCollector extends AbstractCollector
 {
@@ -38,28 +39,53 @@ class RequestCollector extends AbstractCollector
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        $templates   = array();
-        $match       = $mvcEvent->getRouteMatch();
+        $views = array();
+        $match = $mvcEvent->getRouteMatch();
+        $viewModel = $mvcEvent->getViewModel();
 
-        $templates[] = $mvcEvent->getViewModel()->getTemplate();
-        if ($mvcEvent->getViewModel()->hasChildren()) {
-            foreach ($mvcEvent->getViewModel()->getChildren() as $child) {
-                $templates[] = $child->getTemplate();
+        $addToViewFromModel = function (ModelInterface $child) use (&$views) {
+            $vars = $child->getVariables();
+
+            if ($vars instanceof Variables) {
+                $vars = $vars->getArrayCopy();
             }
-        }
+            $vars = (array) $vars;
 
-        if (empty($templates)) {
-            $templates[] = 'N/A';
-        }
+            foreach ($vars as $key => &$var) {
+                $var = $key . ': ' . (is_object($var) ? get_class($var) : gettype($var));
+            }
+            sort($vars);
+            $views[] = array(
+                'template' => $child->getTemplate(),
+                'vars' => $vars,
+            );
+        };
+
+        $addToViewFromModel($viewModel);
+        $this->addChildrenToView($viewModel, $addToViewFromModel);
 
         $this->data = array(
-            'templates'  => $templates,
-            'method'     => $mvcEvent->getRequest()->getMethod(),
-            'status'     => $mvcEvent->getResponse()->getStatusCode(),
-            'route'      => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
-            'action'     => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
-            'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A'),
+            'views' => $views,
+            'method' => $mvcEvent->getRequest()->getMethod(),
+            'status' => $mvcEvent->getResponse()->getStatusCode(),
+            'route' => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
+            'action' => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
+            'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A')
         );
+    }
+
+    /**
+     * @param ModelInterface $viewModel
+     * @param callable $addToViewFromModel
+     */
+    protected function addChildrenToView(ModelInterface $viewModel, $addToViewFromModel)
+    {
+        if ($viewModel->hasChildren()) {
+            foreach ($viewModel->getChildren() as $child) {
+                $addToViewFromModel($child);
+                $this->addChildrenToView($child, $addToViewFromModel);
+            }
+        }
     }
 
     /**
@@ -115,7 +141,8 @@ class RequestCollector extends AbstractCollector
     /**
      * Returns the controller and action name if possible, otherwise N/A.
      *
-     * @param  bool $short Removes the namespace.
+     * @param bool $short
+     *            Removes the namespace.
      * @return string
      */
     public function getFullControllerName($short = true)
@@ -141,8 +168,8 @@ class RequestCollector extends AbstractCollector
      *
      * @return string
      */
-    public function getTemplateNames()
+    public function getViews()
     {
-        return $this->data['templates'];
+        return $this->data['views'];
     }
 }

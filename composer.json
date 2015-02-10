@@ -28,7 +28,8 @@
         "zendframework/zend-stdlib":         "2.*",
         "zendframework/zend-servicemanager": "2.*",
         "zendframework/zend-version":        "2.*",
-        "zendframework/zend-debug":          "2.*"
+        "zendframework/zend-debug":          "2.*",
+        "zendframework/zend-view":           "2.*"
     },
     "suggest": {
         "bjyoungblood/bjy-profiler": "Version: dev-master, allows the usage of the (Zend) Db collector.",
