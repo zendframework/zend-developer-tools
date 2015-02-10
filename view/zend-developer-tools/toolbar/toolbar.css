@@ -16,6 +16,7 @@
     background: linear-gradient(to bottom, #333, #222);
     font: normal 13px/40px 'Helvetica Neue', Helvetica, Arial, sans-serif;
     direction: ltr;
+    text-align: left;
 }
 
 #zend-developer-toolbar a {
