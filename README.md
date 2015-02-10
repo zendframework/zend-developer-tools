@@ -33,3 +33,5 @@ If you wish to profile `Zend\Db` queries, you will have to install and enable
 
 To track dependencies within your application, you will have to install and enable
 [OcraServiceManager](https://github.com/Ocramius/OcraServiceManager).
+
+If you're using Zend\Session and want to see the session data, you will have to install and enable [SanSessionToolbar](https://github.com/samsonasik/SanSessionToolbar)
