@@ -32,7 +32,8 @@
     },
     "suggest": {
         "bjyoungblood/bjy-profiler": "Version: dev-master, allows the usage of the (Zend) Db collector.",
-        "ocramius/ocra-service-manager": "OcraServiceManager can help you track dependencies within your application."
+        "ocramius/ocra-service-manager": "OcraServiceManager can help you track dependencies within your application.",
+        "san/san-session-toolbar": "SanSessionToolbar can help you see current Zend\\Session data you're using within your application."
     },
     "autoload": {
         "psr-0": {
