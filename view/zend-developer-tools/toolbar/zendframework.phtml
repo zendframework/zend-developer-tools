@@ -1,12 +1,11 @@
 <div class="zdt-toolbar-entry">
     <div class="zdt-toolbar-preview">
-        <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAPCAYAAAAceBSiAAAAAXNSR0IArs4c6QAAAAZiS0dEAH8A9wAAMkqpNAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB9wCCwIWGuaXOlYAAAJiSURBVDjLldS/i1xVFAfwz8leJxF/FdFUNjayhYpCkBATxEIwb0D/ADFpIjMgCDGQQtBCIWVAY/EmIGKbRpt9q6CFplIL8UfvL2SLqBBRUHzDsdi3O7Ozb7KbA493udz7Pff7Pd9zYtyUkumrCI/YfxzARvJgcDeeT54Mbs/cP0iBCNEB7i/SNMNxPIBPcCRu4eURMwaS2DNd908Ir0yq9sfgTRxZBN7jyw7xh4KpdA73LGaL8Lf0MoZia8tnddW+PVorgWdvQa0tipFsYHhTxqO18miEr3N29Y9J1R6GcVMCr+PfbfhZgl1Kd/9ppm8nw/ZjbiL3aK0U4TtptZMqUNVVu754drxWHhKOZjoYsYvwivTBZNhu9BpuSVzGagcWeK8v8agpDU7NG6nHYNdsSt0rxyLr0xHen6vUF3XVHtvFuClv4LUdFd0dv9ZVe/+4KSdxEY/hF5wvPYnvjXAps2OS/slwtudcZHphrlX7uyM9060v4Wi3XsWV0iPFhzgcIaXo2ur7Jb16Q/qyx9it9DMuT4bbd1/FIfyEb7ASC2zeifBSpuzYvFtX7dmlpmzKwKZC/9VVm/NmjTCd35sr1Sk0OBdzQI8H13BbpojwZ2ek6zmTcUud63XV3uic/pRwAceSg8Gh5L5J1f7ek/g41nG1rtoXS5d4Jfg0GUSHntwhNRELTtp8yQVcGTflOVyVBjk79NuSxA/jI3yOEZRuUq3jztgebGBF7Jx6He2MNOgecl4YzE0/OLOkSm/hLgwxHTfFgeB08PQe7bLTxrHpdpzoBn5E+gtn6qptllx9YnHjf9NI2tXkjbmCAAAAAElFTkSuQmCC
-" alt="Zend Framework 2">
+        <img alt="Zend Framework 2" src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAPCAYAAAAceBSiAAAAAXNSR0IArs4c6QAAAAZiS0dEAH8A9wAAMkqpNAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB9wCCwIWGuaXOlYAAAJiSURBVDjLldS/i1xVFAfwz8leJxF/FdFUNjayhYpCkBATxEIwb0D/ADFpIjMgCDGQQtBCIWVAY/EmIGKbRpt9q6CFplIL8UfvL2SLqBBRUHzDsdi3O7Ozb7KbA493udz7Pff7Pd9zYtyUkumrCI/YfxzARvJgcDeeT54Mbs/cP0iBCNEB7i/SNMNxPIBPcCRu4eURMwaS2DNd908Ir0yq9sfgTRxZBN7jyw7xh4KpdA73LGaL8Lf0MoZia8tnddW+PVorgWdvQa0tipFsYHhTxqO18miEr3N29Y9J1R6GcVMCr+PfbfhZgl1Kd/9ppm8nw/ZjbiL3aK0U4TtptZMqUNVVu754drxWHhKOZjoYsYvwivTBZNhu9BpuSVzGagcWeK8v8agpDU7NG6nHYNdsSt0rxyLr0xHen6vUF3XVHtvFuClv4LUdFd0dv9ZVe/+4KSdxEY/hF5wvPYnvjXAps2OS/slwtudcZHphrlX7uyM9060v4Wi3XsWV0iPFhzgcIaXo2ur7Jb16Q/qyx9it9DMuT4bbd1/FIfyEb7ASC2zeifBSpuzYvFtX7dmlpmzKwKZC/9VVm/NmjTCd35sr1Sk0OBdzQI8H13BbpojwZ2ek6zmTcUud63XV3uic/pRwAceSg8Gh5L5J1f7ek/g41nG1rtoXS5d4Jfg0GUSHntwhNRELTtp8yQVcGTflOVyVBjk79NuSxA/jI3yOEZRuUq3jztgebGBF7Jx6He2MNOgecl4YzE0/OLOkSm/hLgwxHTfFgeB08PQe7bLTxrHpdpzoBn5E+gtn6qptllx9YnHjf9NI2tXkjbmCAAAAAElFTkSuQmCC">
         <span class="zdt-toolbar-info zdt-toolbar-bold<?php echo ($this->is_latest) ? '' : ' zdt-toolbar-color-yellow'; ?>">
             <?php echo $this->zf_version; ?>
         </span>
         <div class="zdt-toolbar-detail">
-            <?php if (!$this->is_latest) : ?>
+            <?php if (!$this->is_latest): ?>
                 <span class="zdt-toolbar-info">
                     <span class="zdt-detail-label">New Version</span>
                     <span class="zdt-detail-value zdt-toolbar-spacing">
@@ -36,7 +35,7 @@
                     >intl</span>
                 </span>
             </span>
-            <?php if (isset($this->modules)) : ?>
+            <?php if (isset($this->modules)): ?>
                 <span class="zdt-toolbar-info">
                     <?php echo $this->ZendDeveloperToolsDetailArray('Modules', $this->modules); ?>
                 </span>

@@ -7,12 +7,10 @@
     </div>
     <div class="zdt-toolbar-detail">
         <span class="zdt-toolbar-info zdt-toolbar-info-heading">Errors</span>
-        <?php
-        foreach ($this->errors as $i => $error) {
-            echo '<span class="zdt-toolbar-info">';
-            printf('<strong>%d.</strong> %s', ++$i, $error);
-            echo '</span>';
-        }
-        ?>
+        <?php foreach ($this->errors as $i => $error): ?>
+            <span class="zdt-toolbar-info">
+                <strong><?php echo $i + 1; ?>.</strong> <?php echo $error; ?>
+            </span>
+        <?php endforeach; ?>
     </div>
 </div>

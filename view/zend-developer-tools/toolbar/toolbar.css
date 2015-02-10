@@ -121,7 +121,7 @@
 }
 
 .zdt-toolbar-detail .zdt-toolbar-info-redundant,.zdt-toolbar-detail .zdt-toolbar-extra-info-redundant
-    {
+{
     display: none;
 }
 
@@ -241,8 +241,7 @@
     text-decoration: none;
 }
 
-#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-detail,#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-info
-    {
+#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-detail,#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-info {
     font-size: 11px;
     max-width: 700px;
 }

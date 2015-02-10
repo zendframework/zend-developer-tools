@@ -6,19 +6,15 @@
         </span>
     </div>
     <div class="zdt-toolbar-detail<?php echo ($this->collector->hasEventTimes()) ? ' zdt-toolbar-detail-overflow' : ' zdt-toolbar-detail-redundant' ;?>">
-        <?php
-        if ($this->collector->hasEventTimes()) {
-            foreach ($this->collector->getApplicationEventTimes() as $key => $value) {
-                echo '<span class="zdt-toolbar-info">';
-                printf('<span class="zdt-detail-label">%d. %s</span>', ($key + 1), $value['name']);
-                echo '<span class="zdt-detail-value zdt-detail-value-right">';
-                echo $this->ZendDeveloperToolsTime($value['elapsed']);
-                echo '</span>';
-                printf('<div class="zdt-detail-context">File: %s - Line: %s<br>Target: %s</div>', $value['file'], $value['line'], $value['target']);
-                echo '</span>';
-            }
-        }
-        ?>
+        <?php if ($this->collector->hasEventTimes()): ?>
+            <?php foreach ($this->collector->getApplicationEventTimes() as $key => $value): ?>
+                <span class="zdt-toolbar-info">
+                <span class="zdt-detail-label"><?php printf('%d. %s', ($key + 1), $value['name']); ?></span>
+                <span class="zdt-detail-value zdt-detail-value-right"><?php echo $this->ZendDeveloperToolsTime($value['elapsed']); ?></span>
+                <div class="zdt-detail-context"><?php printf('File: %s - Line: %s<br>Target: %s', $value['file'], $value['line'], $value['target']); ?></div>
+                </span>
+            <?php endforeach; ?>
+        <?php endif; ?>
         <span class="zdt-toolbar-info zdt-toolbar-info-redundant<?php echo ($this->collector->hasEventTimes()) ? ' zdt-toolbar-topspacing' : '' ;?>">
             <span class="zdt-detail-label">Total Time</span>
             <span class="zdt-detail-value zdt-detail-value-right">
