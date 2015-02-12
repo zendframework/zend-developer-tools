@@ -28,10 +28,6 @@ Installation
 Extensions
 ==========
 
-If you wish to profile `Zend\Db` queries, you will have to install and enable
-[BjyProfiler](https://github.com/bjyoungblood/BjyProfiler).
-
-To track dependencies within your application, you will have to install and enable
-[OcraServiceManager](https://github.com/Ocramius/OcraServiceManager).
-
-If you're using Zend\Session and want to see the session data, you will have to install and enable [SanSessionToolbar](https://github.com/samsonasik/SanSessionToolbar)
+* [BjyProfiler](https://github.com/bjyoungblood/BjyProfiler) - profile `Zend\Db` queries
+* [OcraServiceManager](https://github.com/Ocramius/OcraServiceManager) - track dependencies within your application
+* [SanSessionToolbar](https://github.com/samsonasik/SanSessionToolbar) - preview Zend\Session data
