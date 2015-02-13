@@ -30,4 +30,8 @@ Extensions
 
 * [BjyProfiler](https://github.com/bjyoungblood/BjyProfiler) - profile `Zend\Db` queries
 * [OcraServiceManager](https://github.com/Ocramius/OcraServiceManager) - track dependencies within your application
-* [SanSessionToolbar](https://github.com/samsonasik/SanSessionToolbar) - preview Zend\Session data
+* [SanSessionToolbar](https://github.com/samsonasik/SanSessionToolbar) - preview `Zend\Session` data
+* [ZfSnapEventDebugger](https://github.com/snapshotpl/ZfSnapEventDebugger) - debug events from `Zend\EventManager`
+* [DoctrineORMModule](https://github.com/doctrine/DoctrineORMModule) - profile `DoctrineORM` queries
+* [JhuZdtLoggerModule](https://github.com/jhuet/JhuZdtLoggerModule) - log data from `Zend\Log`
+* [aist-git-tools](https://github.com/ma-si/aist-git-tools) - informations about current GIT repository
