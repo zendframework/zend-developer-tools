@@ -34,7 +34,11 @@
     "suggest": {
         "bjyoungblood/bjy-profiler": "Version: dev-master, allows the usage of the (Zend) Db collector.",
         "ocramius/ocra-service-manager": "OcraServiceManager can help you track dependencies within your application.",
-        "san/san-session-toolbar": "SanSessionToolbar can help you see current Zend\\Session data you're using within your application."
+        "san/san-session-toolbar": "SanSessionToolbar can help you see current Zend\\Session data you're using within your application.",
+        "snapshotpl/zf-snap-event-debugger": "ZfSnapEventDebugger can help you debug events from Zend\\EventManager",
+        "doctrine/doctrine-orm-module": "Profile DoctrineORM queries",
+        "jhuet/zdt-logger-module": "Show you log data from Zend\\Log",
+        "aist/aist-git-tools": "Show you informations about current GIT repository"
     },
     "autoload": {
         "psr-0": {
