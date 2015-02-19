@@ -318,6 +318,8 @@ class ToolbarListener implements ListenerAggregateInterface
         /* @var $moduleManager \Zend\ModuleManager\ModuleManagerInterface */
         $moduleManager  = $serviceManager->get('ModuleManager');
 
-        return array_keys($moduleManager->getLoadedModules());
+        $k = array_keys($moduleManager->getLoadedModules());
+        sort($k);
+        return $k;
     }
 }
