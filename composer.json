@@ -53,8 +53,8 @@
         ]
     },
     "autoload-dev": {
-      "psr-0": {
-          "ZendDeveloperToolsTest": "tests/"
-      }
+        "psr-0": {
+            "ZendDeveloperToolsTest": "tests/"
+        }
     }
 }
