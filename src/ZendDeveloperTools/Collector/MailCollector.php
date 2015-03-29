@@ -18,7 +18,7 @@ use Zend\Mvc\MvcEvent;
 class MailCollector extends AbstractCollector implements AutoHideInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -26,7 +26,7 @@ class MailCollector extends AbstractCollector implements AutoHideInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {
@@ -34,7 +34,7 @@ class MailCollector extends AbstractCollector implements AutoHideInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function collect(MvcEvent $mvcEvent)
     {
@@ -42,7 +42,7 @@ class MailCollector extends AbstractCollector implements AutoHideInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function canHide()
     {

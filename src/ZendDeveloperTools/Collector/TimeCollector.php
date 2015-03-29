@@ -18,7 +18,7 @@ use ZendDeveloperTools\EventLogging\EventContextProvider;
 class TimeCollector extends AbstractCollector implements EventCollectorInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -26,7 +26,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {
@@ -34,7 +34,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function collect(MvcEvent $mvcEvent)
     {

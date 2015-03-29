@@ -35,7 +35,7 @@ class ConfigCollector implements CollectorInterface, Serializable
     protected $applicationConfig;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {

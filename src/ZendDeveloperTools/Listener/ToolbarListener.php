@@ -87,7 +87,7 @@ class ToolbarListener implements ListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attach(EventManagerInterface $events)
     {
@@ -99,7 +99,7 @@ class ToolbarListener implements ListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function detach(EventManagerInterface $events)
     {

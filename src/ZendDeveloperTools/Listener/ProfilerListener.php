@@ -53,7 +53,7 @@ class ProfilerListener implements ListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attach(EventManagerInterface $events)
     {
@@ -65,7 +65,7 @@ class ProfilerListener implements ListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function detach(EventManagerInterface $events)
     {

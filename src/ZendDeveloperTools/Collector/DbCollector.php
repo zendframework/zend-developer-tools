@@ -24,7 +24,7 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
     protected $profiler;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -32,7 +32,7 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {
@@ -40,7 +40,7 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function collect(MvcEvent $mvcEvent)
     {
@@ -48,7 +48,7 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function canHide()
     {

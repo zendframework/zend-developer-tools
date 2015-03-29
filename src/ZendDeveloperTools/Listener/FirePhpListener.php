@@ -42,7 +42,7 @@ class FirePhpListener implements ListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attach(EventManagerInterface $events)
     {
@@ -54,7 +54,7 @@ class FirePhpListener implements ListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function detach(EventManagerInterface $events)
     {

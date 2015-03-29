@@ -29,7 +29,7 @@ class FlushListener implements ListenerAggregateInterface
     protected $listeners = array();
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attach(EventManagerInterface $events)
     {
@@ -41,7 +41,7 @@ class FlushListener implements ListenerAggregateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function detach(EventManagerInterface $events)
     {

@@ -20,7 +20,7 @@ use ZendDeveloperTools\Exception\SerializableException;
 class ExceptionCollector extends AbstractCollector
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -28,7 +28,7 @@ class ExceptionCollector extends AbstractCollector
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {
@@ -36,7 +36,7 @@ class ExceptionCollector extends AbstractCollector
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function collect(MvcEvent $mvcEvent)
     {

@@ -18,7 +18,7 @@ use ZendDeveloperTools\EventLogging\EventContextProvider;
 class MemoryCollector extends AbstractCollector implements EventCollectorInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -26,7 +26,7 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {
@@ -34,7 +34,7 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function collect(MvcEvent $mvcEvent)
     {
