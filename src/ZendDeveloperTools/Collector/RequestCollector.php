@@ -19,7 +19,7 @@ use Zend\View\Variables;
 class RequestCollector extends AbstractCollector
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -27,7 +27,7 @@ class RequestCollector extends AbstractCollector
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {
@@ -35,7 +35,7 @@ class RequestCollector extends AbstractCollector
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function collect(MvcEvent $mvcEvent)
     {
