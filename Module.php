@@ -216,7 +216,8 @@ class Module implements
                             $p = true;
                             $db->setProfiler($adapter->getProfiler());
                         }
-                    } elseif (!$p && $sm->has('Zend\Db\Adapter\ProfilingAdapter')) {
+                    }
+                    if (!$p && $sm->has('Zend\Db\Adapter\ProfilingAdapter')) {
                         $adapter = $sm->get('Zend\Db\Adapter\ProfilingAdapter');
                         if ($adapter instanceof ProfilingAdapter) {
                             $db->setProfiler($adapter->getProfiler());
