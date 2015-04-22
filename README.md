@@ -1,6 +1,8 @@
 Zend Developer Tools
 ====================
 
+[![Build Status](https://travis-ci.org/zendframework/ZendDeveloperTools.svg)](https://travis-ci.org/zendframework/ZendDeveloperTools)  
+
 Module providing debug tools for working with the [Zend Framework 2](https://github.com/zendframework/zf2) MVC
 layer.
 
