@@ -47,10 +47,7 @@
     "autoload": {
         "psr-0": {
             "ZendDeveloperTools": "src/"
-        },
-        "classmap": [
-            "./Module.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-0": {
