@@ -17,7 +17,6 @@
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
-            <file>Module.php</file>
         </whitelist>
     </filter>
 </phpunit>
