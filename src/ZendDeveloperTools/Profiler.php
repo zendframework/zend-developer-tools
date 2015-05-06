@@ -10,11 +10,11 @@
 
 namespace ZendDeveloperTools;
 
+use Zend\EventManager\EventInterface;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Stdlib\PriorityQueue;
-use Zend\EventManager\EventInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\EventManagerAwareInterface;
 
 class Profiler implements EventManagerAwareInterface
 {
@@ -209,7 +209,7 @@ class Profiler implements EventManagerAwareInterface
         if (isset($this->collectors)) {
             foreach ($this->collectors as $collector) {
                 $collector->collect($mvcEvent);
-                $this->report->addCollector(unserialize(serialize($collector)));
+                $this->report->addCollector($collector);
             }
 
             $this->eventManager->trigger(ProfilerEvent::EVENT_COLLECTED, $this->getEvent());
