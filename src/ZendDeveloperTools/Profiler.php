@@ -146,7 +146,7 @@ class Profiler implements EventManagerAwareInterface
      */
     public function setEventManager(EventManagerInterface $eventManager)
     {
-        $eventManager->addIdentifiers([__CLASS__, get_called_class(), 'profiler']);
+        $eventManager->addIdentifiers(array(__CLASS__, get_called_class(), 'profiler'));
         $this->eventManager = $eventManager;
 
         return $this;
