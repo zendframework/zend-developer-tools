@@ -86,5 +86,7 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
         foreach ($this->collectors as $collector) {
             $collector->collectEvent('application', $event);
         }
+        
+        return true;
     }
 }
