@@ -9,7 +9,7 @@
 namespace ZendDeveloperTools\Collector;
 
 use Zend\Mvc\MvcEvent;
-use Zend\EventManager\Event;
+use Zend\EventManager\EventInterface;
 use ZendDeveloperTools\EventLogging\EventContextProvider;
 
 /**
