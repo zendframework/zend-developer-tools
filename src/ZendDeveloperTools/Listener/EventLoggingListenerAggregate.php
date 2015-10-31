@@ -9,7 +9,7 @@
 
 namespace ZendDeveloperTools\Listener;
 
-use Zend\EventManager\Event;
+use Zend\EventManager\EventInterface;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\EventManager\SharedListenerAggregateInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
@@ -75,13 +75,13 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     /**
      * Callback to process events
      *
-     * @param Event $event
+     * @param EventInterface $event
      *
      * @return bool
      *
      * @throws ServiceNotFoundException
      */
-    public function onCollectEvent(Event $event)
+    public function onCollectEvent(EventInterface $event)
     {
         foreach ($this->collectors as $collector) {
             $collector->collectEvent('application', $event);
