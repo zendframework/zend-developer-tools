@@ -7,7 +7,7 @@
 
 namespace ZendDeveloperTools\Collector;
 
-use Zend\EventManager\Event;
+use Zend\EventManager\EventInterface;
 
 /**
  * Event Data Collector Interface.
@@ -17,8 +17,8 @@ interface EventCollectorInterface
     /**
      * Collects event-level information
      *
-     * @param string $id
-     * @param Event  $event
+     * @param string         $id
+     * @param EventInterface $event
      */
-    public function collectEvent($id, Event $event);
+    public function collectEvent($id, EventInterface $event);
 }
