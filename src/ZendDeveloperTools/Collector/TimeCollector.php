@@ -58,9 +58,9 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
      * Saves the current time in microseconds for a specific event.
      *
      * @param string $id
-     * @param Event  $event
+     * @param EventInterface  $event
      */
-    public function collectEvent($id, Event $event)
+    public function collectEvent($id, EventInterface $event)
     {
         $contextProvider   = new EventContextProvider($event);
         $context['time']   = microtime(true);
