@@ -27,7 +27,7 @@ use Zend\View\Helper\AbstractHelper;
 class Memory extends AbstractHelper
 {
     /**
-     * Returns the formatted time.
+     * Returns the formatted memory.
      *
      * @param  integer $size
      * @param  integer $precision Only used for MegaBytes
@@ -38,9 +38,9 @@ class Memory extends AbstractHelper
         if ($size < 1024) {
             return sprintf('%d B', $size);
         } elseif (($size / 1024) < 1024) {
-            return sprintf('%.0f Kb', $size / 1024);
+            return sprintf('%.0f KB', $size / 1024);
         } else {
-            return sprintf('%.' . $precision . 'f Mb', $size / 1024 / 1024);
+            return sprintf('%.' . $precision . 'f MB', $size / 1024 / 1024);
         }
     }
 }
