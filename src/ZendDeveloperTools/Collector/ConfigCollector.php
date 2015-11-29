@@ -13,6 +13,7 @@ use Serializable;
 use Traversable;
 use Closure;
 use Zend\Mvc\MvcEvent;
+use Zend\Stdlib\ArrayObject;
 use Zend\Stdlib\ArrayUtils;
 use ZendDeveloperTools\Stub\ClosureStub;
 
@@ -23,6 +24,7 @@ class ConfigCollector implements CollectorInterface, Serializable
 {
     const NAME     = 'config';
     const PRIORITY = 100;
+    const OBFUSCATE_STRING = '******';
 
     /**
      * @var array|null
@@ -33,6 +35,23 @@ class ConfigCollector implements CollectorInterface, Serializable
      * @var array|null
      */
     protected $applicationConfig;
+
+    /**
+     * @var array
+     */
+    protected $riskyConfigKeys = array(
+        'api_key',
+        'dsn',
+        'database',
+        'key',
+        'license',
+        'license_key',
+        'password',
+        'pwd',
+        'pass',
+        'username',
+        'usr',
+    );
 
     /**
      * {@inheritdoc}
@@ -75,7 +94,9 @@ class ConfigCollector implements CollectorInterface, Serializable
      */
     public function getConfig()
     {
-        return isset($this->config) ? $this->unserializeArray($this->config) : null;
+        return isset($this->config) ? $this->obfuscateConfigValues(
+            $this->unserializeArray($this->config)
+        ) : null;
     }
 
     /**
@@ -102,6 +123,31 @@ class ConfigCollector implements CollectorInterface, Serializable
         $data                    = unserialize($serialized);
         $this->config            = $data['config'];
         $this->applicationConfig = $data['applicationConfig'];
+    }
+
+    /**
+     * Replaces Risky Config Values with a obfuscate string
+     *
+     * @param array $data
+     * @return array
+     */
+    private function obfuscateConfigValues(array $data)
+    {
+        $obfuscateData = new ArrayObject($data);
+
+        foreach (ArrayUtils::iteratorToArray($data) as $key => $value) {
+            if ($value instanceof Traversable || is_array($value)) {
+                $obfuscateData[$key] = $this->obfuscateConfigValues($value);
+
+                continue;
+            }
+
+            if (is_string($key) && in_array($key, $this->riskyConfigKeys)) {
+                $obfuscateData[$key] = self::OBFUSCATE_STRING;
+            }
+        }
+
+        return $obfuscateData->getArrayCopy();
     }
 
     /**
