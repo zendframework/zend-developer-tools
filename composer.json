@@ -24,9 +24,9 @@
     "require": {
         "php":                               ">=5.3.3",
         "zendframework/zend-mvc":            "2.*",
-        "zendframework/zend-eventmanager":   "2.*",
+        "zendframework/zend-eventmanager":   "2.* || 3.*",
         "zendframework/zend-stdlib":         "2.*",
-        "zendframework/zend-servicemanager": "2.*",
+        "zendframework/zend-servicemanager": "2.* || 3.*",
         "zendframework/zend-modulemanager":  "2.*",
         "zendframework/zend-version":        "2.*",
         "zendframework/zend-debug":          "2.*",
