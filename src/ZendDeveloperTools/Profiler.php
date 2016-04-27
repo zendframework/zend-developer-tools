@@ -212,7 +212,9 @@ class Profiler implements EventManagerAwareInterface
                 $this->report->addCollector($collector);
             }
 
-            $this->eventManager->trigger(ProfilerEvent::EVENT_COLLECTED, $this->getEvent());
+            $event = $this->getEvent();
+            $event->setName(ProfilerEvent::EVENT_COLLECTED);
+            $this->eventManager->triggerEvent($event);
 
             return $this;
         }

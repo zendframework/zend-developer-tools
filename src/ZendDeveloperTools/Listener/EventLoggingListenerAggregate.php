@@ -11,9 +11,8 @@ namespace ZendDeveloperTools\Listener;
 
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
-use Zend\EventManager\SharedListenerAggregateInterface;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use ZendDeveloperTools\Collector\CollectorInterface;
+use ZendDeveloperTools\Collector\EventCollectorInterface;
 use ZendDeveloperTools\Profiler;
 
 /**
@@ -22,10 +21,10 @@ use ZendDeveloperTools\Profiler;
  * @author Mark Garrett <mark@moderndeveloperllc.com>
  * @since 0.0.3
  */
-class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
+class EventLoggingListenerAggregate
 {
     /**
-     * @var \ZendDeveloperTools\Collector\EventCollectorInterface[]
+     * @var EventCollectorInterface[]
      */
     protected $collectors;
 
@@ -37,7 +36,7 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
     /**
      * Constructor.
      *
-     * @param \ZendDeveloperTools\Collector\EventCollectorInterface[] $collectors
+     * @param EventCollectorInterface[] $collectors
      * @param string[]                                                $identifiers
      */
     public function __construct(array $collectors, array $identifiers)
@@ -61,7 +60,9 @@ class EventLoggingListenerAggregate implements SharedListenerAggregateInterface
      */
     public function attachShared(SharedEventManagerInterface $events)
     {
-        $events->attach($this->identifiers, '*', array($this,'onCollectEvent'), Profiler::PRIORITY_EVENT_COLLECTOR);
+        foreach ($this->identifiers as $id) {
+            $events->attach($id, '*', array($this,'onCollectEvent'), Profiler::PRIORITY_EVENT_COLLECTOR);
+        }
     }
 
     /**
