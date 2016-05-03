@@ -3,7 +3,7 @@
 <?php include __DIR__ . '/toolbar.css'; ?>
 
 <?php if ($this->position === 'top') : ?>
-#zend-developer-toolbar {
+.zend-developer-toolbar {
     top: 0;
     bottom: auto;
     border-top: 0;
@@ -22,6 +22,30 @@
     bottom: auto;
     border-top: 0;
     border-bottom: 10px solid #68B604;
+}
+<?php elseif ($this->position === 'stack') : ?>
+.zend-developer-toolbar {
+    position: inherit;
+    display:block;
+    clear:both;
+}
+
+.zdt-toolbar-detail {
+    top: auto;
+    bottom: auto;
+}
+
+.zdt-toolbar-detail:before,
+.zdt-toolbar-detail:after {
+    left: 14px;
+    top: -10px;
+    bottom: auto;
+    border-top: 0;
+    border-bottom: 10px solid #68B604;
+}
+
+.zdt-toolbar-entry:hover .zdt-toolbar-detail {
+    box-shadow: rgba(255, 255, 255, 0.75) 0 0 7px;
 }
 <?php endif; ?>
 </style>

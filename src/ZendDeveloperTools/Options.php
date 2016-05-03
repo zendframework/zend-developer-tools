@@ -70,6 +70,13 @@ class Options extends AbstractOptions
     );
 
     /**
+     * @var array
+     */
+    protected $backgroundrequests = array(
+        'enabled' => false,
+    );
+
+    /**
      * Overloading Constructor.
      *
      * @param  array|Traversable|null $options
@@ -407,6 +414,28 @@ class Options extends AbstractOptions
     public function getToolbarEntries()
     {
         return $this->toolbar['entries'];
+    }
+
+    /**
+     * Sets BackgroundRequest options.
+     *
+     * @param array $options
+     */
+    public function setBackgroundrequests($options)
+    {
+        if (isset($options['enabled'])) {
+            $this->backgroundrequests['enabled'] = (bool) $options['enabled'];
+        }
+    }
+
+    /**
+     * Is the background-request-collection enabled?
+     *
+     * @return bool
+     */
+    public function isBackgroundrequestsEnabled()
+    {
+        return $this->backgroundrequests['enabled'];
     }
 
     // todo: storage and firephp options.

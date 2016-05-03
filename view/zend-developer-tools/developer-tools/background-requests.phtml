@@ -1,0 +1,30 @@
+<?php
+/**
+ * Zend Developer Tools for Zend Framework (http://framework.zend.com/)
+ *
+ * @link      http://github.com/zendframework/ZendDeveloperTools for the canonical source repository
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ */
+?>
+
+<html>
+<head>
+<?php echo $this->partial('zend-developer-tools/toolbar/style', ['position' => 'stack']); ?>
+</head>
+
+<body>
+<?php
+foreach ($toolbars as $toolbar) {
+    echo $this->partial(
+        'zend-developer-tools/toolbar/toolbar',
+        array(
+            'entries' => $toolbar['renderedEntries'],
+            'multitoolbar' => true,
+        )
+    );
+}
+
+?>
+</body>
+</html>

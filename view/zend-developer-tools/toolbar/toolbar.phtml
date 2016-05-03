@@ -1,5 +1,9 @@
 <!-- START Zend Developer Toolbar -->
-<div id="zend-developer-toolbar">
+<?php if (isset($this->multitoolbar) && $this->multitoolbar): ?>
+<div class="zend-developer-toolbar">
+<?php else: ?>
+<div id="zend-developer-toolbar" class="zend-developer-toolbar">
+<?php endif; ?>
     <?php foreach ($this->entries as $entry): ?>
         <?php echo $entry; ?>
     <?php endforeach; ?>

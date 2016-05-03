@@ -1,4 +1,4 @@
-#zend-developer-toolbar {
+.zend-developer-toolbar {
     left: 0;
     bottom: 0;
     width: 100%;
@@ -19,12 +19,12 @@
     text-align: left;
 }
 
-#zend-developer-toolbar a {
+.zend-developer-toolbar a {
     color: #80dc09;
     text-decoration: none;
 }
 
-#zend-developer-toolbar a:hover {
+.zend-developer-toolbar a:hover {
     text-decoration: underline;
 }
 
@@ -226,7 +226,7 @@
     color: #9d9d9d;
 }
 
-#zend-developer-toolbar .zdf-toolbar-hide-button {
+.zend-developer-toolbar .zdf-toolbar-hide-button {
     top: 0;
     right: 8px;
     color: #bebebe;
@@ -236,17 +236,17 @@
     text-decoration: none;
 }
 
-#zend-developer-toolbar .zdf-toolbar-hide-button:hover {
+.zend-developer-toolbar .zdf-toolbar-hide-button:hover {
     color: #eb4a4a;
     text-decoration: none;
 }
 
-#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-detail,#zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-info {
+.zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-detail,.zend-developer-toolbar .zdt-toolbar-entry .zdt-toolbar-info {
     font-size: 11px;
     max-width: 700px;
 }
 
-#zend-developer-toolbar .zdt-toolbar-info .zdt-detail-value pre {
+.zend-developer-toolbar .zdt-toolbar-info .zdt-detail-value pre {
     max-height: 350px;
     max-width: 650px;
     overflow-y: scroll;
@@ -289,7 +289,7 @@
 }
 
 @media print {
-    #zend-developer-toolbar {
+    .zend-developer-toolbar {
         display: none;
     }
 }
