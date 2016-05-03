@@ -120,7 +120,16 @@ class ToolbarListener implements ListenerAggregateInterface
         $application = $event->getApplication();
         $request     = $application->getRequest();
 
-        if ($request->isXmlHttpRequest()) {
+        if ($this->options->isBackgroundrequestsEnabled()) {
+            $toolbar = array(
+                'renderedEntries' => $this->renderEntries($event),
+                'timestamp' => microtime(true),
+            );
+            $cacheDir = $this->options->getCacheDir();
+            file_put_contents($cacheDir . '/ZDT_' . microtime(true) . '.entries', serialize($toolbar));
+        }
+
+        if ($request->isXmlHttpRequest() || !$this->options->isToolbarEnabled()) {
             return;
         }
 
@@ -183,7 +192,7 @@ class ToolbarListener implements ListenerAggregateInterface
         $report  = $event->getReport();
 
         list($isLatest, $latest) = $this->getLatestVersion(Version::VERSION);
-        
+
         if (false === ($pos = strpos(Version::VERSION, 'dev'))) {
             $docUri = sprintf(self::DOC_URI_PATTERN, substr(Version::VERSION, 0, 3));
         } else { // unreleased dev branch - compare minor part of versions

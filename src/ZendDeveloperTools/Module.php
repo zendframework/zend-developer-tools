@@ -6,7 +6,6 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-
 namespace ZendDeveloperTools;
 
 use Zend\EventManager\EventInterface;
@@ -17,14 +16,17 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
+use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use BjyProfiler\Db\Adapter\ProfilingAdapter;
+use ZendDeveloperTools\Controller\DeveloperToolsController;
 
 class Module implements
     InitProviderInterface,
     ConfigProviderInterface,
     ServiceProviderInterface,
     BootstrapListenerInterface,
-    ViewHelperProviderInterface
+    ViewHelperProviderInterface,
+    ControllerProviderInterface
 {
     /**
      * Initialize workflow
@@ -82,9 +84,10 @@ class Module implements
         $sem = $em->getSharedManager();
         $sm  = $app->getServiceManager();
 
+        /* @var $options \ZendDeveloperTools\Options */
         $options = $sm->get('ZendDeveloperTools\Config');
 
-        if (!$options->isToolbarEnabled()) {
+        if (!($options->isToolbarEnabled() || $options->isBackgroundrequestsEnabled())) {
             return;
         }
 
@@ -104,9 +107,7 @@ class Module implements
 
         $em->attachAggregate($sm->get('ZendDeveloperTools\ProfilerListener'));
 
-        if ($options->isToolbarEnabled()) {
-            $sem->attach('profiler', $sm->get('ZendDeveloperTools\ToolbarListener'), null);
-        }
+        $sem->attach('profiler', $sm->get('ZendDeveloperTools\ToolbarListener'), null);
 
         if ($options->isStrict() && $report->hasErrors()) {
             throw new Exception\ProfilerException(implode(' ', $report->getErrors()));
@@ -128,6 +129,22 @@ class Module implements
                 'ZendDeveloperToolsTime'        => 'ZendDeveloperTools\View\Helper\Time',
                 'ZendDeveloperToolsMemory'      => 'ZendDeveloperTools\View\Helper\Memory',
                 'ZendDeveloperToolsDetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
+            ),
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getControllerConfig()
+    {
+        return array(
+            'factories' => array(
+                'zenddevelopertools' => function ($cm) {
+                    $sm = $cm->getServiceLocator();
+                    $config = $sm->get('ZendDeveloperTools\Config');
+                    return new DeveloperToolsController($config);
+                },
             ),
         );
     }

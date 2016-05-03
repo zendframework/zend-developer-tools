@@ -94,6 +94,18 @@ return array(
             'identifiers' => array()
         ),
         /**
+         * General Background-Request settings
+         */
+        'backgroundrequests' => array(
+            /**
+             * Enables or disables the Background-Requests-Page
+             *
+             * Expects: bool
+             * Default: false
+             */
+            'enabled' => true,
+        ),
+        /**
          * General Toolbar settings
          */
         'toolbar' => array(

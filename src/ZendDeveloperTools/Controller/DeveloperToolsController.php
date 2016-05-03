@@ -11,11 +11,41 @@ namespace ZendDeveloperTools\Controller;
 
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\Controller\AbstractActionController;
+use ZendDeveloperTools\Options;
 
-class IndexController extends AbstractActionController
+class DeveloperToolsController extends AbstractActionController
 {
+    /**
+     * @var Options
+     */
+    protected $options;
+
+    public function __construct(Options $options)
+    {
+        $this->options = $options;
+    }
+
     public function indexAction()
     {
         return new ViewModel();
+    }
+
+    public function backgroundRequestsAction()
+    {
+        $this->options->setToolbar(['enabled' => false]);
+
+        /*TODO: make this configurable */
+        $this->options->setBackgroundrequests(['enabled' => false]);
+
+        $toolbars = array();
+        $cacheDir = $this->options->getCacheDir();
+
+        foreach (glob($cacheDir . '/ZDT_*.entries') as $entriesFileName) {
+            $toolbars[] = unserialize(file_get_contents($entriesFileName));
+        }
+
+        $model = new ViewModel(['toolbars' => $toolbars]);
+        $model->setTerminal(true);
+        return $model;
     }
 }
