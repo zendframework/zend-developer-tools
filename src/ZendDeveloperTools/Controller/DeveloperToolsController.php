@@ -12,7 +12,7 @@ namespace ZendDeveloperTools\Controller;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\Controller\AbstractActionController;
 
-class IndexController extends AbstractActionController
+class DeveloperToolsController extends AbstractActionController
 {
     public function indexAction()
     {
