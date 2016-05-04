@@ -91,7 +91,8 @@ class Module implements
         $report = $sm->get('ZendDeveloperTools\Report');
 
         if ($options->canFlushEarly()) {
-            $em->attachAggregate($sm->get('ZendDeveloperTools\FlushListener'));
+            $flushListener = $sm->get('ZendDeveloperTools\FlushListener');
+            $flushListener->attach($em);
         }
 
         if ($options->isStrict() && $report->hasErrors()) {
@@ -99,13 +100,16 @@ class Module implements
         }
 
         if ($options->eventCollectionEnabled()) {
-            $sem->attachAggregate($sm->get('ZendDeveloperTools\EventLoggingListenerAggregate'));
+            $eventLoggingListener = $sm->get('ZendDeveloperTools\EventLoggingListenerAggregate');
+            $eventLoggingListener->attachShared($sem);
         }
 
-        $em->attachAggregate($sm->get('ZendDeveloperTools\ProfilerListener'));
+        $profilerListener = $sm->get('ZendDeveloperTools\ProfilerListener');
+        $profilerListener->attach($em);
 
         if ($options->isToolbarEnabled()) {
-            $sem->attach('profiler', $sm->get('ZendDeveloperTools\ToolbarListener'), null);
+            $toolbarListener = $sm->get('ZendDeveloperTools\ToolbarListener');
+            $toolbarListener->attach($em);
         }
 
         if ($options->isStrict() && $report->hasErrors()) {
@@ -210,6 +214,21 @@ class Module implements
 
                     return $db;
                 },
+            ),
+        );
+    }
+    
+    /**
+     * 
+     * @return array
+     */
+    public function getAutoloaderConfig()
+    {
+        return array(
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__,
+                ),
             ),
         );
     }
