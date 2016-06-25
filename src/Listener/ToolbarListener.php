@@ -93,7 +93,7 @@ class ToolbarListener implements ListenerAggregateInterface
     {
         $this->listeners[] = $events->getSharedManager()->attach('profiler', ProfilerEvent::EVENT_COLLECTED, [$this, 'onCollected'], Profiler::PRIORITY_TOOLBAR);
     }
-    
+
     /**
      * {@inheritdoc}
      */
