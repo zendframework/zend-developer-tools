@@ -104,7 +104,7 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
         $app = $this->data['event']['application'];
 
         $previous = null;
-        while (list ($name, $context) = each($app)) {
+        while (list($name, $context) = each($app)) {
             $result[$name] = $context;
             $result[$name]['difference'] = ($previous)
                 ? ($context['memory'] - $previous['memory'])

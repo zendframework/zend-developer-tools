@@ -18,5 +18,4 @@ namespace ZendDeveloperTools\Exception;
  */
 class ParameterMissingException extends \Exception implements ExceptionInterface
 {
-
 }

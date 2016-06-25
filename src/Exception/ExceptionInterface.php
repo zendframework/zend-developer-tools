@@ -11,5 +11,4 @@ namespace ZendDeveloperTools\Exception;
 
 interface ExceptionInterface
 {
-
 }

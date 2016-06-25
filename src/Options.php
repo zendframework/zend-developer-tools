@@ -48,7 +48,7 @@ class Options extends AbstractOptions
             'time'   => 'ZendDeveloperTools\TimeCollector',
         ],
         'identifiers' => [
-        	'all' => '*'
+            'all' => '*'
         ]
     ];
 

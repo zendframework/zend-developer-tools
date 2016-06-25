@@ -183,7 +183,7 @@ class Report implements ReportInterface
             return $this->collectors[$name];
         }
 
-        return null;
+        return;
     }
 
     /**

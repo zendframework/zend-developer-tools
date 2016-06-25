@@ -61,7 +61,7 @@ class EventLoggingListenerAggregate
     public function attachShared(SharedEventManagerInterface $events)
     {
         foreach ($this->identifiers as $id) {
-            $events->attach($id, '*', [$this,'onCollectEvent'], Profiler::PRIORITY_EVENT_COLLECTOR);
+            $events->attach($id, '*', [$this, 'onCollectEvent'], Profiler::PRIORITY_EVENT_COLLECTOR);
         }
     }
 

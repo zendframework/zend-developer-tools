@@ -28,7 +28,6 @@ use ZendDeveloperTools\Collector\AutoHideInterface;
 use ZendDeveloperTools\Exception\InvalidOptionException;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Developer Toolbar Listener
@@ -179,7 +178,7 @@ class ToolbarListener implements ListenerAggregateInterface
         $report  = $event->getReport();
 
         list($isLatest, $latest) = $this->getLatestVersion(Version::VERSION);
-        
+
         if (false === ($pos = strpos(Version::VERSION, 'dev'))) {
             $docUri = sprintf(self::DOC_URI_PATTERN, substr(Version::VERSION, 0, 3));
         } else { // unreleased dev branch - compare minor part of versions
@@ -307,7 +306,7 @@ class ToolbarListener implements ListenerAggregateInterface
     private function getModules(ProfilerEvent $event)
     {
         if (!$application = $event->getApplication()) {
-            return null;
+            return;
         }
 
         $serviceManager = $application->getServiceManager();

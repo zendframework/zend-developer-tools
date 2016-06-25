@@ -72,6 +72,5 @@ class StorageListener implements ListenerAggregateInterface
      */
     public function onCollected(ProfilerEvent $event)
     {
-
     }
 }

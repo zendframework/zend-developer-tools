@@ -72,6 +72,5 @@ class FirePhpListener implements ListenerAggregateInterface
      */
     public function onCollected(ProfilerEvent $event)
     {
-
     }
 }

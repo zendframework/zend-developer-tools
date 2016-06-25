@@ -11,5 +11,4 @@ namespace ZendDeveloperTools\Exception;
 
 class InvalidOptionException extends \InvalidArgumentException implements ExceptionInterface
 {
-
 }

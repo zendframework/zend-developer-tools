@@ -2,8 +2,6 @@
 $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->in('src')
     ->in('test')
-    ->notPath('TestAsset')
-    ->notPath('_files')
     ->filter(function (SplFileInfo $file) {
         if (strstr($file->getPath(), 'compatibility')) {
             return false;

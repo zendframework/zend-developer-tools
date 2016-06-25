@@ -11,5 +11,4 @@ namespace ZendDeveloperTools\Exception;
 
 class ProfilerException extends \Exception implements ExceptionInterface
 {
-
 }

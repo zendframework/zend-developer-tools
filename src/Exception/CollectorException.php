@@ -11,5 +11,4 @@ namespace ZendDeveloperTools\Exception;
 
 class CollectorException extends \Exception implements ExceptionInterface
 {
-
 }

@@ -11,5 +11,4 @@ namespace ZendDeveloperTools\Storage;
 
 interface StorageInterface
 {
-
 }
