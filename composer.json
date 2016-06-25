@@ -45,8 +45,9 @@
         "aist/aist-git-tools": "Show you informations about current GIT repository"
     },
     "autoload": {
-        "psr-0": {
-            "ZendDeveloperTools": "src/"
+        "psr-4": {
+            "ZendDeveloperTools\\": "src/",
+            "ZendDeveloperToolsTest\\": "test/"
         }
     },
     "autoload-dev": {
