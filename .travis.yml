@@ -11,7 +11,3 @@ before_install:
 
 script:
   - ./vendor/bin/phpunit
-
-matrix:
-  allow_failures:
-    - php: 7.0
