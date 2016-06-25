@@ -53,10 +53,5 @@
         "psr-4": {
             "ZendDeveloperToolsTest\\": "test/"
         }
-    },
-    "autoload-dev": {
-        "psr-0": {
-            "ZendDeveloperToolsTest": "tests/"
-        }
     }
 }
