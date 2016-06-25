@@ -1,8 +1,8 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             'zenddevelopertools' => __DIR__ . '/../view',
-        ),
-    ),
-);
+        ],
+    ],
+];
