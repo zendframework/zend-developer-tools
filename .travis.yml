@@ -23,6 +23,7 @@ matrix:
     - php: 5.5
       env:
         - EXECUTE_CS_CHECK=true
+        - DEPS=locked
     - php: 5.5
       env:
         - DEPS=latest
