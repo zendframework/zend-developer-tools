@@ -46,7 +46,11 @@
     },
     "autoload": {
         "psr-4": {
-            "ZendDeveloperTools\\": "src/",
+            "ZendDeveloperTools\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "ZendDeveloperToolsTest\\": "test/"
         }
     },
