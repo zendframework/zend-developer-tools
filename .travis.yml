@@ -11,4 +11,3 @@ before_install:
 
 script:
   - ./vendor/bin/phpunit
-  
