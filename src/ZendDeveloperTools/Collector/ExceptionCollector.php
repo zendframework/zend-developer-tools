@@ -41,9 +41,9 @@ class ExceptionCollector extends AbstractCollector
     public function collect(MvcEvent $mvcEvent)
     {
         if ($mvcEvent->getError() === Application::ERROR_EXCEPTION) {
-            $this->data = array(
+            $this->data = [
                 'exception' => new SerializableException($mvcEvent->getParam('exception'))
-            );
+            ];
         }
     }
 

@@ -42,7 +42,7 @@ class Module implements
         $eventManager = $manager->getEventManager();
         $eventManager->attach(
             ModuleEvent::EVENT_LOAD_MODULES_POST,
-            array($this, 'onLoadModulesPost'),
+            [$this, 'onLoadModulesPost'],
             -1100
         );
     }
@@ -127,13 +127,13 @@ class Module implements
 
     public function getViewHelperConfig()
     {
-        return array(
-            'invokables' => array(
+        return [
+            'invokables' => [
                 'ZendDeveloperToolsTime'        => 'ZendDeveloperTools\View\Helper\Time',
                 'ZendDeveloperToolsMemory'      => 'ZendDeveloperTools\View\Helper\Memory',
                 'ZendDeveloperToolsDetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -141,11 +141,11 @@ class Module implements
      */
     public function getServiceConfig()
     {
-        return array(
-            'aliases' => array(
+        return [
+            'aliases' => [
                 'ZendDeveloperTools\ReportInterface' => 'ZendDeveloperTools\Report',
-            ),
-            'invokables' => array(
+            ],
+            'invokables' => [
                 'ZendDeveloperTools\Report'             => 'ZendDeveloperTools\Report',
                 'ZendDeveloperTools\EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
                 'ZendDeveloperTools\ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
@@ -156,8 +156,8 @@ class Module implements
                 'ZendDeveloperTools\MemoryCollector'    => 'ZendDeveloperTools\Collector\MemoryCollector',
                 'ZendDeveloperTools\TimeCollector'      => 'ZendDeveloperTools\Collector\TimeCollector',
                 'ZendDeveloperTools\FlushListener'      => 'ZendDeveloperTools\Listener\FlushListener',
-            ),
-            'factories' => array(
+            ],
+            'factories' => [
                 'ZendDeveloperTools\Profiler' => function ($sm) {
                     $a = new Profiler($sm->get('ZendDeveloperTools\Report'));
                     $a->setEvent($sm->get('ZendDeveloperTools\Event'));
@@ -190,7 +190,7 @@ class Module implements
                     $config = $sm->get('ZendDeveloperTools\Config');
 
                     return new Listener\EventLoggingListenerAggregate(
-                        array_map(array($sm, 'get'), $config->getEventCollectors()),
+                        array_map([$sm, 'get'], $config->getEventCollectors()),
                         $config->getEventIdentifiers()
                     );
                 },
@@ -214,7 +214,7 @@ class Module implements
 
                     return $db;
                 },
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -25,7 +25,7 @@ class SerializableException implements \Serializable
      */
     public function __construct(\Exception $exception)
     {
-        $this->data = array(
+        $this->data = [
             'code'     => $exception->getCode(),
             'file'     => $exception->getFile(),
             'line'     => $exception->getLine(),
@@ -37,7 +37,7 @@ class SerializableException implements \Serializable
                 $exception->getFile(),
                 $exception->getLine()
             ),
-        );
+        ];
     }
 
     /**
@@ -109,9 +109,9 @@ class SerializableException implements \Serializable
      */
     protected function filterTrace($trace, $file, $line)
     {
-        $filteredTrace = array();
+        $filteredTrace = [];
 
-        $filteredTrace[] = array(
+        $filteredTrace[] = [
             'namespace'   => '',
             'short_class' => '',
             'class'       => '',
@@ -119,8 +119,8 @@ class SerializableException implements \Serializable
             'function'    => '',
             'file'        => $file,
             'line'        => $line,
-            'args'        => array(),
-        );
+            'args'        => [],
+        ];
 
         foreach ($trace as $entry) {
             $class = '';
@@ -132,7 +132,7 @@ class SerializableException implements \Serializable
                 $namespace = implode('\\', $parts);
             }
 
-            $filteredTrace[] = array(
+            $filteredTrace[] = [
                 'namespace'   => $namespace,
                 'short_class' => $class,
                 'class'       => isset($entry['class']) ? $entry['class'] : '',
@@ -140,8 +140,8 @@ class SerializableException implements \Serializable
                 'function'    => $entry['function'],
                 'file'        => isset($entry['file']) ? $entry['file'] : null,
                 'line'        => isset($entry['line']) ? $entry['line'] : null,
-                'args'        => isset($entry['args']) ? $this->filterArgs($entry['args']) : array(),
-            );
+                'args'        => isset($entry['args']) ? $this->filterArgs($entry['args']) : [],
+            ];
         }
 
         return $filteredTrace;
@@ -159,25 +159,25 @@ class SerializableException implements \Serializable
      */
     protected function filterArgs($args, $level = 0)
     {
-        $result = array();
+        $result = [];
 
         foreach ($args as $key => $value) {
             if (is_object($value)) {
-                $result[$key] = array('object', get_class($value));
+                $result[$key] = ['object', get_class($value)];
             } elseif (is_array($value)) {
                 if ($level > 10) {
-                    $result[$key] = array('array', '*DEEP NESTED ARRAY*');
+                    $result[$key] = ['array', '*DEEP NESTED ARRAY*'];
                 } else {
-                    $result[$key] = array('array', $this->filterArgs($value, ++$level));
+                    $result[$key] = ['array', $this->filterArgs($value, ++$level)];
                 }
             } elseif (null === $value) {
-                $result[$key] = array('null', null);
+                $result[$key] = ['null', null];
             } elseif (is_bool($value)) {
-                $result[$key] = array('boolean', $value);
+                $result[$key] = ['boolean', $value];
             } elseif (is_resource($value)) {
-                $result[$key] = array('resource', get_resource_type($value));
+                $result[$key] = ['resource', get_resource_type($value)];
             } else {
-                $result[$key] = array('string', (string) $value);
+                $result[$key] = ['string', (string) $value];
             }
         }
 

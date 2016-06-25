@@ -91,7 +91,7 @@ class ConfigCollector implements CollectorInterface, Serializable
      */
     public function serialize()
     {
-        return serialize(array('config' => $this->config, 'applicationConfig' => $this->applicationConfig));
+        return serialize(['config' => $this->config, 'applicationConfig' => $this->applicationConfig]);
     }
 
     /**
@@ -113,7 +113,7 @@ class ConfigCollector implements CollectorInterface, Serializable
      */
     private function makeArraySerializable($data)
     {
-        $serializable = array();
+        $serializable = [];
 
         foreach (ArrayUtils::iteratorToArray($data) as $key => $value) {
             if ($value instanceof Traversable || is_array($value)) {
@@ -143,7 +143,7 @@ class ConfigCollector implements CollectorInterface, Serializable
      */
     private function unserializeArray(array $data)
     {
-        $unserialized = array();
+        $unserialized = [];
 
         foreach (ArrayUtils::iteratorToArray($data) as $key => $value) {
             if ($value instanceof Traversable || is_array($value)) {

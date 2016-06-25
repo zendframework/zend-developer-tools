@@ -38,7 +38,7 @@ class ProfilerListener implements ListenerAggregateInterface
     /**
      * @var array
      */
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * Constructor.
@@ -59,7 +59,7 @@ class ProfilerListener implements ListenerAggregateInterface
     {
         $this->listeners[] = $events->attach(
             MvcEvent::EVENT_FINISH,
-            array($this, 'onFinish'),
+            [$this, 'onFinish'],
             Profiler::PRIORITY_PROFILER
         );
     }

@@ -44,7 +44,7 @@ class Report implements ReportInterface
     /**
      * @var array
      */
-    protected $collectors = array();
+    protected $collectors = [];
 
     /**
      * {@inheritdoc}
@@ -124,7 +124,7 @@ class Report implements ReportInterface
     public function addError($error)
     {
         if (!isset($this->errors)) {
-            $this->errors = array();
+            $this->errors = [];
         }
 
         $this->errors[] = $error;
@@ -227,6 +227,6 @@ class Report implements ReportInterface
      */
     public function __sleep()
     {
-        return array('ip', 'uri', 'time', 'token', 'errors', 'method', 'collectors');
+        return ['ip', 'uri', 'time', 'token', 'errors', 'method', 'collectors'];
     }
 }

@@ -26,7 +26,7 @@ class FlushListener implements ListenerAggregateInterface
     /**
      * @var array
      */
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * {@inheritdoc}
@@ -35,7 +35,7 @@ class FlushListener implements ListenerAggregateInterface
     {
         $this->listeners[] = $events->attach(
             MvcEvent::EVENT_FINISH,
-            array($this, 'onFinish'),
+            [$this, 'onFinish'],
             Profiler::PRIORITY_FLUSH
         );
     }
@@ -64,7 +64,7 @@ class FlushListener implements ListenerAggregateInterface
             return;
         }
 
-        if(is_callable(array($response, 'send'))){
+        if(is_callable([$response, 'send'])){
             return $response->send();
         }
     }

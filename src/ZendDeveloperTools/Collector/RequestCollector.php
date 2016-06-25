@@ -39,7 +39,7 @@ class RequestCollector extends AbstractCollector
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        $views = array();
+        $views = [];
         $match = $mvcEvent->getRouteMatch();
         $viewModel = $mvcEvent->getViewModel();
 
@@ -55,23 +55,23 @@ class RequestCollector extends AbstractCollector
                 $var = $key . ': ' . (is_object($var) ? get_class($var) : gettype($var));
             }
             sort($vars);
-            $views[] = array(
+            $views[] = [
                 'template' => $child->getTemplate(),
                 'vars' => $vars,
-            );
+            ];
         };
 
         $addToViewFromModel($viewModel);
         $this->addChildrenToView($viewModel, $addToViewFromModel);
 
-        $this->data = array(
+        $this->data = [
             'views' => $views,
             'method' => $mvcEvent->getRequest()->getMethod(),
             'status' => $mvcEvent->getResponse()->getStatusCode(),
             'route' => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
             'action' => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
             'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A')
-        );
+        ];
     }
 
     /**

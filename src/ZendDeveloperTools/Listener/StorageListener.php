@@ -29,7 +29,7 @@ class StorageListener implements ListenerAggregateInterface
     /**
      * @var array
      */
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * Constructor.
@@ -48,7 +48,7 @@ class StorageListener implements ListenerAggregateInterface
     {
         $this->listeners[] = $events->attach(
             ProfilerEvent::EVENT_COLLECTED,
-            array($this, 'onCollected'),
+            [$this, 'onCollected'],
             Profiler::PRIORITY_STORAGE
         );
     }

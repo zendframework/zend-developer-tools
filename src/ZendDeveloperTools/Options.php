@@ -21,53 +21,53 @@ class Options extends AbstractOptions
     /**
      * @var array
      */
-    protected $profiler = array(
+    protected $profiler = [
         'enabled'     => false,
         'strict'      => true,
         'flush_early' => false,
         'cache_dir'   => 'data/cache',
-        'matcher'     => array(),
-        'collectors' => array(
+        'matcher'     => [],
+        'collectors' => [
             'db'        => 'ZendDeveloperTools\DbCollector',
             'exception' => 'ZendDeveloperTools\ExceptionCollector',
             'request'   => 'ZendDeveloperTools\RequestCollector',
             'config'    => 'ZendDeveloperTools\ConfigCollector',
             'memory'    => 'ZendDeveloperTools\MemoryCollector',
             'time'      => 'ZendDeveloperTools\TimeCollector',
-        ),
-    );
+        ],
+    ];
 
     /**
      * Defaults for event-level logging
      * @var array
      */
-    protected $events = array(
+    protected $events = [
         'enabled'    => false,
-        'collectors' => array(
+        'collectors' => [
             'memory' => 'ZendDeveloperTools\MemoryCollector',
             'time'   => 'ZendDeveloperTools\TimeCollector',
-        ),
-        'identifiers' => array(
+        ],
+        'identifiers' => [
         	'all' => '*'
-        )
-    );
+        ]
+    ];
 
     /**
      * @var array
      */
-    protected $toolbar = array(
+    protected $toolbar = [
         'enabled'       => false,
         'auto_hide'     => false,
         'position'      => 'bottom',
         'version_check' => false,
-        'entries'       => array(
+        'entries'       => [
             'request' => 'zend-developer-tools/toolbar/request',
             'time'    => 'zend-developer-tools/toolbar/time',
             'memory'  => 'zend-developer-tools/toolbar/memory',
             'config'  => 'zend-developer-tools/toolbar/config',
             'db'      => 'zend-developer-tools/toolbar/db',
-        ),
-    );
+        ],
+    ];
 
     /**
      * Overloading Constructor.

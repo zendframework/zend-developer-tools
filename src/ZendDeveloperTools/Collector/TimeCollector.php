@@ -47,7 +47,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
         }
 
         if (!isset($this->data)) {
-            $this->data = array();
+            $this->data = [];
         }
 
         $this->data['start'] = $start;
@@ -70,7 +70,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
         $context['line']   = $contextProvider->getEventTriggerLine();
 
         if (!isset($this->data['event'][$id])) {
-            $this->data['event'][$id] = array();
+            $this->data['event'][$id] = [];
         }
 
         $this->data['event'][$id][] = $context;
@@ -113,7 +113,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
      */
     public function getApplicationEventTimes()
     {
-        $result = array();
+        $result = [];
 
         if (!isset($this->data['event']['application'])) {
             return $result;
