@@ -33,7 +33,7 @@
         "zendframework/zend-view":           "^2.6"
     },
     "require-dev": {
-      "phpunit/phpunit":                     "~4"
+      "phpunit/phpunit":                     "~4 || ~5"
     },
     "suggest": {
         "bjyoungblood/bjy-profiler": "Version: dev-master, allows the usage of the (Zend) Db collector.",
