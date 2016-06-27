@@ -18,7 +18,6 @@
 
 namespace ZendDeveloperTools\Listener;
 
-use Zend\Version\Version;
 use Zend\View\Model\ViewModel;
 use Zend\View\Exception\RuntimeException;
 use ZendDeveloperTools\Options;
@@ -48,18 +47,11 @@ class ToolbarListener implements ListenerAggregateInterface
     const VERSION_CACHE_TTL = 3600;
 
     /**
-     * Dev documentation URI pattern.
-     *
-     * @var string
-     */
-    const DEV_DOC_URI_PATTERN = 'http://zf2.readthedocs.org/en/%s/index.html';
-
-    /**
      * Documentation URI pattern.
      *
      * @var string
      */
-    const DOC_URI_PATTERN = 'http://framework.zend.com/manual/%s/en/index.html';
+    const DOC_URI = 'https://docs.zendframework.com/';
 
     /**
      * @var object
@@ -167,27 +159,10 @@ class ToolbarListener implements ListenerAggregateInterface
     {
         $entries = [];
         $report  = $event->getReport();
-
-        list($isLatest, $latest) = $this->getLatestVersion(Version::VERSION);
-
-        if (false === ($pos = strpos(Version::VERSION, 'dev'))) {
-            $docUri = sprintf(self::DOC_URI_PATTERN, substr(Version::VERSION, 0, 3));
-        } else { // unreleased dev branch - compare minor part of versions
-            $partsCurrent       = explode('.', substr(Version::VERSION, 0, $pos));
-            $partsLatestRelease = explode('.', $latest);
-            $docUri             = sprintf(
-                self::DEV_DOC_URI_PATTERN,
-                current($partsLatestRelease) == $partsCurrent[1] ? 'latest' : 'develop'
-            );
-        }
-
         $zfEntry = new ViewModel([
-            'zf_version'  => Version::VERSION,
-            'is_latest'   => $isLatest,
-            'latest'      => $latest,
             'php_version' => phpversion(),
             'has_intl'    => extension_loaded('intl'),
-            'doc_uri'     => $docUri,
+            'doc_uri'     => self::DOC_URI,
             'modules'     => $this->getModules($event),
         ]);
         $zfEntry->setTemplate('zend-developer-tools/toolbar/zendframework');
