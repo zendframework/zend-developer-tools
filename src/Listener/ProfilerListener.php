@@ -14,6 +14,7 @@ use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
+use Zend\EventManager\ListenerAggregateTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 
@@ -25,6 +26,8 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
  */
 class ProfilerListener implements ListenerAggregateInterface
 {
+    use ListenerAggregateTrait;
+
     /**
      * @var ServiceLocatorInterface
      */
@@ -34,11 +37,6 @@ class ProfilerListener implements ListenerAggregateInterface
      * @var Options
      */
     protected $options;
-
-    /**
-     * @var array
-     */
-    protected $listeners = [];
 
     /**
      * Constructor.
@@ -62,18 +60,6 @@ class ProfilerListener implements ListenerAggregateInterface
             [$this, 'onFinish'],
             Profiler::PRIORITY_PROFILER
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function detach(EventManagerInterface $events)
-    {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
     }
 
     /**

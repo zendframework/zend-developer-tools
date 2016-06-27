@@ -13,6 +13,7 @@ use ZendDeveloperTools\Profiler;
 use ZendDeveloperTools\ProfilerEvent;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
+use Zend\EventManager\ListenerAggregateTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -21,15 +22,12 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class FirePhpListener implements ListenerAggregateInterface
 {
+    use ListenerAggregateTrait;
+
     /**
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
-
-    /**
-     * @var array
-     */
-    protected $listeners = [];
 
     /**
      * Constructor.
@@ -51,18 +49,6 @@ class FirePhpListener implements ListenerAggregateInterface
             [$this, 'onCollected'],
             Profiler::PRIORITY_FIREPHP
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function detach(EventManagerInterface $events)
-    {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
     }
 
     /**

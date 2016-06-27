@@ -14,6 +14,7 @@ use ZendDeveloperTools\Profiler;
 use Zend\Stdlib\ResponseInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
+use Zend\EventManager\ListenerAggregateTrait;
 
 /**
  * Flush Listener
@@ -23,10 +24,7 @@ use Zend\EventManager\ListenerAggregateInterface;
  */
 class FlushListener implements ListenerAggregateInterface
 {
-    /**
-     * @var array
-     */
-    protected $listeners = [];
+    use ListenerAggregateTrait;
 
     /**
      * {@inheritdoc}
@@ -38,18 +36,6 @@ class FlushListener implements ListenerAggregateInterface
             [$this, 'onFinish'],
             Profiler::PRIORITY_FLUSH
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function detach(EventManagerInterface $events)
-    {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
     }
 
     /**
