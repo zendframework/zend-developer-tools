@@ -18,4 +18,6 @@
     <!-- Paths to check -->
     <file>src</file>
     <file>test</file>
+    <file>config/module.config.php</file>
+    <file>config/zenddevelopertools.local.php.dist</file>
 </ruleset>
