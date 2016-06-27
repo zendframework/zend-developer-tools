@@ -1,10 +1,10 @@
 <?php
-return array(
-    'zenddevelopertools' => array(
+return [
+    'zenddevelopertools' => [
         /**
          * General Profiler settings
          */
-        'profiler' => array(
+        'profiler' => [
             /**
              * Enables or disables the profiler.
              *
@@ -51,7 +51,7 @@ return array(
              * 'matcher' => array('url' => array('path' => '/admin')
              * Note: The matcher is not implemented yet!
              */
-            'matcher' => array(),
+            'matcher' => [],
 
             /**
              * Contains a list with all collector the profiler should run. Zend Developer Tools ships with
@@ -61,9 +61,9 @@ return array(
              * Example: 'collectors' => array('db' => null)
              * Expects: array
              */
-            'collectors' => array()
-        ),
-        'events' => array(
+            'collectors' => [],
+        ],
+        'events' => [
             /**
              * Set to true to enable event-level logging for collectors that will support it. This enables a wildcard
              * listener onto the shared event manager that will allow profiling of user-defined events as well as the
@@ -81,7 +81,7 @@ return array(
              * Example: 'collectors' => array('memory' => null)
              * Expects: array
              */
-            'collectors' => array(),
+            'collectors' => [],
 
             /**
              * Contains event identifiers used with the event listener. Zend Developer Tools defaults to listen to all
@@ -91,12 +91,12 @@ return array(
              * Example: 'identifiers' => array('all' => null, 'dispatchable' => 'Zend\Stdlib\DispatchableInterface')
              * Expects: array
              */
-            'identifiers' => array()
-        ),
+            'identifiers' => [],
+        ],
         /**
          * General Toolbar settings
          */
-        'toolbar' => array(
+        'toolbar' => [
             /**
              * Enables or disables the Toolbar.
              *
@@ -147,7 +147,7 @@ return array(
              * ),
              * Expects: array
              */
-            'entries' => array()
-        )
-    )
-);
+            'entries' => [],
+        ],
+    ],
+];

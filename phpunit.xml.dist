@@ -12,7 +12,7 @@
     syntaxCheck="true"
 >
     <testsuite name="ZendDeveloperTools tests suite">
-        <directory>./tests</directory>
+        <directory>./test</directory>
     </testsuite>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">

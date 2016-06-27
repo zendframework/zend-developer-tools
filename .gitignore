@@ -1,8 +1,7 @@
 nbproject
-composer.lock
 .idea
 .buildpath
 .project
 .settings/
 .DS_Store
-vendor
+vendor/
