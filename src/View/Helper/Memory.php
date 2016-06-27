@@ -38,7 +38,7 @@ class Memory extends AbstractHelper
         if ($size < 1024) {
             return sprintf('%d B', $size);
         }
-        
+
         if (($size / 1024) < 1024) {
             return sprintf('%.0f KB', $size / 1024);
         }

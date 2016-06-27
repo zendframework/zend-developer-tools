@@ -55,7 +55,7 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
         if (! isset($this->profiler)) {
             return false;
         }
-        
+
         if ($this->getQueryCount() > 0) {
             return false;
         }

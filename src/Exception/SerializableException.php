@@ -166,7 +166,7 @@ class SerializableException implements \Serializable
                 $result[$key] = ['object', get_class($value)];
                 continue;
             }
-            
+
             if (is_array($value)) {
                 if ($level > 10) {
                     $result[$key] = ['array', '*DEEP NESTED ARRAY*'];
@@ -175,17 +175,17 @@ class SerializableException implements \Serializable
                 $result[$key] = ['array', $this->filterArgs($value, ++$level)];
                 continue;
             }
-            
+
             if (null === $value) {
                 $result[$key] = ['null', null];
                 continue;
             }
-            
+
             if (is_bool($value)) {
                 $result[$key] = ['boolean', $value];
                 continue;
             }
-            
+
             if (is_resource($value)) {
                 $result[$key] = ['resource', get_resource_type($value)];
                 continue;
