@@ -10,6 +10,8 @@
 
 namespace ZendDeveloperTools;
 
+use DateTime;
+use DateTimezone;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -105,7 +107,6 @@ class Profiler implements EventManagerAwareInterface
     public function setErrorMode($mode)
     {
         $this->strict = $mode;
-
         return $this;
     }
 
@@ -118,7 +119,6 @@ class Profiler implements EventManagerAwareInterface
     public function setEvent(EventInterface $event)
     {
         $this->event = $event;
-
         return $this;
     }
 
@@ -129,7 +129,7 @@ class Profiler implements EventManagerAwareInterface
      */
     public function getEvent()
     {
-        if (!isset($this->event)) {
+        if (! isset($this->event)) {
             $this->event = new ProfilerEvent();
             $this->event->setTarget($this);
             $this->event->setProfiler($this);
@@ -171,21 +171,20 @@ class Profiler implements EventManagerAwareInterface
      */
     public function addCollector($collector)
     {
-        if (!isset($this->collectors)) {
+        if (! isset($this->collectors)) {
             $this->collectors = new PriorityQueue();
         }
 
         if ($collector instanceof Collector\CollectorInterface) {
             $this->collectors->insert($collector, $collector->getPriority());
-        } else {
-            $error = sprintf('%s must implement CollectorInterface.', get_class($collector));
-
-            if ($this->strict === true) {
-                throw new Exception\CollectorException($error);
-            }
-
-            $this->report->addError($error);
+            return $this;
         }
+
+        $error = sprintf('%s must implement CollectorInterface.', get_class($collector));
+        if ($this->strict === true) {
+            throw new Exception\CollectorException($error);
+        }
+        $this->report->addError($error);
 
         return $this;
     }
@@ -201,10 +200,10 @@ class Profiler implements EventManagerAwareInterface
     public function collect(MvcEvent $mvcEvent)
     {
         $this->report->setToken(uniqid('zdt'))
-                     ->setUri($mvcEvent->getRequest()->getUriString())
-                     ->setMethod($mvcEvent->getRequest()->getMethod())
-                     ->setTime(new \DateTime('now', new \DateTimeZone('UTC')))
-                     ->setIp($mvcEvent->getRequest()->getServer()->get('REMOTE_ADDR'));
+            ->setUri($mvcEvent->getRequest()->getUriString())
+            ->setMethod($mvcEvent->getRequest()->getMethod())
+            ->setTime(new DateTime('now', new DateTimeZone('UTC')))
+            ->setIp($mvcEvent->getRequest()->getServer()->get('REMOTE_ADDR'));
 
         if (isset($this->collectors)) {
             foreach ($this->collectors as $collector) {

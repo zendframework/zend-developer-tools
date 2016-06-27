@@ -46,7 +46,7 @@ class FlushListener implements ListenerAggregateInterface
     public function onFinish(MvcEvent $event)
     {
         $response = $event->getResponse();
-        if (!$response instanceof ResponseInterface) {
+        if (! $response instanceof ResponseInterface) {
             return;
         }
 

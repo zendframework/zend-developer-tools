@@ -51,7 +51,6 @@ class ProfilerEvent extends Event
     public function setApplication(ApplicationInterface $application)
     {
         $this->setParam('application', $application);
-
         return $this;
     }
 
@@ -74,7 +73,6 @@ class ProfilerEvent extends Event
     public function setProfiler(Profiler $profiler)
     {
         $this->setParam('profiler', $profiler);
-
         return $this;
     }
 
@@ -97,7 +95,6 @@ class ProfilerEvent extends Event
     public function setReport(ReportInterface $report)
     {
         $this->setParam('report', $report);
-
         return $this;
     }
 }

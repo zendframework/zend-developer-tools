@@ -221,7 +221,7 @@ class ToolbarListener implements ListenerAggregateInterface
             }
         }
 
-        if (!empty($errors) || $report->hasErrors()) {
+        if (! empty($errors) || $report->hasErrors()) {
             $tmp = [];
             foreach ($errors as $name => $template) {
                 $cur   = sprintf('Unable to render toolbar template %s (%s).', $name, $template);
@@ -252,7 +252,7 @@ class ToolbarListener implements ListenerAggregateInterface
      */
     protected function getLatestVersion($currentVersion)
     {
-        if (!$this->options->isVersionCheckEnabled()) {
+        if (! $this->options->isVersionCheckEnabled()) {
             return [true, ''];
         }
 
@@ -260,7 +260,7 @@ class ToolbarListener implements ListenerAggregateInterface
 
         // exit early if the cache dir doesn't exist,
         // to prevent hitting the GitHub API for every request.
-        if (!is_dir($cacheDir)) {
+        if (! is_dir($cacheDir)) {
             return [true, ''];
         }
 
@@ -299,12 +299,11 @@ class ToolbarListener implements ListenerAggregateInterface
 
     private function getModules(ProfilerEvent $event)
     {
-        if (!$application = $event->getApplication()) {
+        if (! $application = $event->getApplication()) {
             return;
         }
 
         $serviceManager = $application->getServiceManager();
-        /* @var $moduleManager \Zend\ModuleManager\ModuleManagerInterface */
         $moduleManager  = $serviceManager->get('ModuleManager');
 
         return array_keys($moduleManager->getLoadedModules());

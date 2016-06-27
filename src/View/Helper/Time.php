@@ -41,10 +41,12 @@ class Time extends AbstractHelper
 
         if ($time >= 1) {
             return sprintf('%.' . $precision . 'f s', $time);
-        } elseif ($time * 1000 >= 1) {
-            return sprintf('%.' . $precision . 'f ms', $time * 1000);
-        } else {
-            return sprintf('%.' . $precision . 'f µs', $time * 1000000);
         }
+        
+        if ($time * 1000 >= 1) {
+            return sprintf('%.' . $precision . 'f ms', $time * 1000);
+        }
+
+        return sprintf('%.' . $precision . 'f µs', $time * 1000000);
     }
 }

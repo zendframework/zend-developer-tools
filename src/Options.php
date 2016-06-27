@@ -11,6 +11,9 @@ namespace ZendDeveloperTools;
 
 use Zend\Stdlib\AbstractOptions;
 
+/**
+ * @todo storage and firephp options
+ */
 class Options extends AbstractOptions
 {
     /**
@@ -28,12 +31,12 @@ class Options extends AbstractOptions
         'cache_dir'   => 'data/cache',
         'matcher'     => [],
         'collectors' => [
-            'db'        => 'ZendDeveloperTools\DbCollector',
-            'exception' => 'ZendDeveloperTools\ExceptionCollector',
-            'request'   => 'ZendDeveloperTools\RequestCollector',
-            'config'    => 'ZendDeveloperTools\ConfigCollector',
-            'memory'    => 'ZendDeveloperTools\MemoryCollector',
-            'time'      => 'ZendDeveloperTools\TimeCollector',
+            'db'        => DbCollector::class,
+            'exception' => ExceptionCollector::class,
+            'request'   => RequestCollector::class,
+            'config'    => ConfigCollector::class,
+            'memory'    => MemoryCollector::class,
+            'time'      => TimeCollector::class,
         ],
     ];
 
@@ -44,8 +47,8 @@ class Options extends AbstractOptions
     protected $events = [
         'enabled'    => false,
         'collectors' => [
-            'memory' => 'ZendDeveloperTools\MemoryCollector',
-            'time'   => 'ZendDeveloperTools\TimeCollector',
+            'memory' => MemoryCollector::class,
+            'time'   => TimeCollector::class,
         ],
         'identifiers' => [
             'all' => '*'
@@ -90,23 +93,28 @@ class Options extends AbstractOptions
      */
     public function setProfiler(array $options)
     {
-        if (isset($options['enabled'])) {
-            $this->profiler['enabled'] = (bool) $options['enabled'];
-        }
-        if (isset($options['strict'])) {
-            $this->profiler['strict'] = (bool) $options['strict'];
-        }
-        if (isset($options['flush_early'])) {
-            $this->profiler['flush_early'] = (bool) $options['flush_early'];
-        }
-        if (isset($options['cache_dir'])) {
-            $this->profiler['cache_dir'] = (string) $options['cache_dir'];
-        }
-        if (isset($options['matcher'])) {
-            $this->setMatcher($options['matcher']);
-        }
-        if (isset($options['collectors'])) {
-            $this->setCollectors($options['collectors']);
+        foreach ($options as $key => $value) {
+            switch ($key) {
+                case 'enabled':
+                    // fall-through
+                case 'strict':
+                    // fall-through
+                case 'flush_early':
+                    $this->profiler[$key] = (bool) $value;
+                    continue;
+                case 'cache_dir':
+                    $this->profiler[$key] = (string) $value;
+                    continue;
+                case 'matcher':
+                    $this->setMatcher($value);
+                    continue;
+                case 'collectors':
+                    $this->setCollectors($value);
+                    continue;
+                default:
+                    // unknown option
+                    continue;
+            }
         }
     }
 
@@ -120,9 +128,11 @@ class Options extends AbstractOptions
         if (isset($options['enabled'])) {
             $this->events['enabled'] = (bool) $options['enabled'];
         }
+
         if (isset($options['collectors'])) {
             $this->setEventCollectors($options['collectors']);
         }
+
         if (isset($options['identifiers'])) {
             $this->setEventIdentifiers($options['identifiers']);
         }
@@ -136,12 +146,11 @@ class Options extends AbstractOptions
      */
     protected function setMatcher($options)
     {
-        if (!is_array($options)) {
+        if (! is_array($options)) {
             $this->report->addError(sprintf(
-                '[\'zenddevelopertools\'][\'profiler\'][\'matcher\'] must be an array, %s given.',
+                "['zenddevelopertools']['profiler']['matcher'] must be an array, %s given.",
                 gettype($options)
             ));
-
             return;
         }
 
@@ -155,21 +164,21 @@ class Options extends AbstractOptions
      */
     protected function setCollectors($options)
     {
-        if (!is_array($options)) {
+        if (! is_array($options)) {
             $this->report->addError(sprintf(
-                '[\'zenddevelopertools\'][\'profiler\'][\'collectors\'] must be an array, %s given.',
+                "['zenddevelopertools']['profiler']['collectors'] must be an array, %s given.",
                 gettype($options)
             ));
-
             return;
         }
 
         foreach ($options as $name => $collector) {
             if (($collector === false || $collector === null)) {
                 unset($this->profiler['collectors'][$name]);
-            } else {
-                $this->profiler['collectors'][$name] = $collector;
+                continue;
             }
+
+            $this->profiler['collectors'][$name] = $collector;
         }
     }
 
@@ -190,21 +199,21 @@ class Options extends AbstractOptions
      */
     public function setEventCollectors(array $options)
     {
-        if (!is_array($options)) {
+        if (! is_array($options)) {
             $this->report->addError(sprintf(
-                '[\'zenddevelopertools\'][\'events\'][\'collectors\'] must be an array, %s given.',
+                "['zenddevelopertools']['events']['collectors'] must be an array, %s given.",
                 gettype($options)
             ));
-
             return;
         }
 
         foreach ($options as $name => $collector) {
             if (($collector === false || $collector === null)) {
                 unset($this->events['collectors'][$name]);
-            } else {
-                $this->events['collectors'][$name] = $collector;
+                continue;
             }
+
+            $this->events['collectors'][$name] = $collector;
         }
     }
 
@@ -216,21 +225,21 @@ class Options extends AbstractOptions
      */
     public function setEventIdentifiers(array $options)
     {
-        if (!is_array($options)) {
+        if (! is_array($options)) {
             $this->report->addError(sprintf(
                 '[\'zenddevelopertools\'][\'events\'][\'identifiers\'] must be an array, %s given.',
                 gettype($options)
             ));
-
             return;
         }
 
         foreach ($options as $name => $identifier) {
             if (($identifier === false || $identifier === null)) {
                 unset($this->events['identifiers'][$name]);
-            } else {
-                $this->events['identifiers'][$name] = $identifier;
+                continue;
             }
+
+            $this->events['identifiers'][$name] = $identifier;
         }
     }
 
@@ -264,11 +273,9 @@ class Options extends AbstractOptions
      */
     public function canFlushEarly()
     {
-        return (
-            $this->profiler['flush_early'] &&
-            !$this->profiler['strict'] &&
-            !$this->toolbar['enabled']
-        );
+        return ($this->profiler['flush_early']
+            && ! $this->profiler['strict']
+            && ! $this->toolbar['enabled']);
     }
 
     /**
@@ -322,39 +329,46 @@ class Options extends AbstractOptions
      */
     public function setToolbar(array $options)
     {
-        if (isset($options['enabled'])) {
-            $this->toolbar['enabled'] = (bool) $options['enabled'];
-        }
-        if (isset($options['auto_hide'])) {
-            $this->toolbar['auto_hide'] = (bool) $options['auto_hide'];
-        }
-        if (isset($options['version_check'])) {
-            $this->toolbar['version_check'] = (bool) $options['version_check'];
-        }
-        if (isset($options['position'])) {
-            if ($options['position'] !== 'bottom' && $options['position'] !== 'top') {
-                $this->report->addError(sprintf(
-                    '[\'zenddevelopertools\'][\'toolbar\'][\'position\'] must be "top" or "bottom", %s given.',
-                    $options['position']
-                ));
-            } else {
-                $this->toolbar['position'] = $options['position'];
-            }
-        }
-        if (isset($options['entries'])) {
-            if (is_array($options['entries'])) {
-                foreach ($options['entries'] as $collector => $template) {
-                    if ($template === false || $template === null) {
-                        unset($this->toolbar['entries'][$collector]);
-                    } else {
-                        $this->toolbar['entries'][$collector] = $template;
+        foreach ($options as $key => $value) {
+            switch ($key) {
+                case 'enabled':
+                    // fall-through
+                case 'auto_hide':
+                    // fall-through
+                case 'version_check':
+                    $this->toolbar[$key] = (bool) $value;
+                    continue;
+                case 'position':
+                    if ($value !== 'bottom' && $value !== 'top') {
+                        $this->report->addError(sprintf(
+                            "['zenddevelopertools']['toolbar']['position'] must be 'top' or 'bottom', %s given.",
+                            $value
+                        ));
+                        continue;
                     }
-                }
-            } else {
-                $this->report->addError(sprintf(
-                    '[\'zenddevelopertools\'][\'toolbar\'][\'entries\'] must be an array, %s given.',
-                    gettype($options['entries'])
-                ));
+                    $this->toolbar[$key] = $value;
+                    continue;
+                case 'entries':
+                    if (! is_array($value)) {
+                        $this->report->addError(sprintf(
+                            "['zenddevelopertools']['toolbar']['entries'] must be an array, %s given.",
+                            gettype($value)
+                        ));
+                    }
+
+                    foreach ($value as $collector => $template) {
+                        if ($template === false || $template === null) {
+                            unset($this->toolbar[$key][$collector]);
+                            continue;
+                        }
+
+                        $this->toolbar[$key][$collector] = $template;
+                    }
+
+                    continue;
+                default:
+                    // Unknown type; ignore
+                    continue;
             }
         }
     }
@@ -408,6 +422,4 @@ class Options extends AbstractOptions
     {
         return $this->toolbar['entries'];
     }
-
-    // todo: storage and firephp options.
 }

@@ -52,9 +52,11 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
      */
     public function canHide()
     {
-        if (!isset($this->profiler)) {
+        if (! isset($this->profiler)) {
             return false;
-        } elseif ($this->getQueryCount() > 0) {
+        }
+        
+        if ($this->getQueryCount() > 0) {
             return false;
         }
 
@@ -90,7 +92,6 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
     public function setProfiler(Profiler $profiler)
     {
         $this->profiler = $profiler;
-
         return $this;
     }
 

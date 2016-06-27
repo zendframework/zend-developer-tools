@@ -80,14 +80,14 @@ class ProfilerListener implements ListenerAggregateInterface
         foreach ($collectors as $name => $collector) {
             if ($this->serviceLocator->has($collector)) {
                 $profiler->addCollector($this->serviceLocator->get($collector));
-            } else {
-                $error = sprintf('Unable to fetch or create an instance for %s.', $collector);
-                if ($strict === true) {
-                    throw new ServiceNotFoundException($error);
-                } else {
-                    $report->addError($error);
-                }
+                continue;
             }
+
+            $error = sprintf('Unable to fetch or create an instance for %s.', $collector);
+            if ($strict === true) {
+                throw new ServiceNotFoundException($error);
+            }
+            $report->addError($error);
         }
 
         $profiler->collect($event);

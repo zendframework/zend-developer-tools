@@ -1,4 +1,10 @@
 <?php
+/**
+ * @link      http://github.com/zendframework/ZendDeveloperTools for the canonical source repository
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ */
+
 namespace ZendDeveloperTools\EventLogging;
 
 use Zend\EventManager\EventInterface;
@@ -101,7 +107,7 @@ class EventContextProvider implements EventContextInterface
      */
     private function getDebugBacktrace()
     {
-        if (!$this->debugBacktrace) {
+        if (! $this->debugBacktrace) {
             //Remove the levels this method introduces
             $trace = debug_backtrace();
             $this->debugBacktrace = array_splice($trace, 2);
@@ -118,6 +124,7 @@ class EventContextProvider implements EventContextInterface
     public function getEventTriggerFile()
     {
         $backtrace = $this->getDebugBacktrace();
+
         if (file_exists($backtrace[4]['file'])) {
             return basename(dirname($backtrace[4]['file'])) . '/' . basename($backtrace[4]['file']);
         }
@@ -133,6 +140,7 @@ class EventContextProvider implements EventContextInterface
     public function getEventTriggerLine()
     {
         $backtrace = $this->getDebugBacktrace();
+
         if (isset($backtrace[4]['line'])) {
             return $backtrace[4]['line'];
         }

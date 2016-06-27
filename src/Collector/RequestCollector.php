@@ -55,6 +55,7 @@ class RequestCollector extends AbstractCollector
                 $var = $key . ': ' . (is_object($var) ? get_class($var) : gettype($var));
             }
             sort($vars);
+
             $views[] = [
                 'template' => $child->getTemplate(),
                 'vars' => $vars,
@@ -65,11 +66,11 @@ class RequestCollector extends AbstractCollector
         $this->addChildrenToView($viewModel, $addToViewFromModel);
 
         $this->data = [
-            'views' => $views,
-            'method' => $mvcEvent->getRequest()->getMethod(),
-            'status' => $mvcEvent->getResponse()->getStatusCode(),
-            'route' => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
-            'action' => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
+            'views'      => $views,
+            'method'     => $mvcEvent->getRequest()->getMethod(),
+            'status'     => $mvcEvent->getResponse()->getStatusCode(),
+            'route'      => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
+            'action'     => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
             'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A')
         ];
     }
@@ -80,11 +81,13 @@ class RequestCollector extends AbstractCollector
      */
     protected function addChildrenToView(ModelInterface $viewModel, $addToViewFromModel)
     {
-        if ($viewModel->hasChildren()) {
-            foreach ($viewModel->getChildren() as $child) {
-                $addToViewFromModel($child);
-                $this->addChildrenToView($child, $addToViewFromModel);
-            }
+        if (! $viewModel->hasChildren()) {
+            return;
+        }
+
+        foreach ($viewModel->getChildren() as $child) {
+            $addToViewFromModel($child);
+            $this->addChildrenToView($child, $addToViewFromModel);
         }
     }
 
@@ -147,20 +150,20 @@ class RequestCollector extends AbstractCollector
      */
     public function getFullControllerName($short = true)
     {
+        $controller = $this->data['controller'];
+
         if ($short) {
-            $controller = explode('\\', $this->data['controller']);
+            $controller = explode('\\', $controller);
             $controller = array_pop($controller);
-        } else {
-            $controller = $this->data['controller'];
         }
 
         $return = sprintf('%s::%s', $controller, $this->data['action']);
 
         if ($return === 'N/A::N/A') {
             return 'N/A';
-        } else {
-            return $return;
         }
+
+        return $return;
     }
 
     /**

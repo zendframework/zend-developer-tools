@@ -189,7 +189,6 @@ class Module implements
                     return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));
                 },
                 'ZendDeveloperTools\EventLoggingListenerAggregate' => function ($sm) {
-                    /* @var $config \ZendDeveloperTools\Options */
                     $config = $sm->get('ZendDeveloperTools\Config');
 
                     return new Listener\EventLoggingListenerAggregate(
@@ -208,7 +207,16 @@ class Module implements
                             $db->setProfiler($adapter->getProfiler());
                         }
                     }
-                    if (!$p && $sm->has('Zend\Db\Adapter\ProfilingAdapter')) {
+
+                    if (! $p && $sm->has('Zend\Db\Adapter\AdapterInterface')) {
+                        $adapter = $sm->get('Zend\Db\Adapter\AdapterInterface');
+                        if ($adapter instanceof ProfilingAdapter) {
+                            $p = true;
+                            $db->setProfiler($adapter->getProfiler());
+                        }
+                    }
+
+                    if (! $p && $sm->has('Zend\Db\Adapter\ProfilingAdapter')) {
                         $adapter = $sm->get('Zend\Db\Adapter\ProfilingAdapter');
                         if ($adapter instanceof ProfilingAdapter) {
                             $db->setProfiler($adapter->getProfiler());

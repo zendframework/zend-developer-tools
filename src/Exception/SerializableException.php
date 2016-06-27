@@ -164,21 +164,34 @@ class SerializableException implements \Serializable
         foreach ($args as $key => $value) {
             if (is_object($value)) {
                 $result[$key] = ['object', get_class($value)];
-            } elseif (is_array($value)) {
+                continue;
+            }
+            
+            if (is_array($value)) {
                 if ($level > 10) {
                     $result[$key] = ['array', '*DEEP NESTED ARRAY*'];
-                } else {
-                    $result[$key] = ['array', $this->filterArgs($value, ++$level)];
+                    continue;
                 }
-            } elseif (null === $value) {
-                $result[$key] = ['null', null];
-            } elseif (is_bool($value)) {
-                $result[$key] = ['boolean', $value];
-            } elseif (is_resource($value)) {
-                $result[$key] = ['resource', get_resource_type($value)];
-            } else {
-                $result[$key] = ['string', (string) $value];
+                $result[$key] = ['array', $this->filterArgs($value, ++$level)];
+                continue;
             }
+            
+            if (null === $value) {
+                $result[$key] = ['null', null];
+                continue;
+            }
+            
+            if (is_bool($value)) {
+                $result[$key] = ['boolean', $value];
+                continue;
+            }
+            
+            if (is_resource($value)) {
+                $result[$key] = ['resource', get_resource_type($value)];
+                continue;
+            }
+
+            $result[$key] = ['string', (string) $value];
         }
 
         return $result;

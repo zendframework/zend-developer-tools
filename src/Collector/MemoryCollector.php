@@ -38,7 +38,7 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        if (!isset($this->data)) {
+        if (! isset($this->data)) {
             $this->data = [];
         }
 
@@ -61,7 +61,7 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
         $context['line']   = $contextProvider->getEventTriggerLine();
         $context['memory'] = memory_get_usage(true);
 
-        if (!isset($this->data['event'][$id])) {
+        if (! isset($this->data['event'][$id])) {
             $this->data['event'][$id] = [];
         }
 
@@ -97,7 +97,7 @@ class MemoryCollector extends AbstractCollector implements EventCollectorInterfa
     {
         $result = [];
 
-        if (!isset($this->data['event']['application'])) {
+        if (! isset($this->data['event']['application'])) {
             return $result;
         }
 

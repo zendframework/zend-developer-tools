@@ -36,7 +36,7 @@ class DetailArray extends AbstractHelper
      */
     public function __invoke($label, array $details, $redundant = false)
     {
-        $r = [];
+        $r   = [];
 
         $r[] = '<span class="zdt-toolbar-info';
         $r[] = ($redundant) ? ' zdt-toolbar-info-redundant' : '';

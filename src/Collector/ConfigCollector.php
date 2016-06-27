@@ -108,7 +108,6 @@ class ConfigCollector implements CollectorInterface, Serializable
      * Replaces the un-serializable items in an array with stubs
      *
      * @param array|\Traversable $data
-     *
      * @return array
      */
     private function makeArraySerializable($data)
@@ -118,13 +117,11 @@ class ConfigCollector implements CollectorInterface, Serializable
         foreach (ArrayUtils::iteratorToArray($data) as $key => $value) {
             if ($value instanceof Traversable || is_array($value)) {
                 $serializable[$key] = $this->makeArraySerializable($value);
-
                 continue;
             }
 
             if ($value instanceof Closure) {
                 $serializable[$key] = new ClosureStub();
-
                 continue;
             }
 
@@ -138,7 +135,6 @@ class ConfigCollector implements CollectorInterface, Serializable
      * Opposite of {@see makeArraySerializable} - replaces stubs in an array with actual un-serializable objects
      *
      * @param array $data
-     *
      * @return array
      */
     private function unserializeArray(array $data)
@@ -148,14 +144,12 @@ class ConfigCollector implements CollectorInterface, Serializable
         foreach (ArrayUtils::iteratorToArray($data) as $key => $value) {
             if ($value instanceof Traversable || is_array($value)) {
                 $unserialized[$key] = $this->unserializeArray($value);
-
                 continue;
             }
 
             if ($value instanceof ClosureStub) {
                 $unserialized[$key] = function () {
                 };
-
                 continue;
             }
 

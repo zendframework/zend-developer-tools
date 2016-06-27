@@ -52,7 +52,6 @@ class Report implements ReportInterface
     public function setIp($ip)
     {
         $this->ip = $ip;
-
         return $this;
     }
 
@@ -70,7 +69,6 @@ class Report implements ReportInterface
     public function setUri($uri)
     {
         $this->uri = $uri;
-
         return $this;
     }
 
@@ -88,7 +86,6 @@ class Report implements ReportInterface
     public function setTime($time)
     {
         $this->time = $time;
-
         return $this;
     }
 
@@ -106,7 +103,6 @@ class Report implements ReportInterface
     public function setToken($token)
     {
         $this->token = $token;
-
         return $this;
     }
 
@@ -123,12 +119,11 @@ class Report implements ReportInterface
      */
     public function addError($error)
     {
-        if (!isset($this->errors)) {
+        if (! isset($this->errors)) {
             $this->errors = [];
         }
 
         $this->errors[] = $error;
-
         return $this;
     }
 
@@ -154,7 +149,6 @@ class Report implements ReportInterface
     public function setMethod($method)
     {
         $this->method = $method;
-
         return $this;
     }
 
@@ -182,7 +176,6 @@ class Report implements ReportInterface
         if (isset($this->collectors[$name])) {
             return $this->collectors[$name];
         }
-
         return;
     }
 

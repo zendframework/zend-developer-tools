@@ -38,15 +38,9 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        if (PHP_VERSION_ID >= 50400) {
-            $start = $mvcEvent->getRequest()->getServer()->get('REQUEST_TIME_FLOAT');
-        } elseif (defined('REQUEST_MICROTIME')) {
-            $start = REQUEST_MICROTIME;
-        } else {
-            $start = $mvcEvent->getRequest()->getServer()->get('REQUEST_TIME');
-        }
+        $start = $this->marshalStartTime($mvcEvent);
 
-        if (!isset($this->data)) {
+        if (! isset($this->data)) {
             $this->data = [];
         }
 
@@ -69,7 +63,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
         $context['file']   = $contextProvider->getEventTriggerFile();
         $context['line']   = $contextProvider->getEventTriggerLine();
 
-        if (!isset($this->data['event'][$id])) {
+        if (! isset($this->data['event'][$id])) {
             $this->data['event'][$id] = [];
         }
 
@@ -115,7 +109,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
     {
         $result = [];
 
-        if (!isset($this->data['event']['application'])) {
+        if (! isset($this->data['event']['application'])) {
             return $result;
         }
 
@@ -132,5 +126,24 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Determine the start time
+     *
+     * @param MvcEvent $mvcEvent
+     * @return float
+     */
+    private function marshalStartTime(MvcEvent $mvcEvent)
+    {
+        if (PHP_VERSION_ID >= 50400) {
+            return $mvcEvent->getRequest()->getServer()->get('REQUEST_TIME_FLOAT');
+        }
+       
+        if (defined('REQUEST_MICROTIME')) {
+            return REQUEST_MICROTIME;
+        }
+
+        return $mvcEvent->getRequest()->getServer()->get('REQUEST_TIME');
     }
 }
