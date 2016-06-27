@@ -180,7 +180,10 @@ class Module implements
                     return new Listener\StorageListener($sm);
                 },
                 'ZendDeveloperTools\ToolbarListener' => function ($sm) {
-                    return new Listener\ToolbarListener($sm->get('ViewRenderer'), $sm->get('ZendDeveloperTools\Config'));
+                    return new Listener\ToolbarListener(
+                        $sm->get('ViewRenderer'),
+                        $sm->get('ZendDeveloperTools\Config')
+                    );
                 },
                 'ZendDeveloperTools\ProfilerListener' => function ($sm) {
                     return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));

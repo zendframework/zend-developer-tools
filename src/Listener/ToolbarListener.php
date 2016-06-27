@@ -28,6 +28,7 @@ use ZendDeveloperTools\Collector\AutoHideInterface;
 use ZendDeveloperTools\Exception\InvalidOptionException;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
+use Zend\EventManager\ListenerAggregateTrait;
 
 /**
  * Developer Toolbar Listener
@@ -37,6 +38,8 @@ use Zend\EventManager\ListenerAggregateInterface;
  */
 class ToolbarListener implements ListenerAggregateInterface
 {
+    use ListenerAggregateTrait;
+
     /**
      * Time to live for the version cache in seconds.
      *
@@ -69,11 +72,6 @@ class ToolbarListener implements ListenerAggregateInterface
     protected $options;
 
     /**
-     * @var array
-     */
-    protected $listeners = [];
-
-    /**
      * Constructor.
      *
      * @param object  $viewRenderer
@@ -90,19 +88,12 @@ class ToolbarListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events, $priority = 1)
     {
-        $this->listeners[] = $events->getSharedManager()->attach('profiler', ProfilerEvent::EVENT_COLLECTED, [$this, 'onCollected'], Profiler::PRIORITY_TOOLBAR);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function detach(EventManagerInterface $events)
-    {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
+        $this->listeners[] = $events->getSharedManager()->attach(
+            'profiler',
+            ProfilerEvent::EVENT_COLLECTED,
+            [$this, 'onCollected'],
+            Profiler::PRIORITY_TOOLBAR
+        );
     }
 
     /**
@@ -211,7 +202,10 @@ class ToolbarListener implements ListenerAggregateInterface
                 try {
                     $collectorInstance = $report->getCollector($name);
 
-                    if ($this->options->getToolbarAutoHide() && $collectorInstance instanceof AutoHideInterface && $collectorInstance->canHide()) {
+                    if ($this->options->getToolbarAutoHide()
+                        && $collectorInstance instanceof AutoHideInterface
+                        && $collectorInstance->canHide()
+                    ) {
                         continue;
                     }
 
