@@ -54,5 +54,16 @@
         "psr-4": {
             "ZendDeveloperToolsTest\\": "test/"
         }
+    },
+    "scripts": {
+        "check": [
+            "@cs",
+            "@test"
+        ],
+        "coveralls": "coveralls",
+        "cs": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-clover clover.xml"
     }
 }

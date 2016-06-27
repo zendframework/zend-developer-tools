@@ -1,53 +1,48 @@
+sudo: false
+
 language: php
 
-php:
-  - 5.5
-  - 5.6
-  - 7
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - vendor
+
+env:
+  global:
+    - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.6
+      env:
+        - DEPS=lowest
+    - php: 5.6
+      env:
+        - DEPS=locked
+    - php: 5.6
+      env:
+        - DEPS=latest
+    - php: 7
+      env:
+        - DEPS=lowest
+    - php: 7
+      env:
+        - DEPS=locked
+        - CS_CHECK=true
+    - php: 7
+      env:
+        - DEPS=latest
 
 before_install:
-  - composer self-update
+  - travis_retry composer self-update
 
 install:
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
   - travis_retry composer install $COMPOSER_ARGS
-  - composer show --installed
-
-matrix:
-  fast_finish: true
-  include:
-    - php: 5.5
-      env:
-        - DEPS=lowest
-    - php: 5.5
-      env:
-        - EXECUTE_CS_CHECK=true
-        - DEPS=locked
-    - php: 5.5
-      env:
-        - DEPS=latest
-    - php: 5.6
-      env:
-        - DEPS=lowest
-    - php: 5.6
-      env:
-        - DEPS=locked
-        - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
-        - PATH="$HOME/.local/bin:$PATH"
-    - php: 5.6
-      env:
-        - DEPS=latest
-    - php: 7
-      env:
-        - DEPS=lowest
-    - php: 7
-      env:
-        - DEPS=locked
-    - php: 7
-      env:
-        - DEPS=latest
+  - composer show
 
 script:
-  - ./vendor/bin/phpunit
-  - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/php-cs-fixer fix -v --diff --dry-run ; fi
+  - composer test
+  - if [[ $CS_CHECK == 'true' ]]; then composer cs ; fi
