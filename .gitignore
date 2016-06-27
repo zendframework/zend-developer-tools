@@ -4,4 +4,4 @@ nbproject
 .project
 .settings/
 .DS_Store
-vendor
+vendor/
