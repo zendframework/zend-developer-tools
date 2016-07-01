@@ -14,6 +14,8 @@ class SerializableExceptionTest extends PHPUnit_Framework_TestCase
         } catch (\Throwable $exception) {
             $serializable = new SerializableException($exception);
             $this->assertEquals('Division by zero', $serializable->getMessage());
+
+            return;
         } catch (\Exception $exception) {
             $serializable = new SerializableException($exception);
             $this->assertEquals('Division by zero', $serializable->getMessage());
@@ -27,9 +29,10 @@ class SerializableExceptionTest extends PHPUnit_Framework_TestCase
         } catch (\Throwable $exception) {
             $serializable = new SerializableException($exception);
             $this->assertEquals('Call to undefined method stdClass::iDoNotExist()', $serializable->getMessage());
-        } catch (\Exception $exception) {
-            $serializable = new SerializableException($exception);
-            $this->assertEquals('Call to undefined method stdClass::iDoNotExist()', $serializable->getMessage());
+
+            return;
         }
+
+        $this->fail('fatal error');
     }
 }
