@@ -7,21 +7,19 @@ use ZendDeveloperTools\Exception\SerializableException;
 
 class SerializableExceptionTest extends PHPUnit_Framework_TestCase
 {
-    public function testExceptionAndThrowable()
+    public function testException()
     {
         try {
-            $a = 1 / 0;
-        } catch (\Throwable $exception) {
-            $serializable = new SerializableException($exception);
-            $this->assertEquals('Division by zero', $serializable->getMessage());
-
-            return;
+            new \Exception('foo');
         } catch (\Exception $exception) {
             $serializable = new SerializableException($exception);
-            $this->assertEquals('Division by zero', $serializable->getMessage());
+            $this->assertEquals('foo', $serializable->getMessage());
         }
     }
 
+    /**
+     * @requires PHP 7
+     */
     public function testStdClassCallNotExistMethod()
     {
         try {
@@ -29,10 +27,6 @@ class SerializableExceptionTest extends PHPUnit_Framework_TestCase
         } catch (\Throwable $exception) {
             $serializable = new SerializableException($exception);
             $this->assertEquals('Call to undefined method stdClass::iDoNotExist()', $serializable->getMessage());
-
-            return;
         }
-
-        $this->fail('fatal error');
     }
 }
