@@ -71,7 +71,10 @@ class RequestCollector extends AbstractCollector
             'status'     => $mvcEvent->getResponse()->getStatusCode(),
             'route'      => ($match === null) ? 'N/A' : $match->getMatchedRouteName(),
             'action'     => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
-            'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A')
+            'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A'),
+            'other_route_parameters' => ($match === null) ? 'N/A' : array_filter($match->getParams(), function($key) {
+                return $key !== 'action' && $key !== 'controller';
+            }, ARRAY_FILTER_USE_KEY),
         ];
     }
 
@@ -139,6 +142,15 @@ class RequestCollector extends AbstractCollector
     public function getControllerName()
     {
         return $this->data['controller'];
+    }
+
+    /**
+     * Returns parameters except controller and actions
+     * @return array
+     */
+    public function getOtherParameters()
+    {
+        return $this->data['other_route_parameters'];
     }
 
     /**
