@@ -73,7 +73,7 @@ class RequestCollector extends AbstractCollector
             'action'     => ($match === null) ? 'N/A' : $match->getParam('action', 'N/A'),
             'controller' => ($match === null) ? 'N/A' : $match->getParam('controller', 'N/A'),
             'other_route_parameters' => ($match === null) ? 'N/A' : array_filter($match->getParams(), function ($key) {
-                return $key !== 'action' && $key !== 'controller';
+                return ! in_array($key, ['action', 'controller']);
             }, ARRAY_FILTER_USE_KEY),
         ];
     }
