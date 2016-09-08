@@ -18,7 +18,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#215](https://github.com/zendframework/ZendDeveloperTools/pull/215) replaces
+  the ZF logo to remove the "2".
 
 ## 1.1.0 - 2016-06-27
 
