@@ -21,9 +21,9 @@ class SerializableException implements \Serializable
     /**
      * Saves the exception data in an array.
      *
-     * @param \Exception $exception
+     * @param \Exception|\Throwable $exception
      */
-    public function __construct(\Exception $exception)
+    public function __construct($exception)
     {
         $this->data = [
             'code'     => $exception->getCode(),

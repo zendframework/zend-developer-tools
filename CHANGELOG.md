@@ -24,7 +24,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#217](https://github.com/zendframework/ZendDeveloperTools/pull/217) adds
+  support in the `SerializableException` for PHP 7 Throwables, including Error
+  types.
 
 ### Deprecated
 
