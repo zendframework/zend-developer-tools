@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#217](https://github.com/zendframework/ZendDeveloperTools/pull/217) adds
   support in the `SerializableException` for PHP 7 Throwables, including Error
   types.
+- [#220](https://github.com/zendframework/ZendDeveloperTools/pull/220) adds
+  support for displaying matched route parameters other than just the controller
+  and action.
 
 ### Deprecated
 
