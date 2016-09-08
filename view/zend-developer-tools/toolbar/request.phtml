@@ -18,25 +18,29 @@ $color = ($statusCode < 400)
         </span>
     </div>
     <div class="zdt-toolbar-detail zdt-toolbar-detail-overflow">
-        <span class="zdt-toolbar-info zdt-toolbar-info-redundant">
+        <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">Status code</span>
             <span class="zdt-detail-value zdt-toolbar-bold zdt-toolbar-color-<?php echo $color; ?>">
                 <?php echo $statusCode; ?>
             </span>
         </span>
-        <span class="zdt-toolbar-info">
+       <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">Method</span>
             <span class="zdt-detail-value"><?php echo $this->collector->getMethod(); ?></span>
         </span>
-        <span class="zdt-toolbar-info zdt-toolbar-extra-info-redundant">
+        <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">Controller</span>
             <span class="zdt-detail-value"><?php echo $this->collector->getControllerName(); ?></span>
         </span>
-        <span class="zdt-toolbar-info zdt-toolbar-extra-info-redundant">
+        <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">Action</span>
             <span class="zdt-detail-value"><?php echo $this->collector->getActionName(); ?></span>
         </span>
-        <span class="zdt-toolbar-info zdt-toolbar-extra-info-redundant">
+        <span class="zdt-toolbar-info">
+            <span class="zdt-detail-label">Other Route Parameters</span>
+            <span class="zdt-detail-value"><?php var_dump( $this->collector->getOtherParameters() ); ?></span>
+        </span>
+        <span class="zdt-toolbar-info">
             <span class="zdt-detail-label">Route</span>
             <span class="zdt-detail-value"><?php echo $this->collector->getRouteName(); ?></span>
         </span>
