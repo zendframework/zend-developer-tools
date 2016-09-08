@@ -22,6 +22,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#215](https://github.com/zendframework/ZendDeveloperTools/pull/215) replaces
   the ZF logo to remove the "2".
+- [#218](https://github.com/zendframework/ZendDeveloperTools/pull/218) updates
+  the logic for retrieving a zend-db `Adapter` to only do so if `db`
+  configuration also exists; this ensures the toolbar does not cause a fatal
+  error if zend-db is installed but no adapter configured.
 
 ## 1.1.0 - 2016-06-27
 
