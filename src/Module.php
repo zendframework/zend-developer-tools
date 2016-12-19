@@ -128,6 +128,9 @@ class Module implements
     public function getViewHelperConfig()
     {
         return [
+            'aliases' => [
+                'zendDeveloperToolsTime'        => 'ZendDeveloperToolsTime',
+            ],
             'invokables' => [
                 'ZendDeveloperToolsTime'        => 'ZendDeveloperTools\View\Helper\Time',
                 'ZendDeveloperToolsMemory'      => 'ZendDeveloperTools\View\Helper\Memory',
