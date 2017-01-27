@@ -200,7 +200,7 @@ class Module implements
                     $p  = false;
                     $db = new Collector\DbCollector();
 
-                    if ($sm->has('Zend\Db\Adapter\Adapter') && isset($sm->get('config')['db'])) {
+                    if ($sm->has('Zend\Db\Adapter\Adapter')) {
                         $adapter = $sm->get('Zend\Db\Adapter\Adapter');
                         if ($adapter instanceof ProfilingAdapter) {
                             $p = true;
@@ -208,7 +208,7 @@ class Module implements
                         }
                     }
 
-                    if (! $p && $sm->has('Zend\Db\Adapter\AdapterInterface') && isset($sm->get('config')['db'])) {
+                    if (! $p && $sm->has('Zend\Db\Adapter\AdapterInterface')) {
                         $adapter = $sm->get('Zend\Db\Adapter\AdapterInterface');
                         if ($adapter instanceof ProfilingAdapter) {
                             $p = true;
