@@ -147,9 +147,7 @@ class Module implements
             ],
             'invokables' => [
                 'ZendDeveloperTools\Report'             => 'ZendDeveloperTools\Report',
-                'ZendDeveloperTools\EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
                 'ZendDeveloperTools\ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
-                'ZendDeveloperTools\RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
                 'ZendDeveloperTools\RequestCollector'   => 'ZendDeveloperTools\Collector\RequestCollector',
                 'ZendDeveloperTools\ConfigCollector'    => 'ZendDeveloperTools\Collector\ConfigCollector',
                 'ZendDeveloperTools\MailCollector'      => 'ZendDeveloperTools\Collector\MailCollector',
