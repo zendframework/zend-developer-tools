@@ -88,7 +88,7 @@ class Module implements
             return;
         }
 
-        $report = $sm->get('ZendDeveloperTools\Report');
+        $report = $sm->get(Report::class);
 
         if ($options->canFlushEarly()) {
             $flushListener = $sm->get('ZendDeveloperTools\FlushListener');
@@ -100,15 +100,15 @@ class Module implements
         }
 
         if ($options->eventCollectionEnabled()) {
-            $eventLoggingListener = $sm->get('ZendDeveloperTools\EventLoggingListenerAggregate');
+            $eventLoggingListener = $sm->get(Listener\EventLoggingListenerAggregate::class);
             $eventLoggingListener->attachShared($sem);
         }
 
-        $profilerListener = $sm->get('ZendDeveloperTools\ProfilerListener');
+        $profilerListener = $sm->get(Listener\ProfilerListener::class);
         $profilerListener->attach($em);
 
         if ($options->isToolbarEnabled()) {
-            $toolbarListener = $sm->get('ZendDeveloperTools\ToolbarListener');
+            $toolbarListener = $sm->get(Listener\ProfilerListener::class);
             $toolbarListener->attach($em);
         }
 
@@ -129,9 +129,9 @@ class Module implements
     {
         return [
             'invokables' => [
-                'ZendDeveloperToolsTime'        => 'ZendDeveloperTools\View\Helper\Time',
-                'ZendDeveloperToolsMemory'      => 'ZendDeveloperTools\View\Helper\Memory',
-                'ZendDeveloperToolsDetailArray' => 'ZendDeveloperTools\View\Helper\DetailArray',
+                'ZendDeveloperToolsTime'        => View\Helper\Time::class,
+                'ZendDeveloperToolsMemory'      => View\Helper\Memory::class,
+                'ZendDeveloperToolsDetailArray' => View\Helper\DetailArray::class,
             ],
         ];
     }
@@ -143,23 +143,23 @@ class Module implements
     {
         return [
             'aliases' => [
-                'ZendDeveloperTools\ReportInterface' => 'ZendDeveloperTools\Report',
+                'ZendDeveloperTools\ReportInterface' => Report::class,
             ],
             'invokables' => [
-                'ZendDeveloperTools\Report'             => 'ZendDeveloperTools\Report',
+                Report::class => Report::class,
                 'ZendDeveloperTools\EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
-                'ZendDeveloperTools\ExceptionCollector' => 'ZendDeveloperTools\Collector\ExceptionCollector',
+                'ZendDeveloperTools\ExceptionCollector' => Collector\ExceptionCollector::class,
                 'ZendDeveloperTools\RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
-                'ZendDeveloperTools\RequestCollector'   => 'ZendDeveloperTools\Collector\RequestCollector',
-                'ZendDeveloperTools\ConfigCollector'    => 'ZendDeveloperTools\Collector\ConfigCollector',
-                'ZendDeveloperTools\MailCollector'      => 'ZendDeveloperTools\Collector\MailCollector',
-                'ZendDeveloperTools\MemoryCollector'    => 'ZendDeveloperTools\Collector\MemoryCollector',
-                'ZendDeveloperTools\TimeCollector'      => 'ZendDeveloperTools\Collector\TimeCollector',
-                'ZendDeveloperTools\FlushListener'      => 'ZendDeveloperTools\Listener\FlushListener',
+                'ZendDeveloperTools\RequestCollector'   => Collector\RequestCollector::class,
+                'ZendDeveloperTools\ConfigCollector'    => Collector\ConfigCollector::class,
+                'ZendDeveloperTools\MailCollector'      => Collector\MailCollector::class,
+                'ZendDeveloperTools\MemoryCollector'    => Collector\MemoryCollector::class,
+                'ZendDeveloperTools\TimeCollector'      => Collector\TimeCollector::class,
+                'ZendDeveloperTools\FlushListener'      => Listener\FlushListener::class,
             ],
             'factories' => [
-                'ZendDeveloperTools\Profiler' => function ($sm) {
-                    $a = new Profiler($sm->get('ZendDeveloperTools\Report'));
+                Profiler::class => function ($sm) {
+                    $a = new Profiler($sm->get(Report::class));
                     $a->setEvent($sm->get('ZendDeveloperTools\Event'));
                     return $a;
                 },
@@ -167,11 +167,11 @@ class Module implements
                     $config = $sm->get('Configuration');
                     $config = isset($config['zenddevelopertools']) ? $config['zenddevelopertools'] : null;
 
-                    return new Options($config, $sm->get('ZendDeveloperTools\Report'));
+                    return new Options($config, $sm->get(Report::class));
                 },
                 'ZendDeveloperTools\Event' => function ($sm) {
                     $event = new ProfilerEvent();
-                    $event->setReport($sm->get('ZendDeveloperTools\Report'));
+                    $event->setReport($sm->get(Report::class));
                     $event->setApplication($sm->get('Application'));
 
                     return $event;

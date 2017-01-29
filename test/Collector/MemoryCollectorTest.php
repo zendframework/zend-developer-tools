@@ -2,6 +2,7 @@
 namespace ZendDeveloperToolsTest\Collector;
 
 use ZendDeveloperTools\Collector\MemoryCollector;
+use Zend\Mvc;
 
 class MemoryCollectorTest extends \PHPUnit_Framework_TestCase
 {
@@ -9,7 +10,7 @@ class MemoryCollectorTest extends \PHPUnit_Framework_TestCase
     {
         $collector = new MemoryCollector();
 
-        $mvcEvent = $this->getMockBuilder("Zend\Mvc\MvcEvent")
+        $mvcEvent = $this->getMockBuilder(Mvc\MvcEvent::class)
             ->getMock();
 
         $collector->collect($mvcEvent);
