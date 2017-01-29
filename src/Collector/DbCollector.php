@@ -44,7 +44,6 @@ class DbCollector implements CollectorInterface, AutoHideInterface, \Serializabl
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        return;
     }
 
     /**
