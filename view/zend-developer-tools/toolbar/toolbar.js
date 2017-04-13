@@ -22,6 +22,8 @@
         var cookieKeyHidden = "zdt-hidden";
         /** @type {number} */
         var widthHiddenState = 25;
+        
+        var timer;
 
         self.toggle = function() {
             !self.isHidden() ? self.hide() : self.show();
@@ -78,6 +80,11 @@
          * @param {number} toPosition
          */
         function slide(toPosition) {
+        	
+        	// Clear timer 
+        	clearTimeout(timer);
+        	
+        	
             var increment = 30;
 
             var currentPosition = (container.style.left.length > 0)
@@ -107,7 +114,7 @@
 
             container.style.left = newPosition + "px";
 
-            setTimeout(function() { slide(toPosition); }, 3);
+            timer = setTimeout(function() { slide(toPosition); }, 3);
         }
 
         /**
