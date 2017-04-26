@@ -246,6 +246,11 @@
     max-width: 700px;
 }
 
+#zend-developer-toolbar .zdt-toolbar-info.zdt-toolbar-dbquery {
+    overflow: auto;
+    height:155px;
+}
+
 #zend-developer-toolbar .zdt-toolbar-info .zdt-detail-value pre {
     max-height: 350px;
     max-width: 650px;
