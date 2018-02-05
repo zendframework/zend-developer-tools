@@ -116,7 +116,7 @@ class TimeCollector extends AbstractCollector implements EventCollectorInterface
         $app = $this->data['event']['application'];
 
         $previous = null;
-        while (list($index, $context) = each($app)) {
+        foreach ($app as $index => $context) {
             $result[$index] = $context;
             $result[$index]['elapsed'] = ($previous)
                 ? ($context['time'] - $previous['time'])
