@@ -39,7 +39,6 @@ matrix:
     - php: 7.1
       env:
         - DEPS=locked
-        - CS_CHECK=true
     - php: 7.1
       env:
         - DEPS=latest
@@ -49,7 +48,6 @@ matrix:
     - php: 7.2
       env:
         - DEPS=locked
-        - CS_CHECK=true
     - php: 7.2
       env:
         - DEPS=latest
