@@ -40,6 +40,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
+- [#240](https://github.com/zendframework/zend-developer-tools/pull/240) fixes an issue with slide-in of the toolbar when resizing the browser window.
+
 - [#231](https://github.com/zendframework/zend-developer-tools/pull/231) ensures literal `$` characters are escaped within toolbar content.
 
 ## 1.1.1 - 2016-09-08
