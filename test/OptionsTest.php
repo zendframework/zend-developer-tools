@@ -1,11 +1,11 @@
 <?php
 namespace ZendDeveloperToolsTest;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\ReportInterface;
 
-class OptionsTest extends PHPUnit_Framework_TestCase
+class OptionsTest extends TestCase
 {
     public function testStatusOfDefaultConfiguration()
     {

@@ -8,7 +8,7 @@
 namespace ZendDeveloperToolsTest\Exception;
 
 use Exception;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Throwable;
 use ZendDeveloperTools\Exception\SerializableException;

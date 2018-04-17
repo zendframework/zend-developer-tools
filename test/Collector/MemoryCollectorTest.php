@@ -1,10 +1,11 @@
 <?php
 namespace ZendDeveloperToolsTest\Collector;
 
+use PHPUnit\Framework\TestCase;
 use ZendDeveloperTools\Collector\MemoryCollector;
 use Zend\Mvc;
 
-class MemoryCollectorTest extends \PHPUnit_Framework_TestCase
+class MemoryCollectorTest extends TestCase
 {
     public function testCollector()
     {
