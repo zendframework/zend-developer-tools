@@ -146,10 +146,8 @@ class Module implements
                 'ZendDeveloperTools\ReportInterface' => Report::class,
             ],
             'invokables' => [
-                Report::class => Report::class,
-                'ZendDeveloperTools\EventCollector'     => 'ZendDeveloperTools\Collector\EventCollector',
+                Report::class                           => Report::class,
                 'ZendDeveloperTools\ExceptionCollector' => Collector\ExceptionCollector::class,
-                'ZendDeveloperTools\RouteCollector'     => 'ZendDeveloperTools\Collector\RouteCollector',
                 'ZendDeveloperTools\RequestCollector'   => Collector\RequestCollector::class,
                 'ZendDeveloperTools\ConfigCollector'    => Collector\ConfigCollector::class,
                 'ZendDeveloperTools\MailCollector'      => Collector\MailCollector::class,
