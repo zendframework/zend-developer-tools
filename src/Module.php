@@ -78,8 +78,6 @@ class Module implements
         }
 
         $app = $event->getApplication();
-        $em  = $app->getEventManager();
-        $sem = $em->getSharedManager();
         $sm  = $app->getServiceManager();
 
         $options = $sm->get('ZendDeveloperTools\Config');
@@ -87,6 +85,8 @@ class Module implements
         if (!$options->isToolbarEnabled()) {
             return;
         }
+
+        $em  = $app->getEventManager();
 
         $report = $sm->get('ZendDeveloperTools\Report');
 
@@ -100,6 +100,7 @@ class Module implements
         }
 
         if ($options->eventCollectionEnabled()) {
+            $sem = $em->getSharedManager();
             $eventLoggingListener = $sm->get('ZendDeveloperTools\EventLoggingListenerAggregate');
             $eventLoggingListener->attachShared($sem);
         }
