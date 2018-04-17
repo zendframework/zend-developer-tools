@@ -37,7 +37,7 @@
         "zendframework/zend-stdlib": "^2.7 || ^3.0",
         "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
         "zendframework/zend-modulemanager": "^2.7",
-        "zendframework/zend-debug": "^2.5 || ^3.0",
+        "zendframework/zend-debug": "^2.5",
         "zendframework/zend-view": "^2.6"
     },
     "require-dev": {
