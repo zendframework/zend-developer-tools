@@ -176,7 +176,6 @@ class Report implements ReportInterface
         if (isset($this->collectors[$name])) {
             return $this->collectors[$name];
         }
-        return;
     }
 
     /**
