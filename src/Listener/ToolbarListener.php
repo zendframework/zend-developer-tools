@@ -1,39 +1,25 @@
 <?php
 /**
- * ZendDeveloperTools
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @see       https://github.com/zendframework/ZendDeveloperTools for the canonical source repository
+ * @copyright Copyright (c) 2011-2018 Zend Technologies USA Inc. (https://www.zend.com)
+ * @license   https://github.com/zendframework/ZendDeveloperTools/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendDeveloperTools\Listener;
 
-use Zend\View\Model\ViewModel;
-use Zend\View\Exception\RuntimeException;
+use ZendDeveloperTools\Collector\AutoHideInterface;
+use ZendDeveloperTools\Exception\InvalidOptionException;
 use ZendDeveloperTools\Options;
 use ZendDeveloperTools\Profiler;
 use ZendDeveloperTools\ProfilerEvent;
-use ZendDeveloperTools\Collector\AutoHideInterface;
-use ZendDeveloperTools\Exception\InvalidOptionException;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\ListenerAggregateTrait;
+use Zend\View\Exception\RuntimeException;
+use Zend\View\Model\ViewModel;
 
 /**
  * Developer Toolbar Listener
- *
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class ToolbarListener implements ListenerAggregateInterface
 {

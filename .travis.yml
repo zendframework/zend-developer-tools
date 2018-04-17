@@ -65,4 +65,4 @@ install:
 
 script:
   - composer test
-  - if [[ $CS_CHECK == 'true' ]]; then composer cs ; fi
+  - if [[ $CS_CHECK == 'true' ]]; then composer cs-check ; fi
