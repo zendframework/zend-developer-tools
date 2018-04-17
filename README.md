@@ -1,6 +1,7 @@
 # Zend Developer Tools
 
-[![Build Status](https://travis-ci.org/zendframework/ZendDeveloperTools.svg)](https://travis-ci.org/zendframework/ZendDeveloperTools)  
+[![Build Status](https://secure.travis-ci.org/zendframework/ZendDeveloperTools.svg?branch=master)](https://secure.travis-ci.org/zendframework/ZendDeveloperTools)
+[![Coverage Status](https://coveralls.io/repos/github/zendframework/ZendDeveloperTools/badge.svg?branch=master)](https://coveralls.io/github/zendframework/ZendDeveloperTools?branch=master)
 
 Module providing debug tools for use with [zend-mvc](https://docs.zendframework.com/zend-mvc) applications.
 
@@ -17,6 +18,7 @@ Module providing debug tools for use with [zend-mvc](https://docs.zendframework.
 2. Add the `ZendDeveloperTools` module to the module section of your `config/application.config.php`.
    Starting with version 1.1.0, if you are using [zend-component-installer](https://docs.zendframework.com/zend-component-installer),
    this will be done for you automatically.
+
 3. Copy `./vendor/zendframework/zend-developer-tools/config/zenddevelopertools.local.php.dist` to
    `./config/autoload/zenddevelopertools.local.php`. Change any settings in it
    according to your needs.

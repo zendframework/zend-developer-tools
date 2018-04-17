@@ -1,34 +1,20 @@
 {
     "name": "zendframework/zend-developer-tools",
     "description": "Module for developer and debug tools for use with zend-mvc applications.",
-    "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
+        "zendframework",
         "debug",
         "developer",
-        "zf2",
+        "zf",
         "module"
     ],
-    "homepage": "https://github.com/zendframework/ZendDeveloperTools",
-    "authors": [
-        {
-            "name": "Evan Coury",
-            "email": "me@evancoury.com",
-            "homepage": "http://blog.evan.pro/"
-        },
-        {
-            "name": "Eric Boh",
-            "email": "cossish@gmail.com"
-        }
-    ],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.1-dev",
-            "dev-develop": "1.2-dev"
-        },
-        "zf": {
-            "module": "ZendDeveloperTools"
-        }
+    "support": {
+        "issues": "https://github.com/zendframework/ZendDeveloperTools/issues",
+        "source": "https://github.com/zendframework/ZendDeveloperTools",
+        "rss": "https://github.com/zendframework/ZendDeveloperTools/releases.atom",
+        "chat": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/components"
     },
     "require": {
         "php": "^5.6 || ^7.0",
@@ -63,15 +49,37 @@
             "ZendDeveloperToolsTest\\": "test/"
         }
     },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1.x-dev",
+            "dev-develop": "1.2.x-dev"
+        },
+        "zf": {
+            "module": "ZendDeveloperTools"
+        }
+    },
     "scripts": {
         "check": [
             "@cs-check",
             "@test"
         ],
-        "coveralls": "coveralls",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
-        "test": "phpunit",
-        "test-coverage": "phpunit --coverage-clover clover.xml"
-    }
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+    },
+    "authors": [
+        {
+            "name": "Evan Coury",
+            "email": "me@evancoury.com",
+            "homepage": "http://blog.evan.pro/"
+        },
+        {
+            "name": "Eric Boh",
+            "email": "cossish@gmail.com"
+        }
+    ]
 }
