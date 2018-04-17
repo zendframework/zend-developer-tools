@@ -1,23 +1,21 @@
 <?php
 /**
- * Zend Developer Tools for Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendDeveloperTools for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/ZendDeveloperTools for the canonical source repository
+ * @copyright Copyright (c) 2011-2018 Zend Technologies USA Inc. (https://www.zend.com)
+ * @license   https://github.com/zendframework/ZendDeveloperTools/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendDeveloperTools;
 
+use BjyProfiler\Db\Adapter\ProfilingAdapter;
 use Zend\EventManager\EventInterface;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\InitProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManagerInterface;
-use Zend\ModuleManager\Feature\InitProviderInterface;
-use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\ServiceProviderInterface;
-use Zend\ModuleManager\Feature\BootstrapListenerInterface;
-use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
-use BjyProfiler\Db\Adapter\ProfilingAdapter;
 
 class Module implements
     InitProviderInterface,
@@ -82,7 +80,7 @@ class Module implements
 
         $options = $sm->get('ZendDeveloperTools\Config');
 
-        if (!$options->isToolbarEnabled()) {
+        if (! $options->isToolbarEnabled()) {
             return;
         }
 

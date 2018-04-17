@@ -1,7 +1,4 @@
-nbproject
-.idea
-.buildpath
-.project
-.settings/
-.DS_Store
-vendor/
+/clover.xml
+/coveralls-upload.json
+/phpunit.xml
+/vendor/
