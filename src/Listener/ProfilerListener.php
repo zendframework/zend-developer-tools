@@ -17,6 +17,7 @@ use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\ListenerAggregateTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use ZendDeveloperTools\Report;
 
 /**
  * Profiler Listener
@@ -72,8 +73,8 @@ class ProfilerListener implements ListenerAggregateInterface
     {
         $strict     = $this->options->isStrict();
         $collectors = $this->options->getCollectors();
-        $report     = $this->serviceLocator->get('ZendDeveloperTools\Report');
-        $profiler   = $this->serviceLocator->get('ZendDeveloperTools\Profiler');
+        $report     = $this->serviceLocator->get(Report::class);
+        $profiler   = $this->serviceLocator->get(Profiler::class);
 
         $profiler->setErrorMode($strict);
 
