@@ -2,6 +2,8 @@
 namespace ZendDeveloperToolsTest\Collector;
 
 use ZendDeveloperTools\Collector\ConfigCollector;
+use Zend\Mvc;
+use Zend\ServiceManager;
 
 class ConfigCollectorTest extends \PHPUnit_Framework_TestCase
 {
@@ -9,10 +11,10 @@ class ConfigCollectorTest extends \PHPUnit_Framework_TestCase
     {
         $collector = new ConfigCollector();
 
-        $application = $this->getMockBuilder("Zend\Mvc\Application")
+        $application = $this->getMockBuilder(Mvc\Application::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $serviceManager = $this->getMockBuilder("Zend\ServiceManager\ServiceManager")
+        $serviceManager = $this->getMockBuilder(ServiceManager\ServiceManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -20,7 +22,7 @@ class ConfigCollectorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method("getServiceManager")
             ->willReturn($serviceManager);
-        $mvcEvent = $this->getMockBuilder("Zend\Mvc\MvcEvent")
+        $mvcEvent = $this->getMockBuilder(Mvc\MvcEvent::class)
             ->getMock();
 
         $mvcEvent->method("getApplication")->willReturn($application);
