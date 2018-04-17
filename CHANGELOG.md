@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#242](https://github.com/zendframework/zend-developer-tools/pull/242) adds support for PHP 7.1 and 7.2.
 
 ### Changed
 
