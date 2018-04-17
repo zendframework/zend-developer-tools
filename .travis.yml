@@ -5,11 +5,10 @@ language: php
 cache:
   directories:
     - $HOME/.composer/cache
-    - vendor
 
 env:
   global:
-    - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
+    - COMPOSER_ARGS="--no-interaction"
 
 matrix:
   fast_finish: true
@@ -20,6 +19,7 @@ matrix:
     - php: 5.6
       env:
         - DEPS=locked
+        - LEGACY_DEPS="phpunit/phpunit"
     - php: 5.6
       env:
         - DEPS=latest
@@ -30,6 +30,7 @@ matrix:
       env:
         - DEPS=locked
         - CS_CHECK=true
+        - LEGACY_DEPS="phpunit/phpunit"
     - php: 7
       env:
         - DEPS=latest
@@ -53,13 +54,14 @@ matrix:
         - DEPS=latest
 
 before_install:
-  - travis_retry composer self-update
+  - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
 
 install:
+  - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
+  - if [[ $LEGACY_DEPS != '' ]]; then travis_retry composer update --with-dependencies $COMPOSER_ARGS $LEGACY_DEPS ; fi
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
-  - travis_retry composer install $COMPOSER_ARGS
-  - composer show
+  - stty cols 120 && composer show
 
 script:
   - composer test
