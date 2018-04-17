@@ -14,12 +14,12 @@ class ModuleTest extends PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $config);
     }
-    
-	public function testConfigSerialization()
-	{
-		$module = new Module();
-		$config = $module->getConfig();
-		
-		$this->assertSame($config, unserialize(serialize($config)));
-	}
+
+    public function testConfigSerialization()
+    {
+        $module = new Module();
+        $config = $module->getConfig();
+
+        $this->assertSame($config, unserialize(serialize($config)));
+    }
 }
