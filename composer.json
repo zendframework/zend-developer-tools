@@ -42,7 +42,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7.25 || ^6.4.4 || ^7.1",
-        "squizlabs/php_codesniffer": "~2.3.1"
+        "zendframework/zend-coding-standard": "~1.0.0"
     },
     "suggest": {
         "bjyoungblood/bjy-profiler": "Version: dev-master, allows the usage of the (Zend) Db collector.",
@@ -65,11 +65,11 @@
     },
     "scripts": {
         "check": [
-            "@cs",
+            "@cs-check",
             "@test"
         ],
         "coveralls": "coveralls",
-        "cs": "phpcs",
+        "cs-check": "phpcs",
         "cs-fix": "phpcbf",
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-clover clover.xml"

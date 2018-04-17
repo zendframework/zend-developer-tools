@@ -54,7 +54,7 @@ class EventContextProvider implements EventContextInterface
      */
     public function getEvent()
     {
-        if (!$this->event) {
+        if (! $this->event) {
             throw new \InvalidArgumentException(sprintf(
                 '%s: expects an event to have been set.',
                 __METHOD__
