@@ -1,20 +1,18 @@
 <?php
 /**
- * Zend Developer Tools for Zend Framework (http://framework.zend.com/)
- *
- * @link       http://github.com/zendframework/ZendDeveloperTools for the canonical source repository
- * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/ZendDeveloperTools for the canonical source repository
+ * @copyright Copyright (c) 2011-2018 Zend Technologies USA Inc. (https://www.zend.com)
+ * @license   https://github.com/zendframework/ZendDeveloperTools/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendDeveloperTools\Collector;
 
+use Closure;
 use Serializable;
 use Traversable;
-use Closure;
+use ZendDeveloperTools\Stub\ClosureStub;
 use Zend\Mvc\MvcEvent;
 use Zend\Stdlib\ArrayUtils;
-use ZendDeveloperTools\Stub\ClosureStub;
 
 /**
  * Config data collector - dumps the contents of the `Config` and `ApplicationConfig` services
