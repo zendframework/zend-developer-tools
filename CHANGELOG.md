@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#235](https://github.com/zendframework/zend-developer-tools/pull/235) modifies the module bootstrap to defer retrieval of services until they are needed.
 
 ### Deprecated
 
