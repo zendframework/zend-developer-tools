@@ -22,7 +22,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#248](https://github.com/zendframework/zend-developer-tools/pull/248) fixes dependency configuration within the `Module` class to replace
+  incorrect class and service name references.
 
 ## 1.2.0 - 2018-04-17
 
