@@ -53,10 +53,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#217](https://github.com/zendframework/ZendDeveloperTools/pull/217) adds
+- [#217](https://github.com/zendframework/zend-developer-tools/pull/217) adds
   support in the `SerializableException` for PHP 7 Throwables, including Error
   types.
-- [#220](https://github.com/zendframework/ZendDeveloperTools/pull/220) adds
+- [#220](https://github.com/zendframework/zend-developer-tools/pull/220) adds
   support for displaying matched route parameters other than just the controller
   and action.
 
@@ -70,9 +70,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#215](https://github.com/zendframework/ZendDeveloperTools/pull/215) replaces
+- [#215](https://github.com/zendframework/zend-developer-tools/pull/215) replaces
   the ZF logo to remove the "2".
-- [#218](https://github.com/zendframework/ZendDeveloperTools/pull/218) updates
+- [#218](https://github.com/zendframework/zend-developer-tools/pull/218) updates
   the logic for retrieving a zend-db `Adapter` to only do so if `db`
   configuration also exists; this ensures the toolbar does not cause a fatal
   error if zend-db is installed but no adapter configured.
@@ -81,7 +81,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#213](https://github.com/zendframework/ZendDeveloperTools/pull/213) adds
+- [#213](https://github.com/zendframework/zend-developer-tools/pull/213) adds
   support for zend-mvc, zend-eventmanager, and zend-servicemanager v3.
 
 ### Deprecated
