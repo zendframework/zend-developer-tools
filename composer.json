@@ -10,9 +10,9 @@
         "module"
     ],
     "support": {
-        "issues": "https://github.com/zendframework/ZendDeveloperTools/issues",
-        "source": "https://github.com/zendframework/ZendDeveloperTools",
-        "rss": "https://github.com/zendframework/ZendDeveloperTools/releases.atom",
+        "issues": "https://github.com/zendframework/zend-developer-tools/issues",
+        "source": "https://github.com/zendframework/zend-developer-tools",
+        "rss": "https://github.com/zendframework/zend-developer-tools/releases.atom",
         "chat": "https://zendframework-slack.herokuapp.com",
         "forum": "https://discourse.zendframework.com/c/questions/components"
     },

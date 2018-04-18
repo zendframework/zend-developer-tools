@@ -1,7 +1,7 @@
 # Zend Developer Tools
 
-[![Build Status](https://secure.travis-ci.org/zendframework/ZendDeveloperTools.svg?branch=master)](https://secure.travis-ci.org/zendframework/ZendDeveloperTools)
-[![Coverage Status](https://coveralls.io/repos/github/zendframework/ZendDeveloperTools/badge.svg?branch=master)](https://coveralls.io/github/zendframework/ZendDeveloperTools?branch=master)
+[![Build Status](https://secure.travis-ci.org/zendframework/zend-developer-tools.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-developer-tools)
+[![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-developer-tools/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-developer-tools?branch=master)
 
 Module providing debug tools for use with [zend-mvc](https://docs.zendframework.com/zend-mvc) applications.
 
