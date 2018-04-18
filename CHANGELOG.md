@@ -28,11 +28,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#242](https://github.com/zendframework/zend-developer-tools/pull/242) adds support for PHP 7.1 and 7.2.
+- [#242](https://github.com/zendframework/ZendDeveloperTools/pull/242) adds support for PHP 7.1 and 7.2.
 
 ### Changed
 
-- [#235](https://github.com/zendframework/zend-developer-tools/pull/235) modifies the module bootstrap to defer retrieval of services until they are needed.
+- [#235](https://github.com/zendframework/ZendDeveloperTools/pull/235) modifies the module bootstrap to defer retrieval of services until they are needed.
 
 ### Deprecated
 
@@ -44,9 +44,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#240](https://github.com/zendframework/zend-developer-tools/pull/240) fixes an issue with slide-in of the toolbar when resizing the browser window.
+- [#240](https://github.com/zendframework/ZendDeveloperTools/pull/240) fixes an issue with slide-in of the toolbar when resizing the browser window.
 
-- [#231](https://github.com/zendframework/zend-developer-tools/pull/231) ensures literal `$` characters are escaped within toolbar content.
+- [#231](https://github.com/zendframework/ZendDeveloperTools/pull/231) ensures literal `$` characters are escaped within toolbar content.
 
 ## 1.1.1 - 2016-09-08
 
