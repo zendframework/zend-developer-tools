@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.2.1 - TBD
+## 1.2.1 - 2018-04-18
 
 ### Added
 
@@ -10,7 +10,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#249](https://github.com/zendframework/zend-developer-tools/pull/249) changes the repository name to "zend-developer-tools", in order to make the name
+  consistent with other repositories, as well as play nicely with existing tooling. The Packagist
+  entry has been updated to point to the new repository name, and GitHub auto-redirects any
+  references to the old name to the new repository, making this a non-BC-breaking change.
 
 ### Deprecated
 
