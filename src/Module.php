@@ -106,7 +106,7 @@ class Module implements
         $profilerListener->attach($em);
 
         if ($options->isToolbarEnabled()) {
-            $toolbarListener = $sm->get(Listener\ProfilerListener::class);
+            $toolbarListener = $sm->get(Listener\ToolbarListener::class);
             $toolbarListener->attach($em);
         }
 
@@ -175,16 +175,16 @@ class Module implements
                 'ZendDeveloperTools\StorageListener' => function ($sm) {
                     return new Listener\StorageListener($sm);
                 },
-                'ZendDeveloperTools\ToolbarListener' => function ($sm) {
+                Listener\ToolbarListener::class => function ($sm) {
                     return new Listener\ToolbarListener(
                         $sm->get('ViewRenderer'),
                         $sm->get('ZendDeveloperTools\Config')
                     );
                 },
-                'ZendDeveloperTools\ProfilerListener' => function ($sm) {
+                Listener\ProfilerListener::class => function ($sm) {
                     return new Listener\ProfilerListener($sm, $sm->get('ZendDeveloperTools\Config'));
                 },
-                'ZendDeveloperTools\EventLoggingListenerAggregate' => function ($sm) {
+                Listener\EventLoggingListenerAggregate::class => function ($sm) {
                     $config = $sm->get('ZendDeveloperTools\Config');
 
                     return new Listener\EventLoggingListenerAggregate(
