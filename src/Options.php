@@ -85,6 +85,35 @@ class Options extends AbstractOptions
     }
 
     /**
+     * @param $key
+     * @param $value
+     */
+    private function switchForSetProfiler($key, $value)
+    {
+        switch ($key) {
+            case 'enabled':
+                // fall-through
+            case 'strict':
+                // fall-through
+            case 'flush_early':
+                $this->profiler[$key] = (bool) $value;
+                break;
+            case 'cache_dir':
+                $this->profiler[$key] = (string) $value;
+                break;
+            case 'matcher':
+                $this->setMatcher($value);
+                break;
+            case 'collectors':
+                $this->setCollectors($value);
+                break;
+            default:
+                // unknown option
+                break;
+        }
+    }
+
+    /**
      * Sets Profiler options.
      *
      * @param array $options
@@ -92,27 +121,7 @@ class Options extends AbstractOptions
     public function setProfiler(array $options)
     {
         foreach ($options as $key => $value) {
-            switch ($key) {
-                case 'enabled':
-                    // fall-through
-                case 'strict':
-                    // fall-through
-                case 'flush_early':
-                    $this->profiler[$key] = (bool) $value;
-                    continue 2;
-                case 'cache_dir':
-                    $this->profiler[$key] = (string) $value;
-                    continue 2;
-                case 'matcher':
-                    $this->setMatcher($value);
-                    continue 2;
-                case 'collectors':
-                    $this->setCollectors($value);
-                    continue 2;
-                default:
-                    // unknown option
-                    continue 2;
-            }
+            $this->switchForSetProfiler($key, $value);
         }
     }
 
@@ -319,6 +328,53 @@ class Options extends AbstractOptions
         return $this->events['identifiers'];
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
+    private function switchForSetTollbar($key, $value)
+    {
+        switch ($key) {
+            case 'enabled':
+                // fall-through
+            case 'auto_hide':
+                // fall-through
+            case 'version_check':
+                $this->toolbar[$key] = (bool) $value;
+                break;
+            case 'position':
+                if ($value !== 'bottom' && $value !== 'top') {
+                    $this->report->addError(sprintf(
+                        "['zenddevelopertools']['toolbar']['position'] must be 'top' or 'bottom', %s given.",
+                        $value
+                    ));
+                    break;
+                }
+                $this->toolbar[$key] = $value;
+                break;
+            case 'entries':
+                if (! is_array($value)) {
+                    $this->report->addError(sprintf(
+                        "['zenddevelopertools']['toolbar']['entries'] must be an array, %s given.",
+                        gettype($value)
+                    ));
+                }
+
+                foreach ($value as $collector => $template) {
+                    if ($template === false || $template === null) {
+                        unset($this->toolbar[$key][$collector]);
+                        break;
+                    }
+
+                    $this->toolbar[$key][$collector] = $template;
+                }
+
+                break;
+            default:
+                // Unknown type; ignore
+                break;
+        }
+    }
 
     /**
      * Sets Toolbar options.
@@ -328,46 +384,7 @@ class Options extends AbstractOptions
     public function setToolbar(array $options)
     {
         foreach ($options as $key => $value) {
-            switch ($key) {
-                case 'enabled':
-                    // fall-through
-                case 'auto_hide':
-                    // fall-through
-                case 'version_check':
-                    $this->toolbar[$key] = (bool) $value;
-                    continue 2;
-                case 'position':
-                    if ($value !== 'bottom' && $value !== 'top') {
-                        $this->report->addError(sprintf(
-                            "['zenddevelopertools']['toolbar']['position'] must be 'top' or 'bottom', %s given.",
-                            $value
-                        ));
-                        continue 2;
-                    }
-                    $this->toolbar[$key] = $value;
-                    continue 2;
-                case 'entries':
-                    if (! is_array($value)) {
-                        $this->report->addError(sprintf(
-                            "['zenddevelopertools']['toolbar']['entries'] must be an array, %s given.",
-                            gettype($value)
-                        ));
-                    }
-
-                    foreach ($value as $collector => $template) {
-                        if ($template === false || $template === null) {
-                            unset($this->toolbar[$key][$collector]);
-                            continue 2;
-                        }
-
-                        $this->toolbar[$key][$collector] = $template;
-                    }
-
-                    continue 2;
-                default:
-                    // Unknown type; ignore
-                    continue 2;
-            }
+            $this->switchForSetTollbar($key, $value);
         }
     }
 
