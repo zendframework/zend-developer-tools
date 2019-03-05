@@ -99,19 +99,19 @@ class Options extends AbstractOptions
                     // fall-through
                 case 'flush_early':
                     $this->profiler[$key] = (bool) $value;
-                    continue;
+                    continue 2;
                 case 'cache_dir':
                     $this->profiler[$key] = (string) $value;
-                    continue;
+                    continue 2;
                 case 'matcher':
                     $this->setMatcher($value);
-                    continue;
+                    continue 2;
                 case 'collectors':
                     $this->setCollectors($value);
-                    continue;
+                    continue 2;
                 default:
                     // unknown option
-                    continue;
+                    continue 2;
             }
         }
     }
@@ -335,17 +335,17 @@ class Options extends AbstractOptions
                     // fall-through
                 case 'version_check':
                     $this->toolbar[$key] = (bool) $value;
-                    continue;
+                    continue 2;
                 case 'position':
                     if ($value !== 'bottom' && $value !== 'top') {
                         $this->report->addError(sprintf(
                             "['zenddevelopertools']['toolbar']['position'] must be 'top' or 'bottom', %s given.",
                             $value
                         ));
-                        continue;
+                        continue 2;
                     }
                     $this->toolbar[$key] = $value;
-                    continue;
+                    continue 2;
                 case 'entries':
                     if (! is_array($value)) {
                         $this->report->addError(sprintf(
@@ -357,16 +357,16 @@ class Options extends AbstractOptions
                     foreach ($value as $collector => $template) {
                         if ($template === false || $template === null) {
                             unset($this->toolbar[$key][$collector]);
-                            continue;
+                            continue 2;
                         }
 
                         $this->toolbar[$key][$collector] = $template;
                     }
 
-                    continue;
+                    continue 2;
                 default:
                     // Unknown type; ignore
-                    continue;
+                    continue 2;
             }
         }
     }
