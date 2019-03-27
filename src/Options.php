@@ -357,7 +357,7 @@ class Options extends AbstractOptions
                     foreach ($value as $collector => $template) {
                         if ($template === false || $template === null) {
                             unset($this->toolbar[$key][$collector]);
-                            break;
+                            continue;
                         }
 
                         $this->toolbar[$key][$collector] = $template;
