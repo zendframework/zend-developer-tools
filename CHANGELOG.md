@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.2.3 - TBD
+## 1.2.3 - 2019-03-28
 
 ### Added
 
@@ -22,7 +22,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- Fixes an information disclosure vulnerability; see https://framework.zend.com/security/advisory/ZF2019-01
+  for more details.
 
 ## 1.2.2 - 2019-03-05
 
