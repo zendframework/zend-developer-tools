@@ -59,8 +59,8 @@ class ConfigCollector implements CollectorInterface, Serializable
 
         $serviceLocator = $application->getServiceManager();
 
-        if ($serviceLocator->has('Config')) {
-            $this->config = $this->makeArraySerializable($serviceLocator->get('Config'));
+        if ($serviceLocator->has('config')) {
+            $this->config = $this->makeArraySerializable($serviceLocator->get('config'));
         }
 
         if ($serviceLocator->has('ApplicationConfig')) {
