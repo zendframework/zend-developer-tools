@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- comply with psr-4 autoloading standard, for composer 1.11+
 
 ## 1.2.4 - 2019-12-26
 
