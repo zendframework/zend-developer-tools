@@ -5,7 +5,7 @@
  * @license   https://github.com/zendframework/zend-developer-tools/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendDeveloperTools\Match;
+namespace ZendDeveloperTools;
 
 interface MatchInterface
 {
