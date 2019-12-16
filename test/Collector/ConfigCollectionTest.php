@@ -12,7 +12,7 @@ use ZendDeveloperTools\Collector\ConfigCollector;
 use Zend\Mvc;
 use Zend\ServiceManager;
 
-class ConfigCollectorTest extends TestCase
+class ConfigCollectionTest extends TestCase
 {
     public function testCollect()
     {
