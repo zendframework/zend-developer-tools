@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.0.0 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#200](https://github.com/zendframework/zend-developer-tools/pull/200) changes the `ZendDeveloperTools\Collector\CollectorInterface::collectEvent()` method to typehint its second argument against `Zend\EventManager\EventInterface` instead of `Zend\EventManager\Event`. This allows for any `EventInterface` implementation, instead of artificially restricting to those events that implement the concrete type. As such, any collectors that are implementing that interface MUST be updated to the new signature.
+
+- [#200](https://github.com/zendframework/zend-developer-tools/pull/200) updates the `MemoryCollector` and `TimeCollector` to the new `CollectorInterface::collectEvent()` signature.
+
+- [#200](https://github.com/zendframework/zend-developer-tools/pull/200) updates the `EventLoggingListenerAggregate::onCollectEvent()` method to typehint against `Zend\EventManager\EventInterface` instead of `Zend\EventManager\Event`. This change should only affect extensions to the class.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.3.0 - 2019-12-26
 
 ### Added
