@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#261](https://github.com/zendframework/zend-developer-tools/pull/261) swaps in symfony/var-dumper for zendframework/zend-debug, as the latter is now archived and abandoned.
 
 ### Deprecated
 
