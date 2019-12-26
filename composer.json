@@ -54,8 +54,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.2.x-dev",
-            "dev-develop": "1.3.x-dev"
+            "dev-master": "1.3.x-dev",
+            "dev-develop": "2.0.x-dev"
         },
         "zf": {
             "module": "ZendDeveloperTools"
