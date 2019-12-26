@@ -17,7 +17,7 @@ matrix:
     - php: 5.6
       env:
         - DEPS=locked
-        - LEGACY_DEPS="phpunit/phpunit"
+        - LEGACY_DEPS="symfony/var-dumper phpunit/phpunit"
     - php: 5.6
       env:
         - DEPS=latest
@@ -27,8 +27,7 @@ matrix:
     - php: 7
       env:
         - DEPS=locked
-        - CS_CHECK=true
-        - LEGACY_DEPS="phpunit/phpunit"
+        - LEGACY_DEPS="symfony/var-dumper phpunit/phpunit"
     - php: 7
       env:
         - DEPS=latest
@@ -38,6 +37,9 @@ matrix:
     - php: 7.1
       env:
         - DEPS=locked
+        - LEGACY_DEPS="symfony/var-dumper"
+        - CS_CHECK=true
+        - TEST_COVERAGE=true
     - php: 7.1
       env:
         - DEPS=latest
@@ -71,8 +73,11 @@ install:
   - stty cols 120 && composer show
 
 script:
-  - composer test
+  - if [[ $TEST_COVERAGE == 'true' ]]; then composer test-coverage ; else composer test ; fi
   - if [[ $CS_CHECK == 'true' ]]; then composer cs-check ; fi
+
+after_script:
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry php vendor/bin/php-coveralls -v ; fi
 
 notifications:
   email: false
