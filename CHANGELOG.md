@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 1.2.4 - TBD
+## 1.2.4 - 2019-12-26
 
 ### Added
 
@@ -44,7 +44,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#259](https://github.com/zendframework/zend-developer-tools/pull/259) adjusts the casing used when retrieving the "config" service within the `ConfigCollector` to be all lowercase, ensuring it works with all versions of zend-mvc.
 
 ## 1.2.3 - 2019-03-28
 
