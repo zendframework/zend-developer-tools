@@ -12,6 +12,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#261](https://github.com/zendframework/zend-developer-tools/pull/261) swaps in symfony/var-dumper for zendframework/zend-debug, as the latter is now archived and abandoned.
 
+- [#262](https://github.com/zendframework/zend-developer-tools/pull/262) moves the file `src/Controller/DeveloperToolsController.php` to `src/Controller/IndexController.php`, so that the filename matches the class name it defines.
+
+- [#262](https://github.com/zendframework/zend-developer-tools/pull/262) moves the file `src/Match/MatchInterface.php` to `src/MatchInterface.php`, so that the filename matches the class name it defines.
+
+- [#262](https://github.com/zendframework/zend-developer-tools/pull/262) moves the file `test/Collector/ConfigCollectionTest.php` to `src/Collector/ConfigCollectorTest.php`, so that the filename matches the class name it defines.
+
 ### Deprecated
 
 - Nothing.
@@ -22,7 +28,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- comply with psr-4 autoloading standard, for composer 1.11+
+- Nothing.
 
 ## 1.2.4 - 2019-12-26
 
