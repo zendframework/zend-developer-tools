@@ -4,10 +4,6 @@
 >
 > This repository has moved to laminas/laminas-developer-tools.
 
-> ## Repository abandoned 2019-12-31
->
-> This repository has moved to laminas/laminas-developer-tools.
-
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-developer-tools.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-developer-tools)
 [![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-developer-tools/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-developer-tools?branch=master)
 
